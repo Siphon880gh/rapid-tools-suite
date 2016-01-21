@@ -12,7 +12,7 @@
 
 <script>
     $(function() {
-        $.get("README.md", function(data) {
+        $.get("readme.md", function(data) {
             var converter = new showdown.Converter();
             converter.setOption("literalMidWordUnderscores", true);
             $("#readme").html(converter.makeHtml(data));
