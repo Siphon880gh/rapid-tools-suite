@@ -1,0 +1,36 @@
+{
+  "name": "rts",
+  "homepage": "https://github.com/Siphon880gh/rapid-tools-suite",
+  "authors": [
+    "Weng Fei Fung <siphon880g@gmail.com>"
+  ],
+  "description": "A collection of frontend and backend tools to shorten development time. Layouts with placeholders, lorem ipsum, and a command line Bootstrap layouter. Discover specifications while making quick layouts and emulating backend queries to the database. Write code faster with controllers attached to elements. Collaborate better using tooltips and narration. -Weng Fei Fung",
+  "main": [
+    "ezloader.php",
+    "js/bundle.js",
+    "js/bundle.css",
+    "js/rapid-backend.php"
+  ],
+  "moduleType": [
+    "amd"
+  ],
+  "keywords": [
+    "rapid",
+    "agile",
+    "frontend",
+    "backend",
+    "php",
+    "emulate",
+    "php",
+    "emulation",
+    "bootstrap"
+  ],
+  "license": "Apache License",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
