@@ -1,13 +1,13 @@
 ###Rapid Tools Suite
 ####*A collection of frontend and backend tools to shorten development time. Layouts with placeholders, lorem ipsum, and a command line Bootstrap layouter. Discover specifications while making quick layouts and emulating backend queries to the database. Write code faster with controllers attached to elements. Collaborate better using tooltips and narration. -Weng Fei Fung*<br/>
 **Dependencies:**<br/>
-Requires jQuery, Jquery UI, Handlebars, Bootstrap
-- jQuery for general functions, jQuery migrate for Chrome debugging functions (if using), Query UI for draggable Bootstrap status and draggable styled ihtml box, Bootstrap css for Bootstrap features, Bootstrap js for detailed tooltips, and Handlebars for itemplate.
+Requires jQuery, jQuery Migrate, Jquery UI, Bootstrap, Handlebars
+- jQuery for general functions, jQuery Migrate for Chrome debugging functions (if using), jQuery UI for draggable Bootstrap status and draggable styled ihtml box, Bootstrap css for Bootstrap features, Bootstrap js for detailed tooltips, and Handlebars for itemplate.
 
 **Installation:**<br/>
 Upload bundle.js or bundle.production.min.js (Coming soon). The minified production js only contains the essentials that are integral to the website when used with Rapid, namely, semantics/modularity (global, onload, onloader, onclick, onclicker), and responsive bootstrap (mdCSS, mdJS, etc). Placeholders, stories, tooltips, etc. are for earlier in the development stages and are removed.
 
-You can also install via `bower install rts`.
+You can also install via `bower install rts` and have bower manage the dependencies for you.
   
 **Legal:**
 In bundle.js.
