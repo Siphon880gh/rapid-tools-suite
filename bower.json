@@ -36,7 +36,7 @@
   "dependencies": {
     "jquery-1.12.0.min": "http://code.jquery.com/jquery-1.12.0.min.js",
     "jquery-migrate": "~1.2.1",
-    "jquery-ui": "http://code.jquery.com/ui/1.11.3/themes/ui-lightness/jquery-ui.css",
+    "jquery-ui.css": "http://code.jquery.com/ui/1.11.3/themes/ui-lightness/jquery-ui.css",
     "jquery-ui.min": "http://code.jquery.com/ui/1.11.4/jquery-ui.min.js",
     "font-awesome": "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.css",
     "bootstrap.min.css": "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css",
