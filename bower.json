@@ -32,5 +32,12 @@
     "bower_components",
     "test",
     "tests"
-  ]
+  ],
+  "dependencies": {
+    "jQuery": "~2.2.0",
+    "jquery-migrate": "~1.2.1",
+    "jquery-ui": "jqueryui#~1.11.4",
+    "bootstrap": "~3.3.6",
+    "handlebars": "~4.0.5"
+  }
 }
