@@ -40,7 +40,7 @@ if($_SERVER["REQUEST_METHOD"]=="POST") {
         $phpSrc = "\n" . '$lnk1' . " = mysqli_connect(\"$db_server\", \"$db_username\", \"$db_password\") or die('{\"status\":\"Couldn\'t connect to server database. Check username and/or password.\"}');";
         $phpSrc .= "\n" . "mysqli_select_db(" . '$lnk1' . "\", \"$db_name\") or die('{\"status\":\"Couldn\'t connect to server database. Check database name.\"}');\n";
 
-        $arr=array("status"=>"Authentication passed. Access granted to run rerouted queries with fetchQuery and execQuery.","authenticated"=>true,"phpSrc"=>"$phpSrc");
+        $arr=array("status"=>"Authentication passed. You can now use fetchQuery and execQuery.","authenticated"=>true,"phpSrc"=>"$phpSrc");
         echo json_encode($arr);
     } // auth request
     
@@ -56,7 +56,7 @@ if($_SERVER["REQUEST_METHOD"]=="POST") {
         $rsQuery = mysqli_query($lnk1, $_POST["rapidMysqli"]);
         
         if(!$rsQuery) // "" -> For other successful queries mysqli_query() will return TRUE.
-            die(json_encode(array("_error"=> var_export(mysql_error(), true) . " with " . $_POST["rapidMysqli"])));
+            die(json_encode(array("_error"=> var_export(mysql_error(), true) . " result after querying: " . $_POST["rapidMysqli"])));
 
             if($rsQuery!==true) { // was a SELECT
                 $rsArr = array();
@@ -87,8 +87,38 @@ if($_SERVER["REQUEST_METHOD"]=="POST") {
             }
         } // if has multiFetchAssocs
         
+        //Fill $_GET, $_POST, $_PUT, etc method parameters
+        $method = $_POST["rapidMethod"];
+        $_PARAMS = json_decode($_POST["rapidParams"], true);
+        switch ($method) {
+          case 'GET':
+            $_GET = $_PARAMS;
+          case 'POST':
+            $_POST = $_POST + $_PARAMS; 
+            break;
+          case 'PUT':
+            $_PUT = $_PARAMS;
+            break;
+          case 'PATCH':
+            $_PATCH = $_PARAMS;  
+            break;
+          case 'DELETE':
+            $_DELETE = $_PARAMS;  
+            break;
+          case 'HEAD':
+            $_HEAD = $_PARAMS; 
+            break;
+          case 'OPTIONS':
+            $_OPTIONS = $_PARAMS;   
+            break;
+          default:
+            $_GET = $_PARAMS;
+            break;
+        } // switch
+        //$_TEST = array();
+        //$_TEST["a"]="success";
+        
         eval($_POST["rapidEcho"]);
-        //rdebug($_POST["rapidEcho"][0], true);
     } // emulate echo
     
 } // CONDITIONAL: $_SERVER["REQUEST_METHOD"]=="POST"

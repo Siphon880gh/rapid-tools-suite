@@ -22,12 +22,16 @@
 */
 
     function initB() {
-        //Status needed for responsive scripts
-        if($("#rapid-bootstrap-status").length==0) {
-            $('<div id="rapid-bootstrap-status" class="rapid-drags" style="background-color:gray; position:fixed;bottom:30px;right:2px;opacity:.7;display:none; width:130px !important; border-radius: 4px; cursor:all-scroll;"><div id="rapid-lg" class="visible-lg">&nbsp;<i class="fa fa-desktop fa-6"></i>&nbsp;Large Screen (lg)</div> <div id="rapid-md" class="visible-md">&nbsp;<i class="fa fa-desktop fa-5"></i>&nbsp;Desktop (md)</div><div id="rapid-sm" class="visible-sm">&nbsp;<i class="fa fa-tablet fa-5"></i>&nbsp;Tablets (sm)</div><div id="rapid-xs" class="visible-xs">&nbsp;<i class="fa fa-mobile fa-5 fa-inverse"></i>&nbsp;Mobile (xs)</div></div>').appendTo("body");
-        } // if
-        if (typeof jQuery.ui != "undefined") {
-            $("#rapid-bootstrap-status").draggable();
+        //Check if Bootstrap exists before showing optional status
+        if(typeof $().emulateTransitionEnd == 'function') {
+
+            //Status needed for responsive scripts
+            if($("#rapid-bootstrap-status").length==0) {
+                $('<div id="rapid-bootstrap-status" class="rapid-drags" style="background-color:gray; position:fixed;bottom:30px;right:2px;opacity:.7;display:none; width:130px !important; border-radius: 4px; cursor:all-scroll;"><div id="rapid-lg" class="visible-lg">&nbsp;<i class="fa fa-desktop fa-6"></i>&nbsp;Large Screen (lg)</div> <div id="rapid-md" class="visible-md">&nbsp;<i class="fa fa-desktop fa-5"></i>&nbsp;Desktop (md)</div><div id="rapid-sm" class="visible-sm">&nbsp;<i class="fa fa-tablet fa-5"></i>&nbsp;Tablets (sm)</div><div id="rapid-xs" class="visible-xs">&nbsp;<i class="fa fa-mobile fa-5 fa-inverse"></i>&nbsp;Mobile (xs)</div></div>').appendTo("body");
+            } // if
+            if (typeof jQuery.ui != "undefined") {
+                $("#rapid-bootstrap-status").draggable();
+            }
         }
         
         //Check for responsive scripts and css media queries
@@ -93,7 +97,8 @@
                     }
                 },
                 staticCSS: function() {
-                  console.info("Rapid.bootstrap.staticCSS:\n-These media queries are combined from xsCSS, smCSS, mdCSS, and lgCSS.\n-To validate the code, copy this to CSS Lint.\n-If your page has elements that grow or shrink while the page is loading, copy this to a style block. This would make sure the CSS media queries run before inline styles rather than the other way around, which causes two sets of style changes, hence the growing and shrinking during loading.\n\n" + $("#rapid-bootstrap-css-media-queries").text());
+                  console.info("Rapid.bootstrap.staticCSS:\n-These media queries are combined from xsCSS, smCSS, mdCSS, and lgCSS.\n-To validate the code, copy this to CSS Lint.\n-If your page has elements that grow or shrink while the page is loading, copy this to a style block. This would make sure the CSS media queries run before inline styles rather than the other way around, which causes two sets of style changes, hence the growing and shrinking during loading.\n\n");
+                    return $("#rapid-bootstrap-css-media-queries").text();
                 },
                 mod: function(sel, mode, widths) {
                     var jqObj;
@@ -118,7 +123,7 @@
                            .removeClass("col-" + mode + "-11")
                            .removeClass("col-" + mode + "-12");
 
-                    if (widths.length!=undefined) {
+                    if (typeof widths.length!='undefined') {
                         $(this).addClass("col-" + mode + "-" + widths[paramColIndex]);
                         if (paramColIndex < widths.length-1) paramColIndex++;
                     } else {
@@ -259,7 +264,7 @@
 *   ------------------------------------------------------------------------------------------ 
 */
     //S-1. Rapid Tools Suite's defaults
-    if(Rapid==undefined) var Rapid = {};
+    if(typeof Rapid=='undefined') var Rapid = {};
 
     //For ilisten - optional function to prevent SQL injection
     function mysqli_real_escape_string(str) {
@@ -269,6 +274,10 @@
     }
     function real_escape_string(str) {
         return mysqli_real_escape_string(str);
+    }
+    //For semantics - easily add enums in javascript
+    function enumer() {
+        return ++Rapid.constants.itrEnum;
     }
 
     $.extend(true, Rapid, 
@@ -280,7 +289,7 @@
                     return Rapid.options.apply(this, arguments);
                 };
                 window.staticCSS = function() {
-                    return Rapid.bootstrap.staticCSS.apply(this, arguments);
+                    return Rapid.ibootstrap.staticCSS.apply(this, arguments);
                 };
                 window.addHelp = function() {
                     return Rapid.ibootstrap.addHelp.apply(this, arguments);
@@ -333,6 +342,7 @@
                 ibootstrapAddColMd: '<div id="" class="col-md-1" style="" data-rapid-target></div>',
                 ibootstrapAddColLg: '<div id="" class="col-lg-1" style="" data-rapid-target></div>',
                 ibootstrapAddSpecol: '<div id="" class="$_SPECOL_$" style="" data-rapid-target></div>',
+                itrEnum: -1
             },
             ihelpers: {
               listeners: {},
@@ -344,10 +354,12 @@
                 return true;
               },
               validateResponse: function(id, data) {
-                if(data==undefined) { console.log(id); }
+                if(typeof data=='undefined') { console.log(id); }
                 if(data.length==0) {
-                    console.error(id + ": Blank response text.");
-                    return false;
+                    console.info(id + ": Blank response text.");
+                    
+                    // Rationale: A blank response text is not necessarily an error, so do not block the caller from continuing
+                    return true;
                 } else if(data.substr(0,3).indexOf("<")!=-1) { // found
                     console.error(id + ": Not the expected response text. Detected '<' in the first few characters. Likely a HTML was returned. Check the URL because it could be a custom 404 page.");
                     console.dir(data);
@@ -459,8 +471,8 @@ $("#rapid-html a#normal").click(function() {
                 if(!Rapid.ihelpers.validateRequestLine("Rapid.iajax", arguments[0])) {
                     return;
                 }
-                if(typeof arguments[arguments.length-1]!=="function") {
-                    console.error("Rapid.iajax: Last parameter must be a done callback that handles what to do with the responseText in regards to the web app.");
+                if(typeof arguments[arguments.length-1]!=="function" && arguments[arguments.length-1]!=null) {
+                    console.error("Rapid.iajax: Last parameter should be a done callback that handles the responseText on the client side. If you do not want to bother with a done callback, pass null. The console will still return a console.dir but the ajax code it gives you will exclude any done callback.");
                     return;
                 }
                              
@@ -469,20 +481,25 @@ $("#rapid-html a#normal").click(function() {
                 requestLine_arr = requestLine.split(" "),
                 method = requestLine_arr[0].toUpperCase(), // VALUE: GET
                 url = requestLine_arr[1].toLowerCase(), // VALUE: http..
-                cbClientDone = arguments[arguments.length-1], // TYPE: mixed
+                cbClientDone = arguments[arguments.length-1], // TYPE: function vs null
                 params = arguments.length>=2?arguments[1]:{};
                 
+                //Listeners overriding Ajax, part 1:
                 var internalDone = {
                     forGet: function(data) { // done wrapper
                             var strJS="";
                             if(data!==Rapid.constants.phpEmulate) {
                                 if(!Rapid.ihelpers.validateResponse("Rapid.iajax", data)) return;
-                                data = JSON.parse(data);
+                                if(data.length)
+                                    data = JSON.parse(data);
+                                else
+                                    data = "";
                             }
                             strJS+='$.' + method.toLowerCase() + '("' + url + '"';
-                            if(params.length==0);
+                            if(params==null);
+                            else if(params.length==0);
                             else if(typeof params=="string") strJS+=", " + params;
-                            else if(typeof params=="object") { if(params.rapidKey!==undefined) delete params.rapidKey; strJS+=", " + JSON.stringify(params); }
+                            else if(typeof params=="object") { if(typeof params.rapidKey!='undefined') delete params.rapidKey; strJS+=", " + JSON.stringify(params); }
                             if(typeof cbClientDone == "function") strJS+=")\n\t.done(" + cbClientDone.toString() + ");"
                             else strJS+=")\n\t.done(function(data) {\n\t\tconsole.dir(data);\n\t});"
 
@@ -490,19 +507,23 @@ $("#rapid-html a#normal").click(function() {
                             console.log("Your js code would be:\n");
                             console.log(strJS);
                             console.log("Evaluating the done callback passed to iajax...");
-                            if(data!=undefined) console.log("data: ", data);
+                            if(typeof data!='undefined') console.log("data: ", data);
                             console.groupEnd();
                     },
                     forPost: function(data) { // done wrapper
                             var strJS="";
                             if(data!=Rapid.constants.phpEmulate) {
                                 if(!Rapid.ihelpers.validateResponse("Rapid.iajax", data)) return;
-                                data = JSON.parse(data);
+                                if(data.length)
+                                    data = JSON.parse(data);
+                                else
+                                    data = "";
                             }
                             strJS+='$.' + method.toLowerCase() + '("' + url + '"';
-                            if(params.length==0);
+                            if(params==null);
+                            else if(params.length==0);
                             else if(typeof params=="string") strJS+=", " + params;
-                            else if(typeof params=="object") { if(params.rapidKey!==undefined) delete params.rapidKey; strJS+=", " + JSON.stringify(params); }
+                            else if(typeof params=="object") { if(typeof params.rapidKey!='undefined') delete params.rapidKey; strJS+=", " + JSON.stringify(params); }
                             if(typeof cbClientDone == "function") strJS+=")\n\t.done(" + cbClientDone.toString() + ");"
                             else strJS+=")\n\t.done(function(data) {\n\t\tconsole.dir(data);\n\t});"
 
@@ -511,7 +532,7 @@ $("#rapid-html a#normal").click(function() {
                             console.log(strJS);
                             //alert("reached cbClientDone");
                             console.log("Evaluating the done callback passed to iajax...");
-                            if(data!=undefined) console.log("data: ", data);
+                            if(typeof data!='undefined') console.log("data: ", data);
                             console.groupEnd();
                             
                     
@@ -520,12 +541,16 @@ $("#rapid-html a#normal").click(function() {
                             var strJS="";
                             if(data!==Rapid.constants.phpEmulate) {
                                 if(!Rapid.ihelpers.validateResponse("Rapid.iajax", data)) return;
-                                data = JSON.parse(data);
+                                if(data.length)
+                                    data = JSON.parse(data);
+                                else
+                                    data = "";
                             }
                             strJS+='$.ajax({\n\turl:"' + url + '",\n';
-                            if(params.length==0);
+                            if(params==null);
+                            else if(params.length==0);
                             else if(typeof params=="string");
-                            else if(typeof params=="object") { if(params.rapidKey!==undefined) delete params.rapidKey; strJS+='\tdata:' + JSON.stringify(params) + ',\n'; }
+                            else if(typeof params=="object") { if(typeof params.rapidKey!='undefined') delete params.rapidKey; strJS+='\tdata:' + JSON.stringify(params) + ',\n'; }
                             strJS+='\tmethod:"' + method + '"\n}';
                             if(typeof cbClientDone == "function") strJS+=")\n\t.done(" + cbClientDone.toString() + ");"
                             else strJS+=")\n\t.done(function(data) {\n\t\tconsole.dir(data);\n\t});"
@@ -533,7 +558,7 @@ $("#rapid-html a#normal").click(function() {
                             console.log("Your js code would be:\n");
                             console.log(strJS);
                             console.log("Evaluating the done callback passed to iajax...");
-                            if(data!=undefined) console.log("data: ", data);
+                            if(typeof data!='undefined') console.log("data: ", data);
                             console.groupEnd();
                     }
                     
@@ -543,8 +568,8 @@ $("#rapid-html a#normal").click(function() {
                 }; // fail
                 
                 
-                //Listeners, overriding Ajax:
-                    if(Rapid.ihelpers.listeners[requestLine]!=undefined) {
+                //Listeners overriding Ajax, part 2:
+                    if(typeof Rapid.ihelpers.listeners[requestLine]!='undefined') {
                         switch (method) {
                             case "GET":
                                 cbInternalDone = internalDone.forGet;
@@ -571,7 +596,7 @@ $("#rapid-html a#normal").click(function() {
                         if(jsExecAjaxStart.length>0) { // start async sequence over at ilisten
                             Rapid.ihelpers.listeners[requestLine].jsExecAjaxStarter();
                         } else { // no ajax response over at ilisten so just echo manually
-                            Rapid.ihelpers.listeners[requestLine].getFinalEcho();
+                            Rapid.ihelpers.listeners[requestLine].runFinalEcho();
                         }
                         return;
                     } // if overridden by ilisten
@@ -659,7 +684,7 @@ $("#rapid-html a#normal").click(function() {
                                 return this;
                             }, // initScope
                             execQuery: function(reg) {                                                
-                                if(this._error!=undefined) {
+                                if(typeof this._error!='undefined') {
                                     //Already shown error
                                     return this;
                                 }
@@ -673,7 +698,7 @@ $("#rapid-html a#normal").click(function() {
                                 return this;
                             },
                             fetchQuery: function(objFetcher) {                                                
-                                if(this._error!=undefined) {
+                                if(typeof this._error!='undefined') {
                                     //Already shown error
                                     return this;
                                 }
@@ -713,7 +738,7 @@ $("#rapid-html a#normal").click(function() {
                                         var str = reg.toString();
                                         var strStr = str.substr(1, str.length-2);
                                         asIsQuery = strStr;
-                                        console.log("Will run mysqli query: ", asIsQuery);
+                                        console.log("When you call .run(), will run mysqli query: ", asIsQuery);
                                     } // for
                                 
                                 if(_getArrayName.indexOf("$rapidNull")==0)
@@ -722,7 +747,7 @@ $("#rapid-html a#normal").click(function() {
                                 this.ajaxMax++;
                                 //console.dir(this.jsExecAjax);
                                 //PROBLEM:
-                                this.jsExecAjax.push("eval(Rapid.ihelpers.listeners[\"" + requestLine + "\"].jsBeforeAjax); $.post(\"" + Rapid.backend.ihelpers.path + "\", $.extend({rapidKey:\"" + Rapid.backend.ihelpers.rapidKey + "\", cacheBuster:" + $.now() + ", rapidMysqli:" + asIsQuery.replace(/\./g, '+') + "}, Rapid.ihelpers.listeners[\"" + requestLine + "\"].curParams)).done(function(data) { var curRequest = Rapid.ihelpers.listeners[\"" + requestLine + "\"]; curRequest.responseHolderKeys.push(\"" + _getArrayName + "\"); curRequest.responseHolderVals.push(data); if(curRequest.ajaxCounter<curRequest.jsExecAjax.length) { curRequest.ajaxCounter++; eval(Rapid.ihelpers.listeners[\"" + requestLine + "\"].jsExecAjax[curRequest.ajaxCounter]); } if(curRequest.ajaxCounter==curRequest.jsExecAjax.length) { curRequest.ajaxCounter=0; curRequest.getFinalEcho();} });");
+                                this.jsExecAjax.push("eval(Rapid.ihelpers.listeners[\"" + requestLine + "\"].jsBeforeAjax); $.post(\"" + Rapid.backend.ihelpers.path + "\", $.extend({rapidKey:\"" + Rapid.backend.ihelpers.rapidKey + "\", cacheBuster:" + $.now() + ", rapidMysqli:" + asIsQuery.replace(/\./g, '+') + "}, Rapid.ihelpers.listeners[\"" + requestLine + "\"].curParams)).done(function(data) { var curRequest = Rapid.ihelpers.listeners[\"" + requestLine + "\"]; curRequest.responseHolderKeys.push(\"" + _getArrayName + "\"); curRequest.responseHolderVals.push(data); if(curRequest.ajaxCounter<curRequest.jsExecAjax.length) { curRequest.ajaxCounter++; eval(Rapid.ihelpers.listeners[\"" + requestLine + "\"].jsExecAjax[curRequest.ajaxCounter]); } if(curRequest.ajaxCounter==curRequest.jsExecAjax.length) { curRequest.ajaxCounter=0; curRequest.runFinalEcho();} });");
                                 
                                 var requestLine_arr = requestLine.split(" ");
                                 var method = requestLine_arr[0].toUpperCase();
@@ -773,7 +798,7 @@ $("#rapid-html a#normal").click(function() {
                                 }
                             }, // jsExecAjaxStart
 
-                            getFinalEcho: function() {
+                            runFinalEcho: function() {
                                 var curRequest = Rapid.ihelpers.listeners[requestLine];
                                 var rsObj = {};
                                 var cbClientDone = curRequest.cbClientDone;
@@ -785,9 +810,16 @@ $("#rapid-html a#normal").click(function() {
                                     } // if
                                 } // for
                                 // rsObj values
+                                var requestLine_arr = curRequest.requestLine.split(" ");
+                                var method = requestLine_arr[0].toUpperCase(); // VALUE: GET
+                                //-
 
-                                if(this.testingChain==undefined)
-                                    $.post(Rapid.backend.ihelpers.path, {rapidKey: Rapid.backend.ihelpers.rapidKey, rapidEcho: curRequest.phpSrcEcho, rapidMultiFetchAssocs: $.isEmptyObject(rsObj)?"":rsObj})
+                                if(typeof this.testingChain=='undefined')
+                                    $.post(Rapid.backend.ihelpers.path, {rapidKey: Rapid.backend.ihelpers.rapidKey, 
+                                                                         rapidEcho: curRequest.phpSrcEcho, 
+                                                                         rapidMethod: method, 
+                                                                         rapidParams: typeof curRequest.curParams=="object"?JSON.stringify(curRequest.curParams):JSON.stringify({"_error":"Can't echo a method without parameters."}), 
+                                                                         rapidMultiFetchAssocs: $.isEmptyObject(rsObj)?"":rsObj})
                                         .done(function(data) { 
                                             if(curRequest.jsExecAjax.length>0)
                                                 console.info("Emulated Server -> Actual Database -> Echo -> Ajax Done Callback:"); 
@@ -795,7 +827,7 @@ $("#rapid-html a#normal").click(function() {
                                                 console.info("Emulated Server -> Echo -> Ajax Done Callback:"); 
                                             cbClientDone(data); 
                                     }); // done
-                            }, // getFinalEcho
+                            }, // runFinalEcho
                             
                             run: function() {
                                 var requestLine = "POST null";
@@ -819,7 +851,7 @@ $("#rapid-html a#normal").click(function() {
                                 if(jsExecAjaxStart.length>0) { // start async sequence over at ilisten
                                     this.jsExecAjaxStarter();
                                 } else { // no ajax response over at ilisten so just echo manually
-                                    this.getFinalEcho();
+                                    this.runFinalEcho();
                                 }
                             } // run if not waiting for iajax (doing a testChain)
                           }; // return 
@@ -828,41 +860,44 @@ $("#rapid-html a#normal").click(function() {
                   path: "", // path to backend with access to mysql database
                   rapidKey: "" // the password that grants access to backend
                 },
-                DB: function(path, rapidKey) {
+                db: function(path, rapidKey) {
                     //eg. path = "../sandbox/rapid/js/rapid-backend.php"
                     
                     if(arguments.length!=2 || typeof arguments[0]!= "string" || typeof arguments[1]!= "string") {
                         console.error('Rapid.backend.db: Must pass a string path of the backend config file and a string access key that matches rapidKey defined in the backend config file. Eg. Rapid.backend.db(\"some-folder/rapid-backend-or-some-other-filename.php\", \"your-configured-password\")');
-                        return;
+                        return false;
                     } // if
                     
                     try {
                         $.post(path, {rapidKey: rapidKey, authenticating: true})
                             .done(function(data) {
-                                if(!Rapid.ihelpers.validateResponse("Rapid.iscript", data)) return;
-                                if(JSON.parse(data).authenticated!=undefined) {
+                                if(!Rapid.ihelpers.validateResponse("Rapid.backend.db", data)) return false;
+                                if(typeof JSON.parse(data).authenticated!='undefined') {
                                     Rapid.backend.ihelpers.path=path;
                                     Rapid.backend.ihelpers.rapidKey=rapidKey;
                                     console.info("Rapid.idb: " + JSON.parse(data).status);
                                     console.info("Your php code would be: " + JSON.parse(data).phpSrc);
-                                } else
+                                } else {
                                     console.error("Rapid.idb: " + JSON.parse(data).status);
+                                    return true;
+                                }
                                     
                             }) // done
                             .fail(function() {
                                 console.error("Rapid.idb: Can't authenticate. Path to backend file is probably incorrect.");
+                                return false;
                             });
                     } catch (e) {
-                            if(e instanceof SyntaxError)
+                            if(e instanceof SyntaxError) {
                                 console.error("Rapid.idb: Can't authenticate. Path to backend file is probably incorrect.");
+                                return false;
+                            }
                     } // catch
-                },
-                db: function() { Rapid.backend.DB.apply(this,arguments); },
-                Db: function() { Rapid.backend.DB.apply(this,arguments); }
+                }
             },
             ilisten: function() {
                 function error_bad_chain() {
-                    console.error("Chain object instructs how the backend is emulated. You can initiate variables before calling database or outputting, then call mysqli (the db is live), and echo the results. Or you can choose not to call mysqli and just echo fake mock data. Example:%c\nRapid.ilisten(Rapid.backend.Chain(\"GET /some-path/\").initScope(\"$arr=array();\").fetchQuery({arr0:/\"SELECT * FROM tbl WHERE col1='\" . mysqli_real_escape_string($POST[\"var\"]) . \"' LIMIT 5;\"/}).execQuery(/\"another-sql-query-in-reg-exp-here\"/).setFinalEcho(\"echo json_encode($arr1);\"));", "font-style:italic;");
+                    console.error("Chain object instructs how the backend is emulated. You can initiate variables before calling database or outputting, then call mysqli (the db is live), and echo the results. Or you can choose not to call mysqli and just echo fake mock data. But you must always set the final echo.\n Example:%c\nRapid.ilisten(Rapid.backend.Chain(\"GET /some-path/\").initScope(\"$arr=array();\").fetchQuery({arr0:/\"SELECT * FROM tbl WHERE col1='\" . mysqli_real_escape_string($POST[\"var\"]) . \"' LIMIT 5;\"/}).execQuery(/\"another-sql-query-in-reg-exp-here\"/).setFinalEcho(\"echo json_encode($arr1);\"));", "font-style:italic;");
                 } // error_bad_chain
                 
                 // Validation
@@ -880,13 +915,14 @@ $("#rapid-html a#normal").click(function() {
                     if(!Rapid.ihelpers.validateRequestLine("Rapid.ilisten", requestLine)) return;
 
                     //Unset
-                    if(Rapid.ihelpers.listeners[requestLine]!=undefined) {
+                    if(typeof Rapid.ihelpers.listeners[requestLine]!='undefined') {
                         delete Rapid.ihelpers.listeners[requestLine];
-                        console.info("Rapid.ilisten: Listener unset.");
+                        console.info("Rapid.ilisten: Listener unset. Iajax requests to this URI will be made to external pages.");
                         return;
                     } else {
                         console.error("Rapid.ilisten: You tried disabling a listener that does not exist. Enable a listener by passing a Chain object.");
                         error_bad_chain();
+                        return;
                     }
                     
                     return;
@@ -894,40 +930,60 @@ $("#rapid-html a#normal").click(function() {
                 
                 
                 //Going down chain with error
-                if(arguments[0].testingChain!=undefined) {
+                if(typeof arguments[0].testingChain!='undefined') {
                     console.error("Rapid.backend.ilisten: A test chain does not belong to ilisten because you are not listening for iajax to perform a backend chain. The purpose of test chain is to validate your query code without the boilerplate of a regular Chain with ilisten. Just run it standalone and finish the chain with .run(). Eg. (Rapid.backend.testChain()).fetchQuery({results:/\"SELECT * FROM tbl1 LIMIT 5\"}).run();");
                     return null;
                 }
                 
-                if(arguments[0]._error!=undefined) {
+                if(typeof arguments[0]._error!='undefined') {
                     return this;
                 }
                 var phpSrcEcho = arguments[0].phpSrcEcho;
                 if(phpSrcEcho.length==0) {
                     console.error("Rapid.backend.Chain's fetchQuery/execQuery: You did not instruct the chain on what to output from the server PHP. Iajax will call the request line supplied to it without rerouting to an emulated backend.");     
                     error_bad_chain();
+                    return;
                 }
                 
                 var requestLine = arguments[0].requestLine;
                 Rapid.ihelpers.listeners[requestLine] = {};
                 $.extend(true, Rapid.ihelpers.listeners[requestLine], arguments[0]); // ChainBuilder returns an object representing JS and PHP code 
                 
-                console.info("Rapid.ilisten: Listener set.\nNow listening for iajax calls to override with your chain of backend code.\nTo unset, call with the same request line as the only parameter.");
+                console.info("Rapid.ilisten: Listener set.\nIajax requests will be made to your chain of emulated backend code.\nTo unset, pass the same request line to ilisten.");
                     
             }, // ilisten
             iscript: function(src) {
+                //Because jQuery's ajax overrides arguments
+                var argsParent = arguments;
+                
+                //Call jQuery ajax
                 $.get(src, {cacheBuster: $.now()})
                     .done(function(data) {
-                        if(!Rapid.ihelpers.validateResponse("Rapid.iscript", data)) return;
+                        //if(!Rapid.ihelpers.validateResponse("Rapid.iscript", data)) return;
                         console.group("Called script at " + src);
-                        console.log(data);
-                        var ret = eval(data);
+                        console.dir({script:data});
+                    
+                        //console.dir(argsParent);
+                        var strExtra="";
+                        if(argsParent.length>1) {
+                          for(var i = 1; i<argsParent.length; i++) {
+                            strExtra += "\n" + argsParent[i];
+                          } // for
+                        } // if
+
+                    
+                        $("head").append("<script>" + data + strExtra + "</script>");
+                    
+                        //eval is not worth it because a lack of error messages
+                        /*var ret = eval(data);
                         if(typeof ret!=="undefined")
-                            console.info("Returned " + typeof ret + ": " + ret);
+                            console.info("Returned " + typeof ret + ": " + ret);*/
+                    
                         console.groupEnd(); 
                     })
                     .fail(function(jqXHR, textStatus, errorThrown) {
-                                console.log("Rapid.iscript:" + " " + textStatus + " with " + errorThrown);
+                                console.log("Rapid.iscript:" + textStatus + " with " + errorThrown);
+                                //console.log("Rapid.iscript: Error", jqXHR);
                     });
             },
             stories: {
@@ -937,16 +993,16 @@ $("#rapid-html a#normal").click(function() {
                         if(typeof story=="string") arr.push(story);
                         story = arr;
         
-                        if(window.showing[input]===undefined) {
+                        if(typeof window.showing[input]=='undefined') {
                             $('[data-toggle="tooltip"][data-onKey="' + input + '"]').each(function() {
                             $(window).scrollTop(Math.floor($('[data-onKey=' + input + ']').offset().top));
-                            if($(this).data("story-detail")!=undefined) $(this).tooltip("enable");
+                            if(typeof $(this).data("story-detail")!='undefined') $(this).tooltip("enable");
                             $(this).trigger('mouseenter'); });
                             console.log.apply(console, story);
                             window.showing[input]="";
                         } else {
                             $('[data-toggle="tooltip"][data-onKey="' + input + '"]').each(function() {
-                            if($(this).data("story-detail")!=undefined) $(this).tooltip("disable");
+                            if(typeof $(this).data("story-detail")!='undefined') $(this).tooltip("disable");
                             $(this).trigger('mouseout'); });
                             delete window.showing[input];
                         } // else
@@ -1022,7 +1078,7 @@ $("#rapid-html a#normal").click(function() {
     }); // extend
 
     //S-2. Global namespace
-    if(global==undefined) var global = window;
+    if(typeof global=='undefined') var global = window;
 
     //S-3. Controllers
     var countScript=-1, countAsync=-1, elAsync = []; // next script
@@ -1037,7 +1093,7 @@ $("#rapid-html a#normal").click(function() {
 
         //A:
         $("[data-onloader-a]").each(function() {
-            if($(this).attr("data-async-id")!=undefined) return;
+            if(typeof $(this).attr("data-async-id")!='undefined') return;
             filename=$(this).data("onloader-a");
             alwaysMax++;
             elAsync.push($(this));
@@ -1051,7 +1107,7 @@ $("#rapid-html a#normal").click(function() {
                 }, "text");
         });
         $("[data-onload-a]").each(function() {
-            if($(this).attr("data-script-id")!=undefined) return;
+            if(typeof $(this).attr("data-script-id")!='undefined') return;
             code=$(this).data("onload-a");
             countScript++;
             $(this).attr("data-script-id", countScript);
@@ -1062,7 +1118,7 @@ $("#rapid-html a#normal").click(function() {
         
         //B:
         $("[data-onloader-b]").each(function() {
-            if($(this).attr("data-async-id")!=undefined) return;
+            if(typeof $(this).attr("data-async-id")!='undefined') return;
             filename=$(this).data("onloader-b");
             alwaysMax++;
             elAsync.push($(this));
@@ -1076,7 +1132,7 @@ $("#rapid-html a#normal").click(function() {
                 }, "text");
         });
         $("[data-onload-b]").each(function() {
-            if($(this).attr("data-script-id")!=undefined) return;
+            if(typeof $(this).attr("data-script-id")!='undefined') return;
             code=$(this).data("onload-b");
             countScript++;
             $(this).attr("data-script-id", countScript);
@@ -1087,7 +1143,7 @@ $("#rapid-html a#normal").click(function() {
         
         //C:
         $("[data-onloader-c]").each(function() {
-            if($(this).attr("data-async-id")!=undefined) return;
+            if(typeof $(this).attr("data-async-id")!='undefined') return;
             filename=$(this).data("onloader-c");
             alwaysMax++;
             elAsync.push($(this));
@@ -1101,7 +1157,7 @@ $("#rapid-html a#normal").click(function() {
                 }, "text");
         });
         $("[data-onload-c]").each(function() {
-            if($(this).attr("data-script-id")!=undefined) return;
+            if(typeof $(this).attr("data-script-id")!='undefined') return;
             code=$(this).data("onload-c");
             countScript++;
             $(this).attr("data-script-id", countScript);
@@ -1112,7 +1168,7 @@ $("#rapid-html a#normal").click(function() {
         
         //D:
         $("[data-onloader-d]").each(function() {
-            if($(this).attr("data-async-id")!=undefined) return;
+            if(typeof $(this).attr("data-async-id")!='undefined') return;
             filename=$(this).data("onloader-d");
             alwaysMax++;
             elAsync.push($(this));
@@ -1126,7 +1182,7 @@ $("#rapid-html a#normal").click(function() {
                 }, "text");
         });
         $("[data-onload-d]").each(function() {
-            if($(this).attr("data-script-id")!=undefined) return;
+            if(typeof $(this).attr("data-script-id")!='undefined') return;
             code=$(this).data("onload-d");
             countScript++;
             $(this).attr("data-script-id", countScript);
@@ -1162,7 +1218,7 @@ $("#rapid-html a#normal").click(function() {
          
         //Desc: data-onclicker refers to external script
         $("[data-onclicker]").each(function() {
-            if($(this).attr("data-async-id")!=undefined) return;
+            if(typeof $(this).attr("data-async-id")!='undefined') return;
             filename=$(this).data("onclicker");
             alwaysMax++;
             elAsync.push($(this));
@@ -1207,48 +1263,48 @@ $("#rapid-html a#normal").click(function() {
         
         //for fully customizable placeholders
         $("[data-rect]").each(function () {
-            var json=$(this).data("rect")!=undefined?$(this).data("rect"):{};
-            if(json.font===undefined) json.font = "16px Helvetica";
-            if(json.top===undefined) json.top = ($(this).height()/2 + parseInt(json.font.replace(/[^\d]/g, ''))/2).toString() + "px";
+            var json=typeof $(this).data("rect")!='undefined'?$(this).data("rect"):{};
+            if(typeof json.font=='undefined') json.font = "16px Helvetica";
+            if(typeof json.top=='undefined') json.top = ($(this).height()/2 + parseInt(json.font.replace(/[^\d]/g, ''))/2).toString() + "px";
             rect = $("<canvas width=" + $(this).width() + " height= " + $(this).height() + ">HTML5 Unsupported</canvas>").appendTo($(this));
             context = rect[0].getContext("2d");
-            context.fillStyle = json.bgcolor===undefined?'#efefef':json.bgcolor;
+            context.fillStyle = typeof json.bgcolor=='undefined'?'#efefef':json.bgcolor;
             context.fillRect(0, 0, $(this).width(), $(this).height());
-            context.fillStyle = json.color===undefined?'#000':json.color;
+            context.fillStyle = typeof json.color=='undefined'?'#000':json.color;
             context.font = json.font; // defaultable font
-            if(json.align===undefined || json.align=="center") {
+            if(typeof json.align=='undefined' || json.align=="center") {
                 context.textAlign = "center";
-                context.fillText(json.title===undefined?'':json.title, $(this).width()/2, parseInt(json.top.replace("px", ""))); // defaultable top
+                context.fillText(typeof json.title=='undefined'?'':json.title, $(this).width()/2, parseInt(json.top.replace("px", ""))); // defaultable top
             } else if(json.align=="left") { 
                 context.textAlign = json.align;
-                context.fillText(json.title===undefined?'':json.title, 0, parseInt(json.top.replace("px", ""))); // defaultable top
+                context.fillText(typeof json.title=='undefined'?'':json.title, 0, parseInt(json.top.replace("px", ""))); // defaultable top
             } else if(json.align=="right") { 
                 context.textAlign = json.align;
-                context.fillText(json.title===undefined?'':json.title, $(this).width(), parseInt(json.top.replace("px", ""))); // defaultable top
+                context.fillText(typeof json.title=='undefined'?'':json.title, $(this).width(), parseInt(json.top.replace("px", ""))); // defaultable top
             } // else
         });
 
 
         $("[data-circ]").each(function () {
-            var json=$(this).data("circ")!=undefined?$(this).data("circ"):{};
-            if(json.font===undefined) json.font = "16px Helvetica";
-            if(json.top===undefined) json.top = ($(this).height()/2 + parseInt(json.font.replace(/[^\d]/g, ''))/2).toString() + "px";
+            var json=typeof $(this).data("circ")!='undefined'?$(this).data("circ"):{};
+            if(typeof json.font=='undefined') json.font = "16px Helvetica";
+            if(typeof json.top=='undefined') json.top = ($(this).height()/2 + parseInt(json.font.replace(/[^\d]/g, ''))/2).toString() + "px";
             rect = $("<canvas width=" + $(this).width() + " height= " + $(this).height() + ">HTML5 Unsupported</canvas>").appendTo($(this));
             context = rect[0].getContext("2d");
-            context.fillStyle = json.bgcolor===undefined?'#efefef':json.bgcolor;
+            context.fillStyle = typeof json.bgcolor=='undefined'?'#efefef':json.bgcolor;
             context.arc($(this).width() / 2, $(this).width() / 2, $(this).width() / 2, 0, 2 * Math.PI);
             context.fill();
-            context.fillStyle = json.color===undefined?'#000':json.color;
+            context.fillStyle = typeof json.color=='undefined'?'#000':json.color;
             context.font = json.font; // defaultable font
-            if(json.align===undefined || json.align=="center") {
+            if(typeof json.align=='undefined' || json.align=="center") {
                 context.textAlign = "center";
-                context.fillText(json.title===undefined?'':json.title, $(this).width()/2, parseInt(json.top.replace("px", ""))); // defaultable top
+                context.fillText(typeof json.title=='undefined'?'':json.title, $(this).width()/2, parseInt(json.top.replace("px", ""))); // defaultable top
             } else if(json.align=="left") { 
                 context.textAlign = json.align;
-                context.fillText(json.title===undefined?'':json.title, 0, parseInt(json.top.replace("px", ""))); // defaultable top
+                context.fillText(typeof json.title=='undefined'?'':json.title, 0, parseInt(json.top.replace("px", ""))); // defaultable top
             } else if(json.align=="right") { 
                 context.textAlign = json.align;
-                context.fillText(json.title===undefined?'':json.title, $(this).width(), parseInt(json.top.replace("px", ""))); // defaultable top
+                context.fillText(typeof json.title=='undefined'?'':json.title, $(this).width(), parseInt(json.top.replace("px", ""))); // defaultable top
             } // else
         });
     } // initP
@@ -1289,7 +1345,7 @@ $("#rapid-html a#normal").click(function() {
     function initT() {
         $("[data-detail], [data-story-detail]").each(function (i) {
             var tip;
-            if($(this).data("detail")!=undefined) tip = $(this).data("detail");
+            if(typeof $(this).data("detail")!='undefined') tip = $(this).data("detail");
             else tip = $(this).data("story-detail");
             //console.log(tip);
 
@@ -1493,7 +1549,7 @@ $("#rapid-html a#normal").click(function() {
         } // there's a bgcolor
             
             $(this).tooltip();
-            if($(this).data("story-detail")!=undefined) $(this).tooltip("disable");
+            if(typeof $(this).data("story-detail")!='undefined') $(this).tooltip("disable");
         });
     } // initT
     
@@ -1518,7 +1574,7 @@ $("#rapid-html a#normal").click(function() {
         window.storytelling=[];
         $("body").off("keypress"); // to prevent multiple firings if stories are set through Rapid.options
         $("body").on("keypress", function(e) {
-           if(e.keyCode==96 && window.showable===undefined) { 
+           if(e.keyCode==96 && typeof window.showable=='undefined') { 
                console.log("%cON - Story %cPress the keys the developer gave you to read some stories or to see some tooltips.","color:red;font-weight:bold;","color:red; font-weight:normal;"); 
                window.showable="";
                return;
@@ -1528,7 +1584,7 @@ $("#rapid-html a#normal").click(function() {
                delete window.showable;
                return;
            } // else
-           if(window.showable===undefined) return;
+           if(typeof window.showable=='undefined') return;
 
             //SB-2. Show story about opened tooltips
 
@@ -1625,6 +1681,9 @@ $("#rapid-html a#normal").click(function() {
                         watchDOM: function() {
                             this.notCompatible();
                         }, // watchDOM
+                        assert: function() {
+                            this.notCompatible();
+                        }, // assert
                         notCompatible: function() {
                             console.error("Chrome Debugger Enhanced: Can't load. This feature only works on Chrome v36 and up.");
                         }
@@ -1636,7 +1695,7 @@ $("#rapid-html a#normal").click(function() {
         var path, node = this;
         if (node.length > 1) node = node[0];
         if (node.length == 0) console.error("sSel: No node selected for getting string selector.");
-        if (node[0]!=undefined && node[0].id!=undefined) return "#" + node[0].id;
+        if (typeof node[0]!='undefined' && typeof node[0].id!='undefined') return "#" + node[0].id;
         while (node.length) {
             var realNode = node[0],
                 name = realNode.localName;
@@ -1673,7 +1732,7 @@ $("#rapid-html a#normal").click(function() {
                  var oldType = typeof oObj["$_" + sProp + "_$"];
                  var newType = typeof value;
                  console.log(oObj.$_name_$+" %cchanged:%c { \"" + sProp + "\" : " + (oldType==="number"?"":"\"") + oObj["$_" + sProp + "_$"] + (oldType==="number"?"":"\"") + " ➜ " + (newType==="number"?"":"\"") + value + (newType==="number"?"":"\"")  + " ..}","font-style:italic;","font-style:normal;", oObj);
-             if(oObj.$_debugger_pause_$!=undefined) { console.log("PAUSED"); debugger; }
+             if(typeof oObj.$_debugger_pause_$!='undefined') { console.log("PAUSED"); debugger; }
 
                  console.groupEnd();
                oObj[sPrivateProp] = value;
@@ -1689,12 +1748,12 @@ $("#rapid-html a#normal").click(function() {
         console.group('Observation ' + Rapid.count);
         mutations.forEach(function(mutation) {
             //console.dir(mutation.target);
-            var extraInfo = ((mutation.target.attributes!=undefined)&&(mutation.target.attributes["data-debugger-path"]!=undefined)?mutation.target.attributes["data-debugger-path"]["value"]:"");
+            var extraInfo = ((typeof mutation.target.attributes!='undefined')&&(typeof mutation.target.attributes["data-debugger-path"]!='undefined')?mutation.target.attributes["data-debugger-path"]["value"]:"");
             var extraInfo2 = "";
             switch (mutation.type) {
                 case "attributes":
                     extraInfo2 = "[" + mutation.attributeName + " = '" + mutation.oldValue + "'";
-                    if(mutation.target.attributes!=undefined && mutation.target.attributes[mutation.attributeName]!=undefined)
+                    if(typeof mutation.target.attributes!='undefined' && typeof mutation.target.attributes[mutation.attributeName]!='undefined')
                         extraInfo2+=" ➜ '" + mutation.target.attributes[mutation.attributeName]["value"]+"']";
                     break;
                 case "characterData":
@@ -1703,7 +1762,7 @@ $("#rapid-html a#normal").click(function() {
             } // switch
                     
             console.log('%s %cchanged:%c %s %s', mutation.target.nodeName.toLowerCase() + extraInfo,  'font-style:italic', 'font-style:normal', mutation.type, extraInfo2, mutation);
-             if((mutation.target.attributes!=undefined)&&(mutation.target.attributes["data-debugger-pause"]!=undefined)) { console.log("PAUSED"); debugger; }
+             if((typeof mutation.target.attributes!='undefined')&&(typeof mutation.target.attributes["data-debugger-pause"]!='undefined')) { console.log("PAUSED"); debugger; }
         });
         console.groupEnd();
     });
@@ -1727,7 +1786,7 @@ $("#rapid-html a#normal").click(function() {
         };
     })(jQuery);
         
-    //CD-7. Expose monitoring methods to global scope 
+    //CD-7. Expose monitoring and assert methods to global scope 
     $.extend(true, Rapid, {
                     config: {childList: true, subtree: true, attributes: true, characterData: true, attributeOldValue: true, characterDataOldValue: true },
                     count: 0, // for observation number
@@ -1765,7 +1824,7 @@ $("#rapid-html a#normal").click(function() {
                                         extraInfo = oObj[key];
                             }
                             
-                            if(changes[0]["oldValue"]!=undefined && typeof changes[0]["oldValue"] === "string")
+                            if(typeof changes[0]["oldValue"]!='undefined' && typeof changes[0]["oldValue"] === "string")
                                 isStr1=true;
                             if(extraInfo.length>0 && typeof extraInfo === "string")
                                 isStr2=true;
@@ -1773,13 +1832,13 @@ $("#rapid-html a#normal").click(function() {
                             
                             if(changes[0].type=="delete")
                                 console.log(oObj.$_name_$+" %cchanged:%c { \"" + changes[0]["name"] + "\" : (deleted) ..}", "font-style:italic;", "font-style:normal", changes, oObj);
-                            else if(changes[0]["oldValue"]!=undefined)
+                            else if(typeof changes[0]["oldValue"]!='undefined')
                                 console.log(oObj.$_name_$+" %cchanged:%c { \"" + changes[0]["name"] + "\" : " + (isStr1?"\"":"") + changes[0]["oldValue"] + (isStr1?"\"":"") + " ➜ " + (isStr2?"\"":"") + extraInfo + (isStr2?"\"":"") + " ..}", "font-style:italic;", "font-style:normal", changes, oObj);
                             else
                                 console.log(oObj.$_name_$+" %cchanged:%c { \"" + changes[0]["name"] + "\" : " + (isStr2?"\"":"") + extraInfo + (isStr2?"\"":"") + " ..}", "font-style:italic;", "font-style:normal", changes, oObj);
                             
                             
-                            if(oObj.$_debugger_pause_$!=undefined) { console.log("PAUSED"); debugger; }
+                            if(typeof oObj.$_debugger_pause_$!='undefined') { console.log("PAUSED"); debugger; }
                         }); // observe
                     } // watchObj
                 });
@@ -1850,8 +1909,15 @@ $("#rapid-html a#normal").click(function() {
                         if(e.name=="NotFoundError")
                             console.error("Rapid.watchDOM: " + sSel + " not found! Either you misspelled or you started monitoring that element before the DOM is ready. Wrap your monitoring code in $(function() {..});, $(document).ready(function() {..});, or any variation for DOM Ready.");
                       }
-                    } // watchDOM
-                });
+                    }, // watchDOM
+                    assert: function() {
+                        if(arguments.length==0) {
+                                console.error("Rapid.assert: You must pass three parameters: value (mixed), comparison operator (string), and value (mixed). Optionally, pass a last parameter (string) that shows a message if the assertion fails.");
+                            return false;
+                        }
+                        console.assert(arguments[0], arguments.length>2&&arguments[2]==true?eval(arguments[1]):arguments[1]);
+                    } // assert
+                }); // extend
     } // else is Chrome
 
 
