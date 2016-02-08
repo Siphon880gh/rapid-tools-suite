@@ -24,13 +24,20 @@
         
         
         /* JS: VIEW TEMPLATE MODULAR */
-            //Now you can have the template where it is going to be rendered! Just have it as a comment block.
-            <div class="menu items">
+            //Just design the template where it's going to be rendered, then make it a comment when you are done. 
+            The code will check for a comment to make into a template then render it where it is. No more needing 
+            to have a template in the head block and coming up with ID names for it.
+            
+            //The markup:
+            <div id="template-wrapper">
                 <!-- <span>{{var1}}</span> -->
             </div>
             
-            //Use:
-            $(".menu-items").html(Handlebars.compile($(".menu-items").html().replace(/<!--([\s\S]*)-->/g, '$1'))(wrapper));
+            //The javascript:
+            var sel_ = "#template-wrapper";
+            if(null!=$(sel_).html().match(/<!--/,"g"))
+                $(sel_).html(Handlebars.compile($(sel_).html().replace(/<!--([\s\S]*)-->/g, '$1'))(wrapper));
+                
         
         /* JS: VIEW TEMPLATE NON-MODULAR */
             // The old regular way is less as modular because you need to write template code elsewhere on the page
