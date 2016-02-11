@@ -84,7 +84,8 @@
             
             /* REMOVE THESE LINES BEFORE UPLOADING TO PRODUCTION SERVER */
             Rapid.i();
-            db("./rapid/js/rapid-backend.php", "password123");
+            //db("./rapid/js/rapid-backend.php", "password123");
+            //db("bower_components/rts/js/rapid-backend.php", "password123");
         });
     </script>
     
@@ -104,11 +105,17 @@
         <!-- Handlebars JS -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.js"></script>
         
-        <!-- Rapid Tools Suite -->
-        <link href="./rapid/js/bundle.css" rel="stylesheet">
+        <!-- Rapid Tools Suite (LOCAL) -->
+        <!--<link href="./rapid/js/bundle.css" rel="stylesheet">
         <script src="./rapid/js/bundle.js"></script>
         <link href="./rapid/js/bootstrap-tooltip.min.css" rel="stylesheet"/>
-        <script src="./rapid/js/bootstrap-tooltip.min.js"></script>
+        <script src="./rapid/js/bootstrap-tooltip.min.js"></script>-->
+        
+        <!-- Rapid Tools Suite (BOWER) -->
+        <link href="bower_components/rts/js/bundle.css" rel="stylesheet">
+        <script src="bower_components/rts/js/bundle.js"></script>
+        <link href="bower_components/rts/js/bootstrap-tooltip.min.css" rel="stylesheet"/>
+        <script src="bower_components/rts/js/bootstrap-tooltip.min.js"></script>
 
         <!-- Qunit -->
         <link href="//code.jquery.com/qunit/qunit-1.20.0.css" rel="stylesheet"/>

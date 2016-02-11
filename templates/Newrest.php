@@ -59,6 +59,7 @@ $path_info = "";
 $path_info = @$_SERVER['PATH_INFO'];
 if($path_info[strlen($path_info)-1]!='/') $path_info .= "/";
 $request = explode("/", substr($path_info, 1));
+if($request[count($request)-1]=="") array_pop($request); // Edge case: last element empty ""
 
 //Prepare RESTful HTTP methods
 $_PARAMS = array();
