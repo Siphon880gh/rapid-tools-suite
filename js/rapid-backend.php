@@ -52,6 +52,7 @@ if($_SERVER["REQUEST_METHOD"]=="POST") {
     /* RUN QUERY */
     else if(isset($_POST["rapidMysqli"])) {
         $_POST["rapidMysqli"] = str_replace("\"", "", $_POST["rapidMysqli"]);
+        $_POST["rapidMysqli"] = str_replace("+", ".", $_POST["rapidMysqli"]); // Bug fixed: table.id presented as table+id
         //$_POST["rapidMysqli"] = substr($_POST["rapidMysqli"], 1, strlen($_POST["rapidMysqli"])-2);
         $rsQuery = mysqli_query($lnk1, $_POST["rapidMysqli"]);
         
