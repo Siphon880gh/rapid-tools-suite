@@ -198,6 +198,13 @@ function method_error($request) {
     
 } // method_error
 
+function array_error() {
+    $strExtra = "";
+    if(func_num_args()>0) $strExtra = ". Code " . func_get_arg(0);
+    
+    return array("error"=>"Invalid connection" . $strExtra . ".");
+}
+
 ///////////////////////////
 //       FUNCTIONS       //
 ///////////////////////////
@@ -252,13 +259,10 @@ class Settings {
 
 /*FUNCTIONS CALLED GLOBALLY*/
 //Eg.
-//var_dump(error_arr());
+//var_dump(now());
 BASIC_FUNCTIONS:
 	function now() {
 		return date("M. d, Y g:m:s a", time());
-	}
-	function error_arr() {
-		return array("_error"=>"Invalid URI.");
 	}
 END_BASIC_FUNCTIONS: //
 
