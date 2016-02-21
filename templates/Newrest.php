@@ -89,6 +89,9 @@ switch ($method) {
   case 'PATCH':
     patch($request);  
     break;
+  case 'UPDATE':
+    update($request);  
+    break;
   case 'DELETE':
     delete($request);  
     break;
@@ -164,6 +167,15 @@ function patch($request) {
     global $LEVEL1, $LEVEL2, $LEVEL3, $LEVEL4, $LEVEL5, $LEVEL6;
     
 } // patch
+
+function update($request) {
+    global $lnk1;
+    global $_PARAMS;
+    $_UPDATE = $_PARAMS;
+    global $LEVEL1, $LEVEL2, $LEVEL3, $LEVEL4, $LEVEL5, $LEVEL6;
+    
+    if(!$LEVEL1) die(json_encode(error_arr()));
+} // update
         
 
 function delete($request) {
@@ -198,9 +210,9 @@ function method_error($request) {
     
 } // method_error
 
-function array_error() {
+function error_arr() {
     $strExtra = "";
-    if(func_num_args()>0) $strExtra = ". Code " . func_get_arg(0);
+    if(func_num_args()>0) $strExtra = ". Code '" . func_get_arg(0) . "'";
     
     return array("error"=>"Invalid connection" . $strExtra . ".");
 }

@@ -70,6 +70,43 @@
     </script> <!-- md -->
     
     <script>
+    $(function() {
+        // Remove duplicate note-anywhere (Chrome extension)
+        // that came from copying the HTML from DevTools to
+        // your editor
+        $(".note-anywhere").each(function(i) { 
+            var first = $(this),
+            curInnerText = ($(this).find(".edit").text()); 
+            if($(first).attr("data-marked-for-removal")==1)
+                return true;
+            $(".note-anywhere").each(function(j) { 
+                var second = $(this);
+                if(i==j || $(second).attr("data-marked-for-removal")==1) 
+                    return true; 
+                else if(curInnerText==$(second).find(".edit").text()) { 
+                    console.log("%cTHIS:\n", "color:red;"); 
+                    $(second).attr("data-marked-for-removal", 1);
+                    console.log(second);
+                    debugger; 
+                } 
+            }); 
+        });
+        $("[data-marked-for-removal=1]").remove();
+
+        // Remove defunct resize ui and add new ones for 
+        // note-anywhere that come from copying the HTML 
+        // from DevTools to your editor
+        $(".note-anywhere").find(".ui-resizable-handle").remove();
+        $(".note-anywhere").resizable();
+
+        // Reinit draggable that goes away from copying 
+        // the HTML from DevTools to your editor
+        $(".note-anywhere").draggable();  
+        
+    });
+    </script>
+    
+    <script>
         $(function() {
             Rapid.options({
                 bootstrap: {
@@ -106,16 +143,18 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.js"></script>
         
         <!-- Rapid Tools Suite (LOCAL) -->
-        <!--<link href="./rapid/js/bundle.css" rel="stylesheet">
-        <script src="./rapid/js/bundle.js"></script>
-        <link href="./rapid/js/bootstrap-tooltip.min.css" rel="stylesheet"/>
-        <script src="./rapid/js/bootstrap-tooltip.min.js"></script>-->
+        <?php $base = "./"; ?>
+        <!--<link href="<?php $base ?>rapid/js/bundle.css" rel="stylesheet">
+        <script src="<?php $base ?>rapid/js/bundle.js"></script>
+        <link href="<?php $base ?>rapid/js/bootstrap-tooltip.min.css" rel="stylesheet"/>
+        <script src="<?php $base ?>rapid/js/bootstrap-tooltip.min.js"></script>-->
         
         <!-- Rapid Tools Suite (BOWER) -->
-        <link href="bower_components/rts/js/bundle.css" rel="stylesheet">
-        <script src="bower_components/rts/js/bundle.js"></script>
-        <link href="bower_components/rts/js/bootstrap-tooltip.min.css" rel="stylesheet"/>
-        <script src="bower_components/rts/js/bootstrap-tooltip.min.js"></script>
+        <?php $base = "./"; ?>
+        <link href="<?php $base ?>bower_components/rts/js/bundle.css" rel="stylesheet">
+        <script src="<?php $base ?>bower_components/rts/js/bundle.js"></script>
+        <link href="<?php $base ?>bower_components/rts/js/bootstrap-tooltip.min.css" rel="stylesheet"/>
+        <script src="<?php $base ?>bower_components/rts/js/bootstrap-tooltip.min.js"></script>
 
         <!-- Qunit -->
         <link href="//code.jquery.com/qunit/qunit-1.20.0.css" rel="stylesheet"/>
