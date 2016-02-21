@@ -1091,6 +1091,16 @@ $("#rapid-html a#normal").click(function() {
         //Notes are only for developer eyes in development environment:
         $("[data-notes],[data-note]").removeAttr("data-notes").removeAttr("data-note");
 
+        //Onloader and onload attributes without a letter is assigned to "a":
+        $("[data-onloader]").each(function() { 
+            $(this).attr("data-onloader-a", $(this).attr("data-onloader")); 
+            $(this).removeAttr("data-onloader"); 
+        });
+        $("[data-onload]").each(function() { 
+            $(this).attr("data-onload-a", $(this).attr("data-onload")); 
+            $(this).removeAttr("data-onload"); 
+        });
+        
         //A:
         $("[data-onloader-a]").each(function() {
             if(typeof $(this).attr("data-async-id")!='undefined') return;

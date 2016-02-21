@@ -89,18 +89,18 @@ var enums2 = { section3: {a:enumer(), b:enumer()}, section4: {a:enumer(), b:enum
 
 Note: You can't name a variable enum because that's a reserved word. But you can name it enums. Although the word is reserved, Javascript still doesn't have enum types.
 
-**D. Script file controllers: onloader**
+**D. Controllers as external scripts: onloader**
 ```
-<div data-onloader-a="demo_onloader.js"></div>
+<div data-onloader="demo_onloader.js"></div>
 ```
 Must use _ori instead of $(this) to refer to same element in that script file:
 ```
 _ori.parent().css("background-color", "green");
 ```
 
-**D. Inline javascript controllers: onload**
+**D. Controllers as inline scripts: onload**
 ```
-<div data-onload-a="alert('this div is loaded and its text is' + _ori.text());"></div>
+<div data-onload="alert('this div is loaded and its text is' + _ori.text());"></div>
 ```
 
 Again, use _ori to refer to same element. When writing inline controller, make sure to end statements with a semicolon like you would in an external script.
@@ -111,26 +111,29 @@ For onclicks, you can use the attribute onclick that's available on most browser
 <div data-onclicker="demo_onclicker.js"></div>
 ```
 
-You may use $(this) or _ori for onclick and onclicker.
-To be consistent, data-onclick works too and is interchangeable with the browser's onclick:
+For onclick and onclicker, you may use either $(this) or _ori . In contrast, the restriction on onload / onloader was to allow functions inside an element to reference another element that called it.
+
+You can use data-onclick in place of onclick if you want to be consistent with using data- for the controllers:
 ```
 <div data-onclick="alert('clicked!');"></div>
 ```
 
 **Misc. a-d**
-The onload and onloader scripts are suffixed with letters a-d. There is an order that they run so you can establish dependencies. If you do not wish to take advantage of the sequence, just use data-onload-a  or data-onloader-a for all your controllers.
+You can append onload and onloader attributes with letters a-d to establish an order of dependencies. Do not use data-onload or data-onloader with data-onload-a or data-onloader-a in the same element since they're the samething essentially and will cause the "a" counterpart to be erased.
 
-The order is:
-data-onloader-a,
-data-onload-a,
+The order that external and inline scripts run are:
+data-onloader-a (aka data-onloader),
+data-onload-a (aka data-onload),
+data-onloader-b,
+data-onload-b,
 *... (continue on) ..*
 data-onloader-d,
 data-onload-d.
 
-You can have data-onload(s) (inline controller) and data-onloader(s) (script controller) associated to the same element.
+You can mix external and inline scripts in the same element. You can also mix them with onclick and onclicker controllers.
 
 **Misc. Functions**
-You can define functions in any controllers that can be accessed by other controllers. Even though this violates MVC, you can house functions that's closely associated to a view and keep code readable. To allow this, I had to discard the immutable $(this) in favor of _ori. Now you can pass _ori to a function in another element, and that element's controller can refer to the element that called it.
+You can define functions in any controllers that can be accessed by other controllers. Even though this violates MVC, you can house functions that's closely associated to a view and keep code readable. To allow this, I had to discard the immutable $(this) in favor of _ori. Now you can have a function that is housed by an element to refer to another element that called it by passing _ori during that call.
 
 **Misc. Runtime**
 Dynamically loaded elements or those elements rendered through Handlebars may have trouble with onload, onloader, and onclicker working. This is because Rapid looks for those attributes on loading to initialize the controllers. You must re-initialize the controllers if the elements with attached controllers are created during runtime (they're dynamically loaded or rendered through Handlebars).
