@@ -1,1 +1,1 @@
-alert("clicked!");
+alert("onclickered!"); console.log($(ori)[0]);

@@ -1,9 +1,11 @@
 /*!
  * RAPID TOOLS SUITE
- * A collection of frontend and backend tools to shorten development time. Layouts with placeholders, lorem ipsum, and a command line Bootstrap layouter. Discover specifications while making quick layouts and emulating backend queries to the database. Write code faster with controllers attached to elements. Collaborate better using tooltips and narration.
+ * A collection of frontend and mysql tools to shorten development time. Layouts with placeholders, lorem ipsum, and a command line Bootstrap layouter. Discover specifications while making quick layouts and emulating mysql queries to the database. Write code faster with controllers attached to elements. Collaborate better using tooltips and narration.
  * By Weng Fei Fung
  *
- * The Lorem Ipsum code in the development js is open source under GNU Lesser General Public License. The production minified JS does not have layout features such as Lorem Ipsum. I forked the copy from F/LoremJS by Brian Grinstead. There was an array of 1272 strings that took up filesize so I adapted an algorithm in place of it that generated Lorem Ipsum words. They are not perfectly Latin words, but at least they act to fill in a spot with words like Lorem Ipsum does. The algorithm was changed from Braden Best's "Nonsense Password Generator" available to public domain through JSFiddle. 
+ * The Lorem Ipsum code is open source under GNU Lesser General Public License. It is forked from fkadeveloper's LoremJS. I removed data-lorem attribute in favor for  
+ * class name. The class name takes inspiration from Bootstrap because you can indicate the quantity and type (word/sentence/paragraph) as part of the class name.
+ * You must be explicit about the type.
  *
  * All other portions of the code in this JS file is licensed under Apache License to Weng Fei Fung. 
  * You may alter the code in this file but alterations must carry prominent notices stating that 
@@ -77,12 +79,16 @@
             $("#rapid-bootstrap-status").css("display", "none");
         // status
         
-        //Nested Warning
-        if(Rapid.bootstrap.nestedWarning) {
-            Rapid.bootstrap.helpers.pollNested();
-        }
-        
         $.extend(true, Rapid, { 
+            replaceStylesheet: function(url) {
+                $.get(url + (url.indexOf("?")<0?"?":"&")+$.now()).done(function(css) { 
+                if(!$('style.rapid-style').length)
+                    $("head").append('<style class="rapid-style">\n' + css + '</style>');
+                else 
+                    $('style.rapid-style').html(css);
+                }).error(function(jqXHR, error) { console.error("Rapid.replaceStylesheet: " + error); });
+            }, // replaceDotCSS
+            
             ibootstrap: {
                 latest: function() {
                     var report ="";
@@ -226,33 +232,12 @@
                     var arrHTML = ["Rapid.bootstrap.add: Your html is\n" + consoleHTML];
                     arrHTML.push("font-weight:bold;","font-weight:normal;");
                     console.info.apply(console, arrHTML);
-
-                    //Nested Warning
-                    if(Rapid.bootstrap.nestedWarning) {
-                        setTimeout(Rapid.bootstrap.helpers.pollNested, 5);
-                    }
                     
                     return html;
                 }, // add
                 addHelp: function() {
                     console.info("Rapid.ibootstrap.addHelp: The correct syntax for adding bootstrap elements is\n%c\tRapid.ibootstrap.add(type, classes, styles, attributes, text)\n%cNote: To create a Bootstrap div, the first parameter requires \"container\", \"well\", \"row\", \"col\", \"colxs\", \"colsm\", \"colmd\", \"collg\", or any column class from \"col-xs-1\" to \"col-lg-12\". All other parameters optional. You can omit parameters that trail. If you want to skip a parameter between two other parameters you are passing, you must pass one of these: blank string \"\", false, null, undefined, or 0.\nTo add HTML to the actual page, pass the function to jQuery's html, append, prepend, insertBefore, or insertAfter with it selecting the unique bid.\nCMD+SHIFT+C to quickly see the bid's of each element on mouseover. CMD+SHIFT+C again to toggle off the mouseover and resume normal browser behavior. CMD+# or Escape with the window focus on DevTools to switch back to Console. Or you can find the bid of nearby elements using jQuery's parent, prev, next, or children.", "font-style:italic;", "font-style:normal;");
                 }, // addHelp
-                parentRow: function(sel) {
-                    var jqObj;
-                    if(sel instanceof jQuery)
-                        jqObj = sel;
-                    else
-                        jqObj = $(sel);
-                    
-                    if(jqObj.parent().hasClass("row"))
-                        return jqObj.parent();
-                    
-                    else if(jqObj.parent().parent().hasClass("row"))
-                        return jqObj.parent().parent();
-                    
-                    else if(jqObj.parent().parent().parent().hasClass("row"))
-                        return jqObj.parent().parent().parent();
-                }, // parentRow
             } // ibootstrap
         }); // extend
         
@@ -266,8 +251,9 @@
     //S-1. Rapid Tools Suite's defaults
     if(typeof Rapid=='undefined') var Rapid = {};
 
-    //For ilisten - optional function to prevent SQL injection
+    //For serverListen - optional function to prevent SQL injection
     function mysqli_real_escape_string(str) {
+        if(typeof str!=="string") return;
         str = str.replace(new RegExp("1=1", 'g'), "");
         str = str.replace(/(<([^>]+)>)/ig,"");
         return str;
@@ -283,7 +269,7 @@
     $.extend(true, Rapid, 
         {
             i: function() {
-                console.info("Rapid.i: Shortened many interactive commands for faster typing.\nAvailable commands: options, staticCSS, addHelp, add, mod, latest, parentRow, ihtml, itemplate, iajax, db, ilisten, Chain, testChain \n");
+                console.info("Rapid.i: Shortened many interactive commands for faster typing.\nAvailable commands: options, staticCSS, addHelp, add, mod, latest, ihtml, itemplate, ajax, db, serverListen, Chain, simpleChain \n");
                 
                 window.options = function() {
                     return Rapid.options.apply(this, arguments);
@@ -312,25 +298,23 @@
                 window.itemplate = function() {
                     return Rapid.itemplate.apply(this, arguments);
                 };
-                window.iajax = function() {
-                    return Rapid.iajax.apply(this, arguments);
+                window.ajax = function() {
+                    return Rapid.ajax.apply(this, arguments);
                 };
                 window.db = function() {
-                    return Rapid.backend.db.apply(this, arguments);
+                    return Rapid.mysql.db.apply(this, arguments);
                 };
-                window.ilisten = function() {
-                    return Rapid.ilisten.apply(this, arguments);
+                window.serverListen = function() {
+                    return Rapid.serverListen.apply(this, arguments);
                 };
                 window.Chain = function() {
-                    return Rapid.backend.Chain.apply(this, arguments);
+                    return Rapid.mysql.Chain.apply(this, arguments);
                 };
-                window.testChain = function() {
-                    return Rapid.backend.testChain.apply(this, arguments);  
+                window.simpleChain = function() {
+                    return Rapid.mysql.simpleChain.apply(this, arguments);  
                 };
             }, // i for shortening interactive commands
-            toggle: {
-              cache: false
-            },
+            cache: false, // for controllers
             constants: { // internal use only
                 phpEmulate: "phpEmulate", 
                 ibootstrapAddContainer: '<div id="" class="container" style="" data-rapid-target></div>',
@@ -461,18 +445,18 @@ $("#rapid-html a#normal").click(function() {
                 if(arguments.length>0)
                     $("#rapid-html").prepend(arguments[0]);
             },
-            iajax: function(/*polymorphic*/) { 
+            ajax: function(/*polymorphic*/) { 
                 
                 //Validation:
                 if(arguments.length==0) {
-                    console.error("Rapid.iajax: Missing parameter. You need to pass 'METHOD some-url'. For example, 'GET list/'.");
+                    console.error("Rapid.ajax: Missing parameter. You need to pass 'METHOD some-url'. For example, 'GET list/'.");
                     return;
                 }
-                if(!Rapid.ihelpers.validateRequestLine("Rapid.iajax", arguments[0])) {
+                if(!Rapid.ihelpers.validateRequestLine("Rapid.ajax", arguments[0])) {
                     return;
                 }
                 if(typeof arguments[arguments.length-1]!=="function" && arguments[arguments.length-1]!=null) {
-                    console.error("Rapid.iajax: Last parameter should be a done callback that handles the responseText on the client side. If you do not want to bother with a done callback, pass null. The console will still return a console.dir but the ajax code it gives you will exclude any done callback.");
+                    console.error("Rapid.ajax: Last parameter should be a done callback that handles the responseText on the client side. If you do not want to bother with a done callback, pass null. The console will still return a console.dir but the ajax code it gives you will exclude any done callback.");
                     return;
                 }
                              
@@ -481,7 +465,7 @@ $("#rapid-html a#normal").click(function() {
                 requestLine_arr = requestLine.split(" "),
                 method = requestLine_arr[0].toUpperCase(), // VALUE: GET
                 url = requestLine_arr[1].toLowerCase(), // VALUE: http..
-                cbClientDone = arguments[arguments.length-1], // TYPE: function vs null
+                cbClientDone = typeof arguments[arguments.length-1]=="function"?arguments[arguments.length-1]:null, // TYPE: function vs null
                 params = arguments.length>=2?arguments[1]:{};
                 
                 //Listeners overriding Ajax, part 1:
@@ -489,7 +473,7 @@ $("#rapid-html a#normal").click(function() {
                     forGet: function(data) { // done wrapper
                             var strJS="";
                             if(data!==Rapid.constants.phpEmulate) {
-                                if(!Rapid.ihelpers.validateResponse("Rapid.iajax", data)) return;
+                                if(!Rapid.ihelpers.validateResponse("Rapid.ajax", data)) return;
                                 if(data.length)
                                     data = JSON.parse(data);
                                 else
@@ -506,14 +490,14 @@ $("#rapid-html a#normal").click(function() {
                             console.group("Called get");
                             console.log("Your js code would be:\n");
                             console.log(strJS);
-                            console.log("Evaluating the done callback passed to iajax...");
+                            console.log("Evaluating the done callback passed to ajax...");
                             if(typeof data!='undefined') console.log("data: ", data);
                             console.groupEnd();
                     },
                     forPost: function(data) { // done wrapper
                             var strJS="";
                             if(data!=Rapid.constants.phpEmulate) {
-                                if(!Rapid.ihelpers.validateResponse("Rapid.iajax", data)) return;
+                                if(!Rapid.ihelpers.validateResponse("Rapid.ajax", data)) return;
                                 if(data.length)
                                     data = JSON.parse(data);
                                 else
@@ -531,7 +515,7 @@ $("#rapid-html a#normal").click(function() {
                             console.log("Your js code would be:\n");
                             console.log(strJS);
                             //alert("reached cbClientDone");
-                            console.log("Evaluating the done callback passed to iajax...");
+                            console.log("Evaluating the done callback passed to ajax...");
                             if(typeof data!='undefined') console.log("data: ", data);
                             console.groupEnd();
                             
@@ -540,7 +524,7 @@ $("#rapid-html a#normal").click(function() {
                     forMiscMethod: function(data) { // done wrapper
                             var strJS="";
                             if(data!==Rapid.constants.phpEmulate) {
-                                if(!Rapid.ihelpers.validateResponse("Rapid.iajax", data)) return;
+                                if(!Rapid.ihelpers.validateResponse("Rapid.ajax", data)) return;
                                 if(data.length)
                                     data = JSON.parse(data);
                                 else
@@ -557,14 +541,14 @@ $("#rapid-html a#normal").click(function() {
                             console.group("Called " + method.toLowerCase());
                             console.log("Your js code would be:\n");
                             console.log(strJS);
-                            console.log("Evaluating the done callback passed to iajax...");
+                            console.log("Evaluating the done callback passed to ajax...");
                             if(typeof data!='undefined') console.log("data: ", data);
                             console.groupEnd();
                     }
                     
                 } // done
                 var fail = function(jsxhr, textStatus, errorThrown) {
-                    console.error("Rapid.iajax: " + method + " " + textStatus + " with " + errorThrown);
+                    console.error("Rapid.ajax: " + method + " " + textStatus + " with " + errorThrown);
                 }; // fail
                 
                 
@@ -586,25 +570,25 @@ $("#rapid-html a#normal").click(function() {
                                 cbInternalDone = internalDone.forMiscMethod;
                                 break;
                             default:
-                                console.log("Rapid.iajax: Wrong method.");
+                                console.log("Rapid.ajax: Wrong method.");
                         } // switch
                         Rapid.ihelpers.listeners[requestLine].curParams=params;
                         Rapid.ihelpers.listeners[requestLine].cbInternalDone=cbInternalDone;
                         Rapid.ihelpers.listeners[requestLine].cbClientDone=cbClientDone;
                         //console.log("here I am here I am!")
                         var jsExecAjaxStart = Rapid.ihelpers.listeners[requestLine].jsExecAjax;
-                        if(jsExecAjaxStart.length>0) { // start async sequence over at ilisten
+                        if(jsExecAjaxStart.length>0) { // start async sequence over at serverListen
                             Rapid.ihelpers.listeners[requestLine].jsExecAjaxStarter();
-                        } else { // no ajax response over at ilisten so just echo manually
+                        } else { // no ajax response over at serverListen so just echo manually
                             Rapid.ihelpers.listeners[requestLine].runFinalEcho();
                         }
                         return;
-                    } // if overridden by ilisten
+                    } // if overridden by serverListen
                 
                 //No listeners, use Ajax:
                 switch (method) {
                     case "GET":
-                            $.get(url, $.extend(params, {rapidKey: Rapid.backend.ihelpers.rapidKey}))
+                            $.get(url, $.extend(params, {rapidKey: Rapid.mysql.ihelpers.rapidKey}))
                                 .done(function(data) {
                                     internalDone.forGet(data);
                                 }) // done
@@ -613,7 +597,7 @@ $("#rapid-html a#normal").click(function() {
                                 }); // fail
                         break;
                     case "POST":
-                            $.post(url, $.extend(params, {rapidKey: Rapid.backend.ihelpers.rapidKey}))
+                            $.post(url, $.extend(params, {rapidKey: Rapid.mysql.ihelpers.rapidKey}))
                                 .done(function(data) {
                                     internalDone.forPost(data);
                                 }) // done
@@ -634,7 +618,7 @@ $("#rapid-html a#normal").click(function() {
                     case "OPTIONS":
                             $.ajax({
                                 url : url,
-                                data: $.extend(params, {rapidKey: Rapid.backend.ihelpers.rapidKey}),
+                                data: $.extend(params, {rapidKey: Rapid.mysql.ihelpers.rapidKey}),
                                 method: method,
                                 }).done(function(data) {
                                         internalDone.forMiscMethod(data);
@@ -645,21 +629,21 @@ $("#rapid-html a#normal").click(function() {
                                 }); // fail
                             break;
                     default:
-                        console.log("Rapid.iajax: Wrong method.");
+                        console.log("Rapid.ajax: Wrong method.");
                 } // switch
-            }, // iajax
-            backend:{
-                testChain: function() {
+            }, // ajax
+            mysql:{
+                simpleChain: function() {
                   return $.extend(Chain.call(this, "POST null"), {testingChain: true});  
                 },
                 Chain: function(requestLine) { 
                     
                         //Validation
                         if(arguments.length==0) {
-                            console.error("Rapid.backend's Chain: Missing parameter. You need to pass 'METHOD uri' to start a Chain object of the backend code. For example, 'GET list/'.");
+                            console.error("Rapid.mysql's Chain: Missing parameter. You need to pass 'METHOD uri' to start a Chain object of the mysql code. For example, 'GET list/'.");
                             return;
                         }
-                        if(!Rapid.ihelpers.validateRequestLine("Rapid.backend.Chain constructor", arguments[0]))
+                        if(!Rapid.ihelpers.validateRequestLine("Rapid.mysql.Chain constructor", arguments[0]))
                             return;
                     
                         return {
@@ -690,7 +674,7 @@ $("#rapid-html a#normal").click(function() {
                                 }
                                 
                                 if(!(reg instanceof RegExp)) {
-                                    console.error("Rapid.backend.Chain()'s execQuery: Must pass a regular expression and that regular expression represents exactly what you would type into mysqli_query in PHP with or without: string quotes, escape quotes, method parameters (eg. $_POST[\"someVar\"]), sql injection functions, and query string. Regular expression escapes the javascript parser so that PHP syntax can be allowed.");
+                                    console.error("Rapid.mysql.Chain()'s execQuery: Must pass a regular expression and that regular expression represents exactly what you would type into mysqli_query in PHP with or without: string quotes, escape quotes, method parameters (eg. $_POST[\"someVar\"]), sql injection functions, and query string. Regular expression escapes the javascript parser so that PHP syntax can be allowed.");
                                     return $.extend(this, {_error:true});
                                 }
                                 
@@ -703,13 +687,13 @@ $("#rapid-html a#normal").click(function() {
                                     return this;
                                 }
                                 
-                                if(Rapid.backend.ihelpers.rapidKey.length==0) {
-                                    console.error("Rapid.backend.Chain's fetchQuery/execQuery: Access denied. Did not authenticate with Rapid.backend.db(path, rapidKey)");
+                                if(Rapid.mysql.ihelpers.rapidKey.length==0) {
+                                    console.error("Rapid.mysql.Chain's fetchQuery/execQuery: Access denied. Did not authenticate with Rapid.mysql.db(path, rapidKey)");
                                     return $.extend(this, {_error:true});
                                 }
                                 
                                 
-                                error_obj_key_reg = "Rapid.backend.Chain()'s fetchQuery: Must pass an object with a key name preceded with \$ and assigned a regular expression. The key name represents the PHP array that stores the fetch assocs before echoing. Therefore, the key name must be preceded with a \$. The regular expression represents what you would type into mysqli_query in PHP with or without: string quotes, escape quotes, method parameters (eg. $_POST[\"someVar\"]), sql injection functions, and query string. Regular expression escapes the javascript parser so that PHP syntax can be allowed.\nEg. fetchQuery(\$arr: /\"SELECT * from users\"/) ";
+                                error_obj_key_reg = "Rapid.mysql.Chain()'s fetchQuery: Must pass an object with a key name preceded with \$ and assigned a regular expression. The key name represents the PHP array that stores the fetch assocs before echoing. Therefore, the key name must be preceded with a \$. The regular expression represents what you would type into mysqli_query in PHP with or without: string quotes, escape quotes, method parameters (eg. $_POST[\"someVar\"]), sql injection functions, and query string. Regular expression escapes the javascript parser so that PHP syntax can be allowed.\nEg. fetchQuery(\$arr: /\"SELECT * from users\"/) ";
                                 var _getArrayName="";
                                 var asIsQuery="";
                                 if(typeof objFetcher != "object") {
@@ -747,7 +731,7 @@ $("#rapid-html a#normal").click(function() {
                                 this.ajaxMax++;
                                 //console.dir(this.jsExecAjax);
                                 //PROBLEM:
-                                this.jsExecAjax.push("eval(Rapid.ihelpers.listeners[\"" + requestLine + "\"].jsBeforeAjax); $.post(\"" + Rapid.backend.ihelpers.path + "\", $.extend({rapidKey:\"" + Rapid.backend.ihelpers.rapidKey + "\", cacheBuster:" + $.now() + ", rapidMysqli:" + asIsQuery.replace(/\./g, '+') + "}, Rapid.ihelpers.listeners[\"" + requestLine + "\"].curParams)).done(function(data) { var curRequest = Rapid.ihelpers.listeners[\"" + requestLine + "\"]; curRequest.responseHolderKeys.push(\"" + _getArrayName + "\"); curRequest.responseHolderVals.push(data); if(curRequest.ajaxCounter<curRequest.jsExecAjax.length) { curRequest.ajaxCounter++; eval(Rapid.ihelpers.listeners[\"" + requestLine + "\"].jsExecAjax[curRequest.ajaxCounter]); } if(curRequest.ajaxCounter==curRequest.jsExecAjax.length) { curRequest.ajaxCounter=0; curRequest.runFinalEcho();} });");
+                                this.jsExecAjax.push("eval(Rapid.ihelpers.listeners[\"" + requestLine + "\"].jsBeforeAjax); $.post(\"" + Rapid.mysql.ihelpers.path + "\", $.extend({rapidKey:\"" + Rapid.mysql.ihelpers.rapidKey + "\", cacheBuster:" + $.now() + ", rapidMysqli:" + asIsQuery.replace(/\./g, '+') + "}, Rapid.ihelpers.listeners[\"" + requestLine + "\"].curParams)).done(function(data) { var curRequest = Rapid.ihelpers.listeners[\"" + requestLine + "\"]; curRequest.responseHolderKeys.push(\"" + _getArrayName + "\"); curRequest.responseHolderVals.push(data); if(curRequest.ajaxCounter<curRequest.jsExecAjax.length) { curRequest.ajaxCounter++; eval(Rapid.ihelpers.listeners[\"" + requestLine + "\"].jsExecAjax[curRequest.ajaxCounter]); } if(curRequest.ajaxCounter==curRequest.jsExecAjax.length) { curRequest.ajaxCounter=0; curRequest.runFinalEcho();} });");
                                 
                                 var requestLine_arr = requestLine.split(" ");
                                 var method = requestLine_arr[0].toUpperCase();
@@ -815,17 +799,17 @@ $("#rapid-html a#normal").click(function() {
                                 //-
 
                                 if(typeof this.testingChain=='undefined')
-                                    $.post(Rapid.backend.ihelpers.path, {rapidKey: Rapid.backend.ihelpers.rapidKey, 
+                                    $.post(Rapid.mysql.ihelpers.path, {rapidKey: Rapid.mysql.ihelpers.rapidKey, 
                                                                          rapidEcho: curRequest.phpSrcEcho, 
                                                                          rapidMethod: method, 
                                                                          rapidParams: typeof curRequest.curParams=="object"?JSON.stringify(curRequest.curParams):JSON.stringify({"_error":"Can't echo a method without parameters."}), 
                                                                          rapidMultiFetchAssocs: $.isEmptyObject(rsObj)?"":rsObj})
                                         .done(function(data) { 
                                             if(curRequest.jsExecAjax.length>0)
-                                                console.info("Emulated Server -> Actual Database -> Echo -> Ajax Done Callback:"); 
+                                                console.info("Rerouted to chain code -> Database -> Echo -> Done Callback:"); 
                                             else
-                                                console.info("Emulated Server -> Echo -> Ajax Done Callback:"); 
-                                            cbClientDone(data); 
+                                                console.info("Rerouted to chain code -> Echo -> Done Callback:"); 
+                                            if(cbClientDone!=null) cbClientDone(data); 
                                     }); // done
                             }, // runFinalEcho
                             
@@ -834,11 +818,11 @@ $("#rapid-html a#normal").click(function() {
                                 var params = arguments.length && typeof arguments[0]=="object" ? arguments[0] : {};
                                 console.dir(params);
                                 if(this.requestLine!="POST null") {
-                                    console.error("Rapid.backend.Chain: Do not chain the run function to a regular Chain. Run should receive optional parameter object and be chained to a Test Chain. Regular Chain needs to be passed to ilisten so that it is ready to run the backend chain when iajax triggers it.");
+                                    console.error("Rapid.mysql.Chain: Do not chain the run function to a regular Chain. Run should receive optional parameter object and be chained to a Test Chain. Regular Chain needs to be passed to serverListen so that it is ready to run the mysql chain when ajax triggers it.");
                                     return this;
                                 }
                                 else if(!this.phpSrcMysqli.length) {
-                                    console.error("Rapid.backend.testChain: You must perform a valid execQuery or a fetchQuery for testChain.");
+                                    console.error("Rapid.mysql.simpleChain: You must perform a valid execQuery or a fetchQuery for simpleChain.");
                                     return this;    
                                 }
                                 
@@ -848,33 +832,33 @@ $("#rapid-html a#normal").click(function() {
                                 //this.cbClientDone=cbClientDone;
                                 var jsExecAjaxStart = this.jsExecAjax;
                                 Rapid.ihelpers.listeners[requestLine] = this;
-                                if(jsExecAjaxStart.length>0) { // start async sequence over at ilisten
+                                if(jsExecAjaxStart.length>0) { // start async sequence over at serverListen
                                     this.jsExecAjaxStarter();
-                                } else { // no ajax response over at ilisten so just echo manually
+                                } else { // no ajax response over at serverListen so just echo manually
                                     this.runFinalEcho();
                                 }
-                            } // run if not waiting for iajax (doing a testChain)
+                            } // run if not waiting for ajax (doing a simpleChain)
                           }; // return 
                         }, // ChainBuilder with implicit build                
                 ihelpers: {
-                  path: "", // path to backend with access to mysql database
-                  rapidKey: "" // the password that grants access to backend
+                  path: "", // path to mysql with access to mysql database
+                  rapidKey: "" // the password that grants access to mysql
                 },
-                db: function(path, rapidKey) {
-                    //eg. path = "../sandbox/rapid/js/rapid-backend.php"
+                connect: function(path, rapidKey) {
+                    //eg. path = "../sandbox/rapid/js/rapid-mysql.php"
                     
                     if(arguments.length!=2 || typeof arguments[0]!= "string" || typeof arguments[1]!= "string") {
-                        console.error('Rapid.backend.db: Must pass a string path of the backend config file and a string access key that matches rapidKey defined in the backend config file. Eg. Rapid.backend.db(\"some-folder/rapid-backend-or-some-other-filename.php\", \"your-configured-password\")');
+                        console.error('Rapid.mysql.db: Must pass a string path of the mysql config file and a string access key that matches rapidKey defined in the mysql config file. Eg. Rapid.mysql.db(\"some-folder/rapid-mysqli-or-some-other-filename.php\", \"your-configured-password\")');
                         return false;
                     } // if
                     
                     try {
                         $.post(path, {rapidKey: rapidKey, authenticating: true})
                             .done(function(data) {
-                                if(!Rapid.ihelpers.validateResponse("Rapid.backend.db", data)) return false;
+                                if(!Rapid.ihelpers.validateResponse("Rapid.mysql.db", data)) return false;
                                 if(typeof JSON.parse(data).authenticated!='undefined') {
-                                    Rapid.backend.ihelpers.path=path;
-                                    Rapid.backend.ihelpers.rapidKey=rapidKey;
+                                    Rapid.mysql.ihelpers.path=path;
+                                    Rapid.mysql.ihelpers.rapidKey=rapidKey;
                                     console.info("Rapid.idb: " + JSON.parse(data).status);
                                     console.info("Your php code would be: " + JSON.parse(data).phpSrc);
                                 } else {
@@ -884,25 +868,25 @@ $("#rapid-html a#normal").click(function() {
                                     
                             }) // done
                             .fail(function() {
-                                console.error("Rapid.idb: Can't authenticate. Path to backend file is probably incorrect.");
+                                console.error("Rapid.idb: Can't authenticate. Path to mysql file is probably incorrect.");
                                 return false;
                             });
                     } catch (e) {
                             if(e instanceof SyntaxError) {
-                                console.error("Rapid.idb: Can't authenticate. Path to backend file is probably incorrect.");
+                                console.error("Rapid.idb: Can't authenticate. Path to mysql file is probably incorrect.");
                                 return false;
                             }
                     } // catch
                 }
             },
-            ilisten: function() {
+            serverListen: function() {
                 function error_bad_chain() {
-                    console.error("Chain object instructs how the backend is emulated. You can initiate variables before calling database or outputting, then call mysqli (the db is live), and echo the results. Or you can choose not to call mysqli and just echo fake mock data. But you must always set the final echo.\n Example:%c\nRapid.ilisten(Rapid.backend.Chain(\"GET /some-path/\").initScope(\"$arr=array();\").fetchQuery({arr0:/\"SELECT * FROM tbl WHERE col1='\" . mysqli_real_escape_string($POST[\"var\"]) . \"' LIMIT 5;\"/}).execQuery(/\"another-sql-query-in-reg-exp-here\"/).setFinalEcho(\"echo json_encode($arr1);\"));", "font-style:italic;");
+                    console.error("Chain object instructs how the mysql is emulated. You can initiate variables before calling database or outputting, then call mysqli (the db is live), and echo the results. Or you can choose not to call mysqli and just echo fake mock data. But you must always set the final echo.\n Example:%c\nRapid.serverListen(Rapid.mysql.Chain(\"GET /some-path/\").initScope(\"$arr=array();\").fetchQuery({arr0:/\"SELECT * FROM tbl WHERE col1='\" . mysqli_real_escape_string($POST[\"var\"]) . \"' LIMIT 5;\"/}).execQuery(/\"another-sql-query-in-reg-exp-here\"/).setFinalEcho(\"echo json_encode($arr1);\"));", "font-style:italic;");
                 } // error_bad_chain
                 
                 // Validation
                 if(arguments.length==0) {
-                    console.error("Rapid.ilisten: Missing first parameter. You need to pass 'METHOD uri' to disable an active listener or a Chain object to enable one. For example, 'GET list/'.");
+                    console.error("Rapid.serverListen: Missing first parameter. You need to pass 'METHOD uri' to disable an active listener or a Chain object to enable one. For example, 'GET list/'.");
                     error_bad_chain()
                     return;
                 }
@@ -912,15 +896,15 @@ $("#rapid-html a#normal").click(function() {
                     var requestLine = arguments[0];
                     
                     //Validation
-                    if(!Rapid.ihelpers.validateRequestLine("Rapid.ilisten", requestLine)) return;
+                    if(!Rapid.ihelpers.validateRequestLine("Rapid.serverListen", requestLine)) return;
 
                     //Unset
                     if(typeof Rapid.ihelpers.listeners[requestLine]!='undefined') {
                         delete Rapid.ihelpers.listeners[requestLine];
-                        console.info("Rapid.ilisten: Listener unset. Iajax requests to this URI will be made to external pages.");
+                        console.info("Rapid.serverListen: Listener %cUNSET%c.\nRapid Ajax requests will route to external pages.", "color:gray;", "color:black;");
                         return;
                     } else {
-                        console.error("Rapid.ilisten: You tried disabling a listener that does not exist. Enable a listener by passing a Chain object.");
+                        console.error("Rapid.serverListen: You tried unsetting a listener that does not exist. Set a listener by passing a Chain object.");
                         error_bad_chain();
                         return;
                     }
@@ -931,7 +915,7 @@ $("#rapid-html a#normal").click(function() {
                 
                 //Going down chain with error
                 if(typeof arguments[0].testingChain!='undefined') {
-                    console.error("Rapid.backend.ilisten: A test chain does not belong to ilisten because you are not listening for iajax to perform a backend chain. The purpose of test chain is to validate your query code without the boilerplate of a regular Chain with ilisten. Just run it standalone and finish the chain with .run(). Eg. (Rapid.backend.testChain()).fetchQuery({results:/\"SELECT * FROM tbl1 LIMIT 5\"}).run();");
+                    console.error("Rapid.mysql.serverListen: A test chain does not belong to serverListen because you are not listening for ajax to perform a mysql chain. The purpose of test chain is to validate your query code without the boilerplate of a regular Chain with serverListen. Just run it standalone and finish the chain with .run(). Eg. (Rapid.mysql.simpleChain()).fetchQuery({results:/\"SELECT * FROM tbl1 LIMIT 5\"}).run();");
                     return null;
                 }
                 
@@ -940,7 +924,7 @@ $("#rapid-html a#normal").click(function() {
                 }
                 var phpSrcEcho = arguments[0].phpSrcEcho;
                 if(phpSrcEcho.length==0) {
-                    console.error("Rapid.backend.Chain's fetchQuery/execQuery: You did not instruct the chain on what to output from the server PHP. Iajax will call the request line supplied to it without rerouting to an emulated backend.");     
+                    console.error("Rapid.mysql.Chain's fetchQuery/execQuery: You did not instruct the chain on what to output from the server PHP. ajax will call the request line supplied to it without rerouting to an emulated mysql.");     
                     error_bad_chain();
                     return;
                 }
@@ -949,35 +933,32 @@ $("#rapid-html a#normal").click(function() {
                 Rapid.ihelpers.listeners[requestLine] = {};
                 $.extend(true, Rapid.ihelpers.listeners[requestLine], arguments[0]); // ChainBuilder returns an object representing JS and PHP code 
                 
-                console.info("Rapid.ilisten: Listener set.\nIajax requests will be made to your chain of emulated backend code.\nTo unset, pass the same request line to ilisten.");
+                console.info("Rapid.serverListen: Listener %cSET%c.\nRapid Ajax requests will route to your Chain's code.\nTo turn off, call serverListen with the string (%cGET api.php/list%c).", "color:green;", "color:black;", "font-style:italic;", "font-style:normal;");
                     
-            }, // ilisten
+            }, // serverListen
             iscript: function(src) {
                 //Because jQuery's ajax overrides arguments
-                var argsParent = arguments;
+                var args = arguments;
                 
                 //Call jQuery ajax
-                $.get(src, {cacheBuster: $.now()})
+                $.getScript(src, {cacheBuster: $.now()})
                     .done(function(data) {
                         //if(!Rapid.ihelpers.validateResponse("Rapid.iscript", data)) return;
                         console.group("Called script at " + src);
                         console.dir({script:data});
                     
                         //console.dir(argsParent);
-                        var strExtra="";
-                        if(argsParent.length>1) {
-                          for(var i = 1; i<argsParent.length; i++) {
-                            strExtra += "\n" + argsParent[i];
+                        var callback="";
+                        if(args.length>1) {
+                          for(var i = 1; i<args.length; i++) {
+                            if(typeof args[i]=="function")
+                                callback = "var rapidCallback = " + args[i].toString() + "; rapidCallback();";
+                            else
+                                callback += "\n" + args[i].toString();
                           } // for
                         } // if
-
                     
-                        $("head").append("<script>" + data + strExtra + "</script>");
-                    
-                        //eval is not worth it because a lack of error messages
-                        /*var ret = eval(data);
-                        if(typeof ret!=="undefined")
-                            console.info("Returned " + typeof ret + ": " + ret);*/
+                        $("head").append("<script>" + callback + "</script>");
                     
                         console.groupEnd(); 
                     })
@@ -985,6 +966,11 @@ $("#rapid-html a#normal").click(function() {
                                 console.log("Rapid.iscript:" + textStatus + " with " + errorThrown);
                                 //console.log("Rapid.iscript: Error", jqXHR);
                     });
+            },
+            istyle: function(url) {
+                $.get(url + (url.indexOf("?")<0?"?":"&")+$.now()).done(function(css) {
+                    $("head").append("<style>" + css + "</style>");
+                }).error(function(jqXHR, error) { console.error("Rapid.istyle: " + error); });                  
             },
             stories: {
                 helpers: {
@@ -1021,17 +1007,8 @@ $("#rapid-html a#normal").click(function() {
                 xsJS: function() {},
                 gridlines: false,
                 status: false,
-                nestedWarning: true,
                 helpers: {
                     htmlCount: 0,
-                    pollNested: function() {
-                        $(".row").each(function() {
-                            if($(this).hasClass("rapid-bootstrap-nested")) return;
-                            else if($(this).find(".row").length) {
-                                console.error("Rapid: Found nested .row. Most likely you wanted to nest columns inside a column. Nesting rows inside a row could cause unpredictable results like the container being off center or taking more than full width. If you know what you are doing and the nesting was intentional, add a .rapid-bootstrap-nested to the parent row. To disable all future warnings on the webpage, there is a Rapid bootstrap option for that, nestedWarning:false. Eg. Rapid.options({bootstrap:{nestedWarning:false}});", $(this)[0]);
-                            }
-                        }); // check each row  
-                    },
                     pollRearrange: function() {
                         
                         // First, if given bootstrap CSS media query options, then insert the style block
@@ -1077,16 +1054,13 @@ $("#rapid-html a#normal").click(function() {
             } // options
     }); // extend
 
-    //S-2. Global namespace
-    if(typeof global=='undefined') var global = window;
-
-    //S-3. Controllers
+    //S-2. Controllers
     var countScript=-1, countAsync=-1, elAsync = []; // next script
     var always=0, alwaysMax=0; // $.get(...).always(...)
     function initS() {
         var scripts = [], scripts2 = [];
-        //global.scripts = scripts;
-        //Rapid.watchArr("global.scripts", true);
+        //window.scripts = scripts;
+        //Rapid.watchArr("window.scripts", true);
         
         //Notes are only for developer eyes in development environment:
         $("[data-notes],[data-note]").removeAttr("data-notes").removeAttr("data-note");
@@ -1107,12 +1081,11 @@ $("#rapid-html a#normal").click(function() {
             filename=$(this).data("onloader-a");
             alwaysMax++;
             elAsync.push($(this));
-            $.get(filename+(Rapid.toggle.cache?"?v="+$.now():""), function(data) { 
+            $.get(filename+(Rapid.cache?"?v="+$.now():""), function(data) { 
                 countAsync = ++countAsync;
-                elAsync[countAsync].attr("data-async-id", countAsync);  
-                data = data.replace(new RegExp("\\)[\s\n\r ]*\\{"), ') {\nvar _ori=$("[data-async-id=' + countAsync + ']");\n');
-                //console.log(data);
-                scripts.push('\nvar _ori = $("[data-async-id=' + countAsync + ']");\n'+data);
+                elAsync[countAsync].attr("data-async-id", countAsync); 
+                data = data.replace(new RegExp("\\)[\s\n\r ]*\\{"), ') {\nvar ori=$("[data-async-id=' + countAsync + ']");\n');
+                scripts.push('\nvar ori = $("[data-async-id=' + countAsync + ']");\n'+data);
                 always++;
                 }, "text");
         });
@@ -1121,8 +1094,8 @@ $("#rapid-html a#normal").click(function() {
             code=$(this).data("onload-a");
             countScript++;
             $(this).attr("data-script-id", countScript);
-            code = code.replace(new RegExp("\\)[\s\n\r ]*\\{"), ') {\nvar _ori=$("[data-script-id=' + countScript + ']");\n');
-            scripts.push('\nvar _ori = $("[data-script-id=' + countScript + ']");\n'+code);
+            code = code.replace(new RegExp("\\)[\s\n\r ]*\\{"), ') {\nvar ori=$("[data-script-id=' + countScript + ']");\n');
+            scripts.push('\nvar ori = $("[data-script-id=' + countScript + ']");\n'+code);
         });
 
         
@@ -1132,12 +1105,11 @@ $("#rapid-html a#normal").click(function() {
             filename=$(this).data("onloader-b");
             alwaysMax++;
             elAsync.push($(this));
-            $.get(filename+(Rapid.toggle.cache?"?v="+$.now():""), function(data) { 
+            $.get(filename+(Rapid.cache?"?v="+$.now():""), function(data) { 
                 countAsync = ++countAsync;
                 elAsync[countAsync].attr("data-async-id", countAsync);  
-                data = data.replace(new RegExp("\\)[\s\n\r ]*\\{"), ') {\nvar _ori=$("[data-async-id=' + countAsync + ']");\n');
-                //console.log(data);
-                scripts.push('\nvar _ori = $("[data-async-id=' + countAsync + ']");\n'+data);
+                data = data.replace(new RegExp("\\)[\s\n\r ]*\\{"), ') {\nvar ori=$("[data-async-id=' + countAsync + ']");\n');
+                scripts.push('\nvar ori = $("[data-async-id=' + countAsync + ']");\n'+data);
                 always++;
                 }, "text");
         });
@@ -1146,8 +1118,8 @@ $("#rapid-html a#normal").click(function() {
             code=$(this).data("onload-b");
             countScript++;
             $(this).attr("data-script-id", countScript);
-            code = code.replace(new RegExp("\\)[\s\n\r ]*\\{"), ') {\nvar _ori=$("[data-script-id=' + countScript + ']");\n');
-            scripts.push('\nvar _ori = $("[data-script-id=' + countScript + ']");\n'+code);
+            code = code.replace(new RegExp("\\)[\s\n\r ]*\\{"), ') {\nvar ori=$("[data-script-id=' + countScript + ']");\n');
+            scripts.push('\nvar ori = $("[data-script-id=' + countScript + ']");\n'+code);
         });
 
         
@@ -1157,12 +1129,11 @@ $("#rapid-html a#normal").click(function() {
             filename=$(this).data("onloader-c");
             alwaysMax++;
             elAsync.push($(this));
-            $.get(filename+(Rapid.toggle.cache?"?v="+$.now():""), function(data) { 
+            $.get(filename+(Rapid.cache?"?v="+$.now():""), function(data) { 
                 countAsync = ++countAsync;
                 elAsync[countAsync].attr("data-async-id", countAsync);  
-                data = data.replace(new RegExp("\\)[\s\n\r ]*\\{"), ') {\nvar _ori=$("[data-async-id=' + countAsync + ']");\n');
-                //console.log(data);
-                scripts.push('\nvar _ori = $("[data-async-id=' + countAsync + ']");\n'+data);
+                data = data.replace(new RegExp("\\)[\s\n\r ]*\\{"), ') {\nvar ori=$("[data-async-id=' + countAsync + ']");\n');
+                scripts.push('\nvar ori = $("[data-async-id=' + countAsync + ']");\n'+data);
                 always++;
                 }, "text");
         });
@@ -1171,8 +1142,8 @@ $("#rapid-html a#normal").click(function() {
             code=$(this).data("onload-c");
             countScript++;
             $(this).attr("data-script-id", countScript);
-            code = code.replace(new RegExp("\\)[\s\n\r ]*\\{"), ') {\nvar _ori=$("[data-script-id=' + countScript + ']");\n');
-            scripts.push('\nvar _ori = $("[data-script-id=' + countScript + ']");\n'+code);
+            code = code.replace(new RegExp("\\)[\s\n\r ]*\\{"), ') {\nvar ori=$("[data-script-id=' + countScript + ']");\n');
+            scripts.push('\nvar ori = $("[data-script-id=' + countScript + ']");\n'+code);
         });
 
         
@@ -1182,12 +1153,11 @@ $("#rapid-html a#normal").click(function() {
             filename=$(this).data("onloader-d");
             alwaysMax++;
             elAsync.push($(this));
-            $.get(filename+(Rapid.toggle.cache?"?v="+$.now():""), function(data) { 
+            $.get(filename+(Rapid.cache?"?v="+$.now():""), function(data) { 
                 countAsync = ++countAsync;
                 elAsync[countAsync].attr("data-async-id", countAsync);  
-                data = data.replace(new RegExp("\\)[\s\n\r ]*\\{"), ') {\nvar _ori=$("[data-async-id=' + countAsync + ']");\n');
-                //console.log(data);
-                scripts.push('\nvar _ori = $("[data-async-id=' + countAsync + ']");\n'+data);
+                data = data.replace(new RegExp("\\)[\s\n\r ]*\\{"), ') {\nvar ori=$("[data-async-id=' + countAsync + ']");\n');
+                scripts.push('\nvar ori = $("[data-async-id=' + countAsync + ']");\n'+data);
                 always++;
                 }, "text");
         });
@@ -1196,11 +1166,11 @@ $("#rapid-html a#normal").click(function() {
             code=$(this).data("onload-d");
             countScript++;
             $(this).attr("data-script-id", countScript);
-            code = code.replace(new RegExp("\\)[\s\n\r ]*\\{"), ') {\nvar _ori=$("[data-script-id=' + countScript + ']");\n');
-            scripts.push('\nvar _ori = $("[data-script-id=' + countScript + ']");\n'+code);
+            code = code.replace(new RegExp("\\)[\s\n\r ]*\\{"), ') {\nvar ori=$("[data-script-id=' + countScript + ']");\n');
+            scripts.push('\nvar ori = $("[data-script-id=' + countScript + ']");\n'+code);
         });
                             
-        //S-4. Jquery has deprecated async, so let's mock async:
+        //S-3. Jquery has deprecated async, so let's mock async:
         var intvI = setInterval(function() {
             if(always==alwaysMax) {
                 var str="";
@@ -1213,16 +1183,16 @@ $("#rapid-html a#normal").click(function() {
             }
             }, 1);
         
-        //S-5. The onclick, data-onclick, data-onclicker:
+        //S-4. The onclick, data-onclick, data-onclicker:
         
-        //Desc: Keep _ori use consistent in onclick too
+        //Desc: Keep ori use consistent in onclick too
         $("[onclick]").each(function() {
-            $(this).attr("onclick", "var _ori = $(this); "+$(this).attr("onclick"));
+            $(this).attr("onclick", "var ori = $(this); " + $(this).attr("onclick"));
         });
         
         //Desc: Keep data- convention consistent. May interchangeably use onclick or data-onclick
         $("[data-onclick]").each(function() {
-            eval('$(this).click(function() { ' + $(this).data("onclick") + '});');
+            $(this).attr("onclick", "var ori = $(this); " + $(this).attr("data-onclick"));
             $(this).removeAttr("data-onclick");
         });
          
@@ -1232,11 +1202,11 @@ $("#rapid-html a#normal").click(function() {
             filename=$(this).data("onclicker");
             alwaysMax++;
             elAsync.push($(this));
-            $.get(filename+(Rapid.toggle.cache?"?v="+$.now():""), function(data) {
+            $.get(filename+(Rapid.cache?"?v="+$.now():""), function(data) {
                 countAsync = ++countAsync;
                 elAsync[countAsync].attr("data-async-id", countAsync); 
                 //console.log(data);
-                scripts2.push('\n$("[data-async-id=' + countAsync + ']").click(function() {\nvar _ori=$("[data-async-id=' + countAsync + ']");\n' + data + '});');
+                scripts2.push('\n$("[data-async-id=' + countAsync + ']").click(function() {\nvar ori=$("[data-async-id=' + countAsync + ']");\n' + data + '});');
                 always++;
             }, "text");
         });  
@@ -1260,16 +1230,10 @@ $("#rapid-html a#normal").click(function() {
     * Placeholders of sections and elements for quick wireframing. Colored, labeled, and choice of rectangle/circle.
     * If you dynamically loaded new elements, their placeholders may need to be re-initialized calling initP().
     * ---------------------------------------------------------------------------------------------------------------
-    * Best practices: 
-    *     -You initiate a placeholder with either a data-rect or data-circ attribute.
-    *     -It will fill to the width and height of the div or element.
-    *     -All settings are optional. Just include or exclude that particular JSON key/value.
-    *     -The placeholder will use the default settings if you don't set them (E.g. gray placeholder).
-    *
     */
     
     function initP() {
-        //for plain placeholders, that's based on bundle.css
+        //for plain placeholders, use class rapid-rect or rapid-circ from rapid.css
         
         //for fully customizable placeholders
         $("[data-rect]").each(function () {
@@ -1624,20 +1588,133 @@ $("#rapid-html a#normal").click(function() {
 
     /**
     * LOREM IPSUM
-    * Generate Lorem Ipsum words, sentences, or paragraphs easily with a data attribute.
+    * Generate Lorem Ipsum words, sentences, or paragraphs easily.
     * --------------------------------------------------------------------------------------------
     * Best practices: 
-    *     E.g. For 20 words, data-lorem='20w'
-    *     E.g. For 8 sentences, data-lorem='8s'
-    *     E.g. For 5 paragraphs, data-lorem='5'
+    *     E.g. For 20 words,  use class 'lorem-20w'
+    *     E.g. For 8 sentences, use class 'lorem-8s'
+    *     E.g. For 5 paragraphs, use class 'lorem-5p'
     *
     */
 
-    var Lorem;
+ 
     function initL() {
-        $("[data-lorem]").html("");
-        (function(){function randw(){var s=Math.floor(Math.random()*3)+1,c=['b','d','f','g','h','j','k','m','n','p','r','s','sh','t','ts','ll','qu','sc','gr','en','ad','ip','am','eg','ph','al','el','urn','fr','rh','pr','ul','et','gn','er','ult','odo','oro','ti','l','v','w','z','tr','ch','bl','pl','cr'],v=['a','e','i','o','u','au','ou','ae','us','ui'],i=0,str='';while(i<s){str+=c[Math.floor(Math.random()*(c.length-1))]+v[Math.floor(Math.random()*(v.length-1))];i++;} return str + (Math.random()*10 < 3 ? c[Math.floor(Math.random()*(c.length-1))]:'');}Lorem=function(){this.type=null;this.query=null;this.data=null};Lorem.IMAGE=1;Lorem.TEXT=2;Lorem.TYPE={PARAGRAPH:1,SENTENCE:2,WORD:3};Lorem.WORDS=[];var a=0;while(a<1272){Lorem.WORDS.push(randw());a++}Lorem.prototype.randomInt=function(c,b){return Math.floor(Math.random()*(b-c+1))+c};Lorem.prototype.createText=function(f,h){switch(h){case Lorem.TYPE.PARAGRAPH:var k=new Array;for(var d=0;d<f;d++){var j=this.randomInt(10,20);var c=this.createText(j,Lorem.TYPE.SENTENCE);k.push(c)}return k.join("\n");break;case Lorem.TYPE.SENTENCE:var l=new Array;for(var d=0;d<f;d++){var m=this.randomInt(5,10);var g=this.createText(m,Lorem.TYPE.WORD).split(" ");g[0]=g[0].substr(0,1).toUpperCase()+g[0].substr(1);var e=g.join(" ");l.push(e)}return(l.join(". ")+".").replace(/(\.\,|\,\.)/g,".");break;case Lorem.TYPE.WORD:var b=this.randomInt(0,Lorem.WORDS.length-f-1);return Lorem.WORDS.slice(b,b+f).join(" ").replace(/\.|\,/g,"");break}};Lorem.prototype.createLorem=function(d){var h=new Array;var g=parseInt(this.query);var e=Lorem.TYPE.PARAGRAPH;if(/\d+p/.test(this.query)){e=Lorem.TYPE.PARAGRAPH}else{if(/\d+s/.test(this.query)){e=Lorem.TYPE.SENTENCE}else{if(/\d+w/.test(this.query)){e=Lorem.TYPE.WORD}}}h.push(this.createText(g,e));h=h.join(" ");if(d){if(this.type==Lorem.TEXT){var f=h.split("\n");for(var c=0;c<f.length;c++){f[c]="<p>"+f[c]+"</p>"}d.innerHTML+=f.join("")}else{if(this.type==Lorem.IMAGE){var j="";var b=this.query.split(" ");if(b[0]=="gray"){j+="/g";b[0]=""}if(d.getAttribute("width")){j+="/"+d.getAttribute("width")}if(d.getAttribute("height")){j+="/"+d.getAttribute("height")}j+="/"+b.join(" ").replace(/(^\s+|\s+$)/,"");d.src="http://lorempixum.com"+j.replace(/\/\//,"/")}}}if(d==null){return h}};if(typeof jQuery!="undefined"){(function(b){b.fn.lorem=function(){b(this).each(function(){var c=new Lorem;c.type=b(this).is("img")?Lorem.IMAGE:Lorem.TEXT;c.query=b(this).data("lorem");c.createLorem(this)})};b(document).ready(function(){b("[data-lorem]").lorem()})})(jQuery)}else{if(document.querySelectorAll){!function(d,c){typeof define=="function"?define(c):typeof module!="undefined"?module.exports=c():this[d]=this.domReady=c()}("domready",function(x){function m(b){n=1;while(b=w.shift()){b()}}var w=[],v,u=!1,t=document,s=t.documentElement,r=s.doScroll,q="DOMContentLoaded",p="addEventListener",o="onreadystatechange",n=/^loade|c/.test(t.readyState);t[p]&&t[p](q,v=function(){t.removeEventListener(q,v,u),m()},u),r&&t.attachEvent(o,v=function(){/^c/.test(t.readyState)&&(t.detachEvent(o,v),m())});return x=r?function(b){self!=top?n?b():w.push(b):function(){try{s.doScroll("left")}catch(c){return setTimeout(function(){x(b)},50)}b()}()}:function(b){n?b():w.push(b)}});domReady(function(){var d=document.querySelectorAll("[data-lorem]");for(var b=0;b<d.length;b++){var c=d[b];var e=new Lorem;e.type=c.tagName=="IMG"?Lorem.IMAGE:Lorem.TEXT;e.query=c.getAttribute("data-lorem");e.createLorem(c)}})}}})();
-    }; // initL
+        function rand_word() {
+            return "";
+            var s = Math.floor(Math.random() * 3) + 1,
+                c = ['b', 'd', 'f', 'g', 'h', 'j', 'k', 'm', 'n', 'p', 'r', 's', 'sh', 't', 'ts', 'll', 'qu', 'sc', 'gr', 'en', 'ad', 'ip', 'am', 'eg', 'ph', 'al', 'el', 'urn', 'fr', 'rh', 'pr', 'ul', 'et', 'gn', 'er', 'ult', 'odo', 'oro', 'ti', 'l', 'v', 'w', 'z', 'tr', 'ch', 'bl', 'pl', 'cr'],
+                v = ['a', 'e', 'i', 'o', 'u', 'au', 'ou', 'ae', 'us', 'ui'],
+                i = 0,
+                str = '';
+            while (i < s) {
+                str += c[Math.floor(Math.random() * (c.length - 1))] + v[Math.floor(Math.random() * (v.length - 1))];
+                i++;
+            }
+            return str + (Math.random() * 10 < 3 ? c[Math.floor(Math.random() * (c.length - 1))] : '');
+        } // rand_word
+    
+    (function() {
+    var Lorem = function() {
+        this.type = null;
+        this.jqObj = null;
+    };
+    Lorem.TYPE = {
+        PARAGRAPH: 1,
+        SENTENCE: 2,
+        WORD: 3
+    };
+    Lorem.WORDS = [
+        "lorem", "ipsum", "dolor", "sit", "amet,", "consectetur", "adipiscing", "elit", "ut", "aliquam,", "purus", "sit", "amet", "luctus", "venenatis,", "lectus", "magna", "fringilla", "urna,", "porttitor", "rhoncus", "dolor", "purus", "non", "enim", "praesent", "elementum", "facilisis", "leo,", "vel", "fringilla", "est", "ullamcorper", "eget", "nulla", "facilisi", "etiam", "dignissim", "diam", "quis", "enim", "lobortis", "scelerisque", "fermentum", "dui", "faucibus", "in", "ornare", "quam", "viverra", "orci", "sagittis", "eu", "volutpat", "odio", "facilisis", "mauris", "sit", "amet", "massa", "vitae", "tortor", "condimentum", "lacinia", "quis", "vel", "eros", "donec", "ac", "odio", "tempor", "orci", "dapibus", "ultrices", "in", "iaculis", "nunc", "sed", "augue", "lacus,", "viverra", "vitae", "congue", "eu,", "consequat", "ac", "felis", "donec", "et", "odio", "pellentesque", "diam", "volutpat", "commodo", "sed", "egestas", "egestas", "fringilla", "phasellus", "faucibus", "scelerisque", "eleifend", "donec", "pretium", "vulputate", "sapien", "nec", "sagittis", "aliquam", "malesuada", "bibendum", "arcu", "vitae", "elementum",
+        "curabitur", "vitae", "nunc", "sed", "velit", "dignissim", "sodales", "ut", "eu", "sem", "integer", "vitae", "justo", "eget", "magna", "fermentum", "iaculis", "eu", "non", "diam", "phasellus", "vestibulum", "lorem", "sed", "risus", "ultricies", "tristique", "nulla", "aliquet", "enim", "tortor,", "at", "auctor", "urna", "nunc", "id", "cursus", "metus", "aliquam", "eleifend", "mi", "in", "nulla", "posuere", "sollicitudin", "aliquam", "ultrices", "sagittis", "orci,", "a", "scelerisque", "purus", "semper", "eget", "duis", "at", "tellus", "at", "urna", "condimentum", "mattis", "pellentesque", "id", "nibh", "tortor,", "id", "aliquet", "lectus", "proin", "nibh", "nisl,", "condimentum", "id", "venenatis", "a,", "condimentum", "vitae", "sapien", "pellentesque", "habitant", "morbi", "tristique", "senectus", "et", "netus", "et", "malesuada", "fames", "ac", "turpis", "egestas", "sed", "tempus,", "urna", "et", "pharetra", "pharetra,", "massa", "massa", "ultricies", "mi,", "quis", "hendrerit", "dolor", "magna", "eget", "est", "lorem", "ipsum", "dolor", "sit", "amet,", "consectetur", "adipiscing", "elit", "pellentesque", "habitant", "morbi", "tristique", "senectus", "et", "netus", "et", "malesuada", "fames", "ac", "turpis", "egestas", "integer", "eget", "aliquet", "nibh", "praesent", "tristique", "magna", "sit", "amet", "purus", "gravida", "quis", "blandit", "turpis", "cursus", "in", "hac", "habitasse", "platea", "dictumst", "quisque", "sagittis,", "purus", "sit", "amet", "volutpat", "consequat,", "mauris", "nunc", "congue", "nisi,", "vitae", "suscipit", "tellus", "mauris", "a", "diam",
+        "maecenas", "sed", "enim", "ut", "sem", "viverra", "aliquet", "eget", "sit", "amet", "tellus", "cras", "adipiscing", "enim", "eu", "turpis", "egestas", "pretium", "aenean", "pharetra,", "magna", "ac", "placerat", "vestibulum,", "lectus", "mauris", "ultrices", "eros,", "in", "cursus", "turpis", "massa", "tincidunt", "dui", "ut", "ornare", "lectus", "sit", "amet", "est", "placerat", "in", "egestas", "erat", "imperdiet", "sed", "euismod", "nisi", "porta", "lorem", "mollis", "aliquam", "ut", "porttitor", "leo", "a", "diam", "sollicitudin", "tempor", "id", "eu", "nisl", "nunc", "mi", "ipsum,", "faucibus", "vitae", "aliquet", "nec,", "ullamcorper", "sit", "amet", "risus", "nullam", "eget", "felis", "eget", "nunc", "lobortis", "mattis", "aliquam", "faucibus", "purus", "in", "massa", "tempor", "nec", "feugiat", "nisl", "pretium", "fusce", "id", "velit", "ut", "tortor", "pretium", "viverra", "suspendisse", "potenti", "nullam", "ac", "tortor", "vitae", "purus", "faucibus", "ornare", "suspendisse", "sed", "nisi", "lacus,", "sed", "viverra", "tellus", "in", "hac", "habitasse", "platea", "dictumst", "vestibulum", "rhoncus", "est", "pellentesque", "elit", "ullamcorper", "dignissim", "cras", "tincidunt", "lobortis", "feugiat", "vivamus", "at", "augue", "eget", "arcu", "dictum", "varius", "duis", "at", "consectetur", "lorem",
+        "donec", "massa", "sapien,", "faucibus", "et", "molestie", "ac,", "feugiat", "sed", "lectus", "vestibulum", "mattis", "ullamcorper", "velit", "sed", "ullamcorper", "morbi", "tincidunt", "ornare", "massa,", "eget", "egestas", "purus", "viverra", "accumsan", "in", "nisl", "nisi,", "scelerisque", "eu", "ultrices", "vitae,", "auctor", "eu", "augue", "ut", "lectus", "arcu,", "bibendum", "at", "varius", "vel,", "pharetra", "vel", "turpis", "nunc", "eget", "lorem", "dolor,", "sed", "viverra", "ipsum", "nunc", "aliquet", "bibendum", "enim,", "facilisis", "gravida", "neque", "convallis", "a", "cras", "semper", "auctor", "neque,", "vitae", "tempus", "quam", "pellentesque", "nec", "nam", "aliquam", "sem", "et", "tortor", "consequat", "id", "porta", "nibh", "venenatis", "cras", "sed", "felis", "eget", "velit", "aliquet", "sagittis", "id", "consectetur", "purus", "ut", "faucibus", "pulvinar", "elementum", "integer", "enim", "neque,", "volutpat", "ac", "tincidunt", "vitae,", "semper", "quis", "lectus", "nulla", "at", "volutpat", "diam", "ut", "venenatis", "tellus", "in", "metus", "vulputate", "eu", "scelerisque", "felis", "imperdiet", "proin", "fermentum", "leo", "vel", "orci", "porta", "non", "pulvinar", "neque", "laoreet", "suspendisse", "interdum", "consectetur", "libero,", "id", "faucibus", "nisl", "tincidunt", "eget", "nullam", "non", "nisi", "est,", "sit", "amet", "facilisis", "magna",
+        "etiam", "tempor,", "orci", "eu", "lobortis", "elementum,", "nibh", "tellus", "molestie", "nunc,", "non", "blandit", "massa", "enim", "nec", "dui", "nunc", "mattis", "enim", "ut", "tellus", "elementum", "sagittis", "vitae", "et", "leo", "duis", "ut", "diam", "quam", "nulla", "porttitor", "massa", "id", "neque", "aliquam", "vestibulum", "morbi", "blandit", "cursus", "risus,", "at", "ultrices", "mi", "tempus", "imperdiet", "nulla", "malesuada", "pellentesque", "elit", "eget", "gravida", "cum", "sociis", "natoque", "penatibus", "et", "magnis", "dis", "parturient", "montes,", "nascetur", "ridiculus", "mus", "mauris", "vitae", "ultricies", "leo", "integer", "malesuada", "nunc", "vel", "risus", "commodo", "viverra", "maecenas", "accumsan,", "lacus", "vel", "facilisis", "volutpat,", "est", "velit", "egestas", "dui,", "id", "ornare", "arcu", "odio", "ut", "sem", "nulla", "pharetra", "diam", "sit", "amet", "nisl", "suscipit", "adipiscing", "bibendum", "est", "ultricies", "integer", "quis", "auctor", "elit",
+        "sed", "vulputate", "mi", "sit", "amet", "mauris", "commodo", "quis", "imperdiet", "massa", "tincidunt", "nunc", "pulvinar", "sapien", "et", "ligula", "ullamcorper", "malesuada", "proin", "libero", "nunc,", "consequat", "interdum", "varius", "sit", "amet,", "mattis", "vulputate", "enim", "nulla", "aliquet", "porttitor", "lacus,", "luctus", "accumsan", "tortor", "posuere", "ac", "ut", "consequat", "semper", "viverra", "nam", "libero", "justo,", "laoreet", "sit", "amet", "cursus", "sit", "amet,", "dictum", "sit", "amet", "justo", "donec", "enim", "diam,", "vulputate", "ut", "pharetra", "sit", "amet,", "aliquam", "id", "diam", "maecenas", "ultricies", "mi", "eget", "mauris", "pharetra", "et", "ultrices", "neque", "ornare", "aenean", "euismod", "elementum", "nisi,", "quis", "eleifend", "quam", "adipiscing", "vitae", "proin", "sagittis,", "nisl", "rhoncus", "mattis", "rhoncus,", "urna", "neque", "viverra", "justo,", "nec", "ultrices", "dui", "sapien", "eget", "mi", "proin", "sed", "libero", "enim,", "sed", "faucibus", "turpis", "in", "eu", "mi", "bibendum", "neque", "egestas", "congue", "quisque", "egestas", "diam", "in", "arcu", "cursus", "euismod", "quis", "viverra", "nibh", "cras", "pulvinar", "mattis", "nunc,", "sed", "blandit", "libero", "volutpat", "sed", "cras", "ornare", "arcu", "dui", "vivamus", "arcu", "felis,", "bibendum", "ut", "tristique", "et,", "egestas", "quis", "ipsum", "suspendisse", "ultrices", "gravida", "dictum",
+        "fusce", "ut", "placerat", "orci", "nulla", "pellentesque", "dignissim", "enim,", "sit", "amet", "venenatis", "urna", "cursus", "eget", "nunc", "scelerisque", "viverra", "mauris,", "in", "aliquam", "sem", "fringilla", "ut", "morbi", "tincidunt", "augue", "interdum", "velit", "euismod", "in", "pellentesque", "massa", "placerat", "duis", "ultricies", "lacus", "sed", "turpis", "tincidunt", "id", "aliquet", "risus", "feugiat", "in", "ante", "metus,", "dictum", "at", "tempor", "commodo,", "ullamcorper", "a", "lacus", "vestibulum", "sed", "arcu", "non", "odio", "euismod", "lacinia", "at", "quis", "risus", "sed", "vulputate", "odio", "ut", "enim", "blandit", "volutpat", "maecenas", "volutpat", "blandit", "aliquam", "etiam", "erat", "velit,", "scelerisque", "in", "dictum", "non,", "consectetur", "a", "erat", "nam", "at", "lectus", "urna", "duis", "convallis", "convallis", "tellus,", "id", "interdum", "velit", "laoreet", "id", "donec", "ultrices", "tincidunt", "arcu,", "non", "sodales", "neque", "sodales", "ut", "etiam", "sit", "amet", "nisl", "purus,", "in", "mollis", "nunc",
+        "sed", "id", "semper", "risus", "in", "hendrerit", "gravida", "rutrum", "quisque", "non", "tellus", "orci,", "ac", "auctor", "augue", "mauris", "augue", "neque,", "gravida", "in", "fermentum", "et,", "sollicitudin", "ac", "orci", "phasellus", "egestas", "tellus", "rutrum", "tellus", "pellentesque", "eu", "tincidunt", "tortor", "aliquam", "nulla", "facilisi", "cras", "fermentum,", "odio", "eu", "feugiat", "pretium,", "nibh", "ipsum", "consequat", "nisl,", "vel", "pretium", "lectus", "quam", "id", "leo", "in", "vitae", "turpis", "massa", "sed", "elementum", "tempus", "egestas", "sed", "sed", "risus", "pretium", "quam", "vulputate", "dignissim", "suspendisse", "in", "est", "ante", "in", "nibh", "mauris,", "cursus", "mattis", "molestie", "a,", "iaculis", "at", "erat",
+        "pellentesque", "adipiscing", "commodo", "elit,", "at", "imperdiet", "dui", "accumsan", "sit", "amet", "nulla", "facilisi", "morbi", "tempus", "iaculis", "urna,", "id", "volutpat", "lacus", "laoreet", "non", "curabitur", "gravida", "arcu", "ac", "tortor", "dignissim", "convallis", "aenean", "et", "tortor", "at", "risus", "viverra", "adipiscing", "at", "in", "tellus", "integer", "feugiat", "scelerisque", "varius", "morbi", "enim", "nunc,", "faucibus", "a", "pellentesque", "sit", "amet,", "porttitor", "eget", "dolor", "morbi", "non", "arcu", "risus,", "quis", "varius", "quam", "quisque", "id", "diam", "vel", "quam", "elementum", "pulvinar", "etiam", "non", "quam", "lacus", "suspendisse", "faucibus", "interdum", "posuere", "lorem", "ipsum", "dolor", "sit", "amet,", "consectetur", "adipiscing", "elit", "duis", "tristique", "sollicitudin", "nibh", "sit", "amet", "commodo", "nulla", "facilisi",
+        "nullam", "vehicula", "ipsum", "a", "arcu", "cursus", "vitae", "congue", "mauris", "rhoncus", "aenean", "vel", "elit", "scelerisque", "mauris", "pellentesque", "pulvinar", "pellentesque", "habitant", "morbi", "tristique", "senectus", "et", "netus", "et", "malesuada", "fames", "ac", "turpis", "egestas", "maecenas", "pharetra", "convallis", "posuere", "morbi", "leo", "urna,", "molestie", "at", "elementum", "eu,", "facilisis", "sed", "odio", "morbi", "quis", "commodo", "odio", "aenean", "sed", "adipiscing", "diam", "donec", "adipiscing", "tristique", "risus", "nec", "feugiat", "in", "fermentum", "posuere", "urna", "nec", "tincidunt", "praesent", "semper", "feugiat", "nibh", "sed", "pulvinar", "proin", "gravida", "hendrerit", "lectus", "a", "molestie"
+    ];
+        function rand_word2() { return Lorem.WORDS[Math.floor(Math.random()*Lorem.WORDS.length)]; }
+    var a = 0;
+    while (a < 1272) {
+        Lorem.WORDS.push(rand_word2());
+        a++
+    }
+    Lorem.prototype.randomInt = function(c, b) {
+        return Math.floor(Math.random() * (b - c + 1)) + c
+    };
+    Lorem.prototype.createText = function(f, h) {
+        switch (h) {
+            case Lorem.TYPE.PARAGRAPH:
+                var k = new Array;
+                for (var d = 0; d < f; d++) {
+                    var j = this.randomInt(10, 20);
+                    var c = this.createText(j, Lorem.TYPE.SENTENCE);
+                    k.push(c)
+                }
+                return k.join("\n");
+                break;
+            case Lorem.TYPE.SENTENCE:
+                var l = new Array;
+                for (var d = 0; d < f; d++) {
+                    var m = this.randomInt(5, 10);
+                    var g = this.createText(m, Lorem.TYPE.WORD).split(" ");
+                    g[0] = g[0].substr(0, 1).toUpperCase() + g[0].substr(1);
+                    var e = g.join(" ");
+                    l.push(e)
+                }
+                return (l.join(". ") + ".").replace(/(\.\,|\,\.)/g, ".");
+                break;
+            case Lorem.TYPE.WORD:
+                var b = this.randomInt(0, Lorem.WORDS.length - f - 1);
+                return Lorem.WORDS.slice(b, b + f).join(" ").replace(/\.|\,/g, "");
+                break
+        }
+    };
+    Lorem.prototype.createLorem = function(d) {
+        //defaults
+        var e = Lorem.TYPE.WORD,
+        g = 0;
+        
+        var re = /lorem-([0-9]{1,})([spw]{1,1})[\s"']/,
+        str = "'" + $(this.jqObj).attr("class") + "'",
+        //console.log(str);
+        m = str.match(re);
+        if(m) {
+          g = parseInt(m[1]);
+          switch(m[2]) {
+              case "p":
+                  $(this.jqObj).text("");
+                  for(var i=0; i<g; i++) {
+                      $(this.jqObj).html($(this.jqObj).html() + "<p>" + this.createText(g, Lorem.TYPE.PARAGRAPH) + "</p>");
+                  }
+                break;
+              case "s":
+                  $(this.jqObj).text(this.createText(g, Lorem.TYPE.SENTENCE));
+                break;
+              case "w":
+                  $(this.jqObj).text(this.createText(g, Lorem.TYPE.WORD));
+                break;
+          }
+        }
+        //debugger;
+        
+    };
+        (function(b) {
+            b.fn.lorem = function() {
+                b(this).each(function() {
+                    var c = new Lorem;
+                    c.jqObj = $(this);
+                    c.createLorem(this);
+                })
+            };
+            b(document).ready(function() {
+                $('[class^="lorem-"]').each(function() { $(this).lorem(); });
+            })
+        })(jQuery);
+    })();
+}; // initL
 
 
     /**
@@ -1809,7 +1886,7 @@ $("#rapid-html a#normal").click(function() {
                         try {
                             oObj = eval(sObj);
                         } catch(e) {
-                            console.error("Rapid.watchObj: The object passed to watchObj as a first parameter string cannot be found, most likely due to that object not being in the global scope because watchObj was implemented in global scope. You have two options. You can pass the object instead of the name of the object, wherein the console will show the name as [Object object] rather than its object name during reported changes. Or you can (1) create a global reference to that object and (2) make sure to pass the global string name (1. global.var=var; 2. Then pass \"global.var\")");
+                            console.error("Rapid.watchObj: The object passed to watchObj as a first parameter string cannot be found, most likely due to that object not being in the global scope because watchObj was implemented in global scope. You have two options. You can pass the object instead of the name of the object, wherein the console will show the name as [Object object] rather than its object name during reported changes. Or you can (1) create a global reference to that object and (2) make sure to pass the global string name (1. window.var=var; 2. Then pass \"window.var\")");
                             return;
                         }
                         if(arguments.length>1 && arguments[1]==true)
@@ -1826,7 +1903,7 @@ $("#rapid-html a#normal").click(function() {
                             var longName = "";
                             if(typeof sObj==="string") {
                                 //alert("string!");
-                                longName = oObj.$_name_$; // may be global.foo
+                                longName = oObj.$_name_$; // may be window.foo
                                 extraInfo = eval(longName + "." + changes[0]["name"])!=undefined?(eval(longName + "." + changes[0]["name"])):"";
                             } else { //
                                 for(var key in oObj)
@@ -1863,7 +1940,7 @@ $("#rapid-html a#normal").click(function() {
                         try {
                             oObj = eval(sObj);
                         } catch(e) {
-                            console.error("Rapid.watchKey: The object passed to watchKey as a first parameter string cannot be found, most likely due to that object not being in the global scope because watchKey was implemented in global scope. You have two options. You can pass the object instead of the name of the object, wherein the console will show the name as [Object object] rather than its object name during reported changes. Or you can (1) create a global reference to that object and (2) make sure to pass the global string name (1. global.var=var; 2. Then pass \"global.var\")");
+                            console.error("Rapid.watchKey: The object passed to watchKey as a first parameter string cannot be found, most likely due to that object not being in the global scope because watchKey was implemented in global scope. You have two options. You can pass the object instead of the name of the object, wherein the console will show the name as [Object object] rather than its object name during reported changes. Or you can (1) create a global reference to that object and (2) make sure to pass the global string name (1. window.var=var; 2. Then pass \"window.var\")");
                             return;
                         }
                       if(arguments.length>2 && arguments[2]==true) oObj.$_debugger_pause_$ = "T";
@@ -1876,7 +1953,7 @@ $("#rapid-html a#normal").click(function() {
                         try {
                             oArr = eval(sArr);
                         } catch(e) {
-                            console.error("Rapid.watchArr: The array passed to watchArr as a first parameter string cannot be found, most likely due to that array not being in the global scope because watchArr was implemented in global scope. You have two options. You can pass the array instead of the name of the array, wherein the console will show the name as [Array array] rather than its array name during reported changes. Or you can (1) create a global reference to that array and (2) make sure to pass the global string name (1. global.arr=arr; 2. Then pass \"global.arr\")");
+                            console.error("Rapid.watchArr: The array passed to watchArr as a first parameter string cannot be found, most likely due to that array not being in the global scope because watchArr was implemented in global scope. You have two options. You can pass the array instead of the name of the array, wherein the console will show the name as [Array array] rather than its array name during reported changes. Or you can (1) create a global reference to that array and (2) make sure to pass the global string name (1. window.arr=arr; 2. Then pass \"window.arr\")");
                             return;
                         }
                         Rapid.arrCount++;
@@ -1934,23 +2011,23 @@ $("#rapid-html a#normal").click(function() {
     //CD-8. If you want to test monitoring functions, uncomment this block, view demo.php, and open Chrome Console:
     /*$(function() {
         var aa = {a:1, b:2};
-        global.aa = aa;
+        window.aa = aa;
         $("#demo").attr("attr","blahblah");
         Rapid.watchDOMOptions({subtree:true});
         Rapid.watchDOM("#demo", false);
         $("#demo").attr("attr","gahgah");
-        Rapid.watchKey("global.aa", "a");
+        Rapid.watchKey("window.aa", "a");
         aa.a=3;
     });*/
 
     $(function() {
         (function init_rapid() {
             initS(); // Semantics incl. global, controllers (as inline js or external script)
-            initP(); // Placeholders incl. rect and circles
+            initP(); // Placeholders including rects and circles
             initT(); // Tooltips
             initSM(); // Storymode that combines tooltips with a console narrative
             initL(); // Lorem Ipsum
-            initB();
+            initB(); // Command-line Bootstrap
             
             // Autoruns on appropriate browser: 
             // Chrome's debugger enhanced

@@ -4,12 +4,11 @@
   "authors": [
     "Weng Fei Fung <siphon880g@gmail.com>"
   ],
-  "description": "A collection of frontend and backend tools to shorten development time. Layouts with placeholders, lorem ipsum, and a command line Bootstrap layouter. Discover specifications while making quick layouts and emulating backend queries to the database. Write code faster with controllers attached to elements. Collaborate better using tooltips and narration. -Weng Fei Fung",
+  "description": "A jquery library and microframework with frontend and backend tools to shorten development time. Attach load and click controllers that refer to external scripts, handlers, or inline javascript. If you use Handlebars JS for templating engine, test template expressions, contexts, and helpers using a function without all the heavy API (itemplate). Test how some HTML code looks in a floating draggable div when needed (ihtml). Add class names to generate placeholder images and lorem ipsum text. Create and modify Bootstrap columns on the fly with the browser console - perfect for responsive testing and fine tuning CSS inside DevTools. See the Bootstrap columns with lightblue borders and whether your window is in xs/sm/md/lg with init or runtime options: Bootstrap gridlines and Bootstrap status. The Bootstrap status changes as you resize your window so you can see how the website layout looks in all xs/sm/md/lg. Have javascript code run based on media queries. Write Bootstrap-styled media queries based on the Bootstrap classes rather than the breakpoint pixels. And Rapid can generate the CSS media queries if you prefer not to rely on Rapid later. Load scripts or replace stylesheets in the browser console so you can experiment with different css and javascript on the fly. Quickly work on the mysqli database in javascript with a capable API including inserting, deleting, selecting, and looping through records, so you don't have to focus on the interplay of AJAX, JSON, and PHP. Also, Rapid can generate the AJAX and PHP code so you can incorporate later in development when you don't want the javascript mysqli to expose database credentials. Rapid's ajax functions equips with an uniform API for all REST methods (get, post, put, patch, update, delete, options) so you don't have to remember $.ajax, $.get, and $.post differences. Use the Boilerplate php file to pick up on those REST requests your ajax may send and read the request data with intuitive $_GET, $_POST, $_PATCH, $_UPDATE, etc arrays made possible with Rapid's PHP boilerplate. Use the Boilerplate files for a new app or new static page with common libraries, stylesheets, and fonts you would need already sourced in script tags. On the javascript side, Rapid has enhanced debugging that lets you monitor several types of variables for change and complements Chrome's debugging tools. Generate enums for some quick constants to use across your app or functions. Let teammembers know more about your website layout with explanations in the console and enhanced tooltips that appear over select elements, and the tooltips have an assortment of icons like TO-DO list or bugs. Let teammember developers see your notes about specific elements by having them inside attributes in the source code while browser removes them. Fully compatible with Handlebars JS, Crossroads JS, and other libraries. This library and microframework is based in jQuery. Remove what you don't need for faster loading.",
   "main": [
-    "ezloader.php",
-    "js/bundle.js",
-    "js/bundle.css",
-    "js/rapid-backend.php"
+    "js/rapid.js",
+    "js/rapid.css",
+    "js/rapid-mysql.php"
   ],
   "moduleType": [
     "amd"
@@ -23,7 +22,8 @@
     "emulate",
     "php",
     "emulation",
-    "bootstrap"
+    "bootstrap",
+    "mysqli js",
   ],
   "license": "Apache License",
   "ignore": [

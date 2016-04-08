@@ -1,54 +1,50 @@
 ###Rapid Tools Suite
-####*A collection of frontend and backend tools to shorten development time. Layouts with placeholders, lorem ipsum, and a command line Bootstrap layouter. Discover specifications while making quick layouts and emulating backend queries to the database. Write code faster with controllers attached to elements. Collaborate better using tooltips and narration. -Weng Fei Fung*<br/>
-**Dependencies:**<br/>
-Requires jQuery, jQuery Migrate, Jquery UI, Bootstrap, Handlebars
-- jQuery for general functions, jQuery Migrate for Chrome debugging functions (if using), jQuery UI for draggable Bootstrap status and draggable styled ihtml box, Bootstrap css for Bootstrap status and gridlines and layouter, Bootstrap js for detailed tooltips, and Handlebars for itemplate.
+####A jquery library and microframework with frontend and backend tools to shorten development time. Attach load and click controllers that refer to external scripts, handlers, or inline javascript. If you use Handlebars JS for templating engine, test templates, contexts, and helpers in one function quickly before investing in the heavy API. Use the Boilerplate files for a new app or static page loaded with common libraries, stylesheets, and fonts you can customize. Rapid can generate Bootstrap code, Ajax code, and PHP mysql code.<br/>
+
+####Generate placeholder images and lorem ipsum text by adding class names. Test how some HTML code looks in a floating draggable div with the site's stylesheet before incorporating into the layout (ihtml). Load scripts or stylesheets in the browser console so you can experiment with different css and javascript on the fly (iscript and istyle). Replace the same stylesheet (replaceStylesheet). Rapid also comes with some tools to enhance JSFiddle so you can load the common libraries, stylesheets, and fonts and Rapid. There is also a tool to toggle fullscreen in JSFiddle. Useful if you prefer to fine tune the layout CSS or more naunced CSS in an online playground first before bringing it to development.<br/>
+
+####Create and modify Bootstrap columns on the fly with the browser console. Then you may copy the code over to your source code. Easily see where the Bootstrap columns are by toggling a lightblue border on them (Rapid Bootstrap gridlines). Resize your window to see your website layout change per xs, sm, md, and lg and a status bar tells you which breakpoint you are at (Rapid Bootstrap status). Run javascript code based on those breakpoints. Write media queries using Bootstrap classes rather than the breakpoint pixels and interchangeably generate its breakpoint pixel CSS.<br/>
+
+####Access the mysqli database in javascript with a capable API including inserting, deleting, selecting, and looping through records, so you don't have to invest heavily on the interplay of AJAX, JSON, and PHP until later. Also, have Rapid generate all the AJAX and PHP codeas as you use javascript mysqli. Rapid's Ajax uses an uniform API for all REST methods (get, post, put, patch, update, delete, options) so you don't have to remember syntax differences between $.ajax, $.get, and $.post. Use the Boilerplate php file to pick up on those REST requests and read request data with intuitive $_GET, $_POST, $_PATCH, $_UPDATE, etc arrays.<br/>
+
+####Rapid enhanced Chrome's debugging tools with several functions that monitor different types of variables. Rapid also enhanced Javascript by allowing you to make enums for some quick constants to use across your app or functions.<p/>
+
+####Let teammembers know more about your website layout with explanations in the console and enhanced tooltips that appear over select elements. The tooltips have an assortment of icons like TO-DO list or bugs that can accompany the text. Let teammember developers see your notes about specific elements by having them inside attributes in the source code while loading the page in a browser removes them.<br/>
+
+####Fully compatible with Handlebars JS, Crossroads JS, and other libraries. This library and microframework is based in jQuery. Remove what you don't need for faster loading. -Weng Fei Fung*<br/>
+**Dependencies (must have):**<br/>
+Requires jQuery<p/>
+**Dependencies (depends what you use):**<br/>
+jQuery Migrate, Jquery UI, Bootstrap, Handlebars<br/>
+(jQuery Migrate for enhanced debugging, jQuery UI for draggable Bootstrap status and draggable, resizable, styled ihtml, Bootstrap css for Bootstrap status and gridlines and Command-line Bootstrap, Bootstrap js for tooltips, and Handlebars for itemplate.)
 
 **Installation:**<br/>
-Upload bundle.js or bundle.production.min.js (Coming soon). The minified production js only contains the essentials that are integral to the website when used with Rapid, namely, semantics/modularity (global, note/notes, onload, onloader, onclick, onclicker), and responsive bootstrap (mdCSS, mdJS, etc). Placeholders, stories, tooltips, etc. are for earlier in the development stages and are removed.
+```
+<script src="rapid/js/rapid.js"> 
+```
+The minified production js is coming soon and will only contain essentials that are useful outside of development. These are onload, onloader, onclick, onclicker, responsive javascript, and Bootstrap-styled media queries.
 
-You can also install via `bower install rts` and have bower download the dependencies for you.
+You can install Rapid and its dependencies via `bower install rts`.
   
 **Legal:**
-In bundle.js.
+In rapid.js.
 
-**TEMPLATES**<br/>
-*What:* Templates for Frontend and Backend are in the rapid/templates folder. Do not confuse this with Handlebar templates. To prevent confusion, if you use Handlebar templates that are separate files, you should have them in a View folder at your project directory. The Frontend template contains HTML, Bootstrap, jQuery, and Handlebar boilerplates that help you get started on your web app. The Backend template implements the best practices for RESTful API in PHP.
+**LATEST VERSION**<br/>
+Latest version removed quite a lot from this tool to make things simple.<br/>
+-Some renames js/bundle.js to js/rapid.js and js/bundle.css to js/rapid.css to avoid developer confusion with Browserify<br/>
+-Renamed rapid-backend.php to rapid-mysql.php to make the purpose clearer.<br/>
+-Removed bootstrap.tooltip.min.js and bootstrap.tooltip.min.css to simplify things and you can custom build bootstrap anyways.<br/>
+-Rapid.backend.db is now Rapid.mysql.connect<br/>
+-Rapid.ilisten is now Rapid.serverListen (because it matches NodeJS's server.listen notation)<br/>
+-Rapid.mysql.testChain is now Rapid.mysqli.simpleChain (because you want a simple Chain API)<br/>
+-Rapid.iajax is now Rapid.ajax (because we aren't always going to use ajax interactively or in console. Also, Rapid's unique brand of ajax can just be called Rapid Ajax)<br/>
+-ori_ is now ori in controller scope
+-Removed variable global (I realize most javascript devs already know of window)<br/>
+-Removed nestedWarning (the intricacies of nesting .row inside .row causing layout problems and how to ignore the warning in console or code will just overwhelm devs and it's more of a Bootstrap fundamental than anything else)<br/>
+-Removed ezloader because it should be clear what the dependencies are from the ReadMe. You also have boilerplates that load Rapid and dependencies.<br/>
 
-**EZLOADER**<br/>
-*What:* Use PHP to load scripts easily: Rapid Tools Suite, its dependencies (jquery, jquery migrate, jquery ui, bootstrap, bootstrap tooltips, Handlebars), and other scripts (buzz!, qunit). For qunit, you can also show the qunit div.
-
-```
-include("rapid/ezloader.php");
-
-/* The dependencies */
-load_jq(); // jQuery
-load_jqm(); // jQuery Migrate
-load_jqui(); // jQuery UI
-load_bs(); // Bootstrap for Command-Line Bootstrap Layouter 
-load_bs_tooltip(); // Bootstrap for Detailed Tooltips current directory
-load_hb(); // Handlebars
-
-/* Optional scripts */
-load_buzz(); // Buzz
-load_qunit(); // Qunit
-show_qunit(); // Qunit's div in place of <div id=qunit></div>
-
-/* The Rapid Tools Suite script */
-load_main();
-
-/* Or the fastest way to load */
-include("rapid/ezloader.php");
-load_depends();
-load_main();
-```
-
-If the Rapid folder isn't in the same folder as the webpage, you'll have to pass the relative path of the Rapid folder to load_main(..). And if you are neither loading full Bootstrap nor load_depends() (which loads full Bootstrap), you'll have to pass the relative path to load_bs_tooltip(..) as well.
-```
-/* Rapid not in current directory: */
-load_bs_tooltip("relativePath/");
-load_main("relativePath/");
-```
+**BOILERPLATES**<br/>
+*What:* For frontend static webpages, web apps, and backend. There is a boilerplate that contains HTML, Bootstrap, jQuery, and Handlebar that helps you get started on your static webpage. Another boilerplate includes libraries such as Crossroads JS to help start a web app. Finally, a RESTful PHP boilerplate lets you access your mysql database, use the intuitive $_GET, $_POST, $_PATCH, $_UPDATE, etc arrays, and respond in JSON.
 
 **SEMANTICS AND MODULARITY**<br/>
 *What:* Add semantics and modularity for more readable code. Here's a brief summary of those features. Following that are example codes.
@@ -67,19 +63,13 @@ Rapid Tools Suite controllers don't need to refer to an ID in the element it is 
 
 jQuery plugins remain available to your controller logic, unlike frameworks out there like Angular JS.
 
-**A. Global**<br/>
-You can attach variables to a global namespace called "global".
-```
-global.someFlag=1;
-```
-
-**B. Notes**<br/>
-You can add notes directly inside the elements rather than have comments near elements. They are removed during page loads.
+**A. Notes**<br/>
+You can add notes directly inside the elements rather than have comments near elements. They are removed during page loads. This is more for teammember developers looking at the source code.
 ```
 <div id="main-content" data-note="this is where the main content goes" data-notes="and so forth, and so forth"></div>
 ```
 
-**C. Enums**<br/>
+**B. Enums**<br/>
 You can create enums by calling enumer() which returns a unique integer. The last integer is remembered across all scopes so you are guaranteed unique numbers whenever enumer is called and wherever in the webapp it is needed.
 
 ```
@@ -89,31 +79,28 @@ var enums2 = { section3: {a:enumer(), b:enumer()}, section4: {a:enumer(), b:enum
 
 Note: You can't name a variable enum because that's a reserved word. But you can name it enums. Although the word is reserved, Javascript still doesn't have enum types.
 
-**D. Controllers as external scripts: onloader**
+**C. Controllers as external scripts: onloader**
 ```
 <div data-onloader="demo_onloader.js"></div>
 ```
-Must use _ori instead of $(this) to refer to same element in that script file:
+You can refer to the element using $(ori). This is because of onloader using ajax replacing $(this) with the jqXHR. Functions can also refer to $(ori).
 ```
-_ori.parent().css("background-color", "green");
+$(ori).css("background-color", "green");
 ```
 
 **D. Controllers as inline scripts: onload**
 ```
-<div data-onload="alert('this div is loaded and its text is' + _ori.text());"></div>
+<div data-onload="alert('this div is loaded and its text is' + $(ori).text());"></div>
 ```
 
-Again, use _ori to refer to same element. When writing inline controller, make sure to end statements with a semicolon like you would in an external script.
+Again use $(ori) because these inline codes are actually pushed into a script block and then ran in order to support dependencies (onload-a, onload-b, onload-c, onload-d) but because $(this) is immutable I have to use another variable. Functions can also refer to $(ori). Make sure your javascript ends with semi-colon. You can have the inline code just be a function call and in this way you can have a handler take care of the controller code.
 
 **Misc. Controllers for clicking events: onclicker and onclick**
-For onclicks, you can use the attribute onclick that's available on most browsers. You can also refer to a script file with:
 ```
 <div data-onclicker="demo_onclicker.js"></div>
 ```
 
-For onclick and onclicker, you may use either $(this) or _ori . In contrast, the restriction on onload / onloader was to allow functions inside an element to reference another element that called it.
-
-You can use data-onclick in place of onclick if you want to be consistent with using data- for the controllers:
+For onclick and onclicker, you may use either $(this) or $(ori) (if you want to keep consistent). Also working, data-onclick (if you want to be consistent).
 ```
 <div data-onclick="alert('clicked!');"></div>
 ```
@@ -133,7 +120,7 @@ data-onload-d.
 You can mix external and inline scripts in the same element. You can also mix them with onclick and onclicker controllers.
 
 **Misc. Functions**
-You can define functions in any controllers that can be accessed by other controllers. Even though this violates MVC, you can house functions that's closely associated to a view and keep code readable. To allow this, I had to discard the immutable $(this) in favor of _ori. Now you can have a function that is housed by an element to refer to another element that called it by passing _ori during that call.
+You can define functions in any controllers that can be accessed by other controllers. Even though this violates MVC, you can encapsulate functions that's closely associated to a view and keep code readable. To allow this, I had to discard the immutable $(this) in favor of $(ori). Now you can have a function that is housed by an element to refer to another element that called it by passing $(ori) during that call.
 
 **Misc. Runtime**
 Dynamically loaded elements or those elements rendered through Handlebars may have trouble with onload, onloader, and onclicker working. This is because Rapid looks for those attributes on loading to initialize the controllers. You must re-initialize the controllers if the elements with attached controllers are created during runtime (they're dynamically loaded or rendered through Handlebars).
@@ -148,13 +135,13 @@ Caching onloaders and onclickers mean repeat visitors load the site faster becau
 When you push to production server, you may want to turn on cache for performance:
 ```
 Rapid.options({
-    toggle: {
-                cache:true
-             }
+    cache:true
 });
 ```
 
-To turn cache back off for further development, set cache:false or simply remove that option.
+To turn cache back off for further development, set cache:false or simply remove that option. 
+           
+This caching option is only for Controllers. All other Rapid's features uses cachebusting because their purpose is for development.
             
 **PLACEHOLDERS**<br/>
 *What:* When designing the website layout, you may want to forgo digging for the actual graphics. You can insert placeholders. There are a few different styles available:
@@ -185,24 +172,24 @@ JSON KEYS: bgcolor, color, top, align, font, title<br/>
 JSON VALUES (E.g.): "title":"Page Container","font":"12px Times New Roman"
 
 **LOREM IPSUM**<br/>
-*What:* When laying out the website, you may not want to dig for the text either. You can generate a bunch of random text that fills in the space using Lorem Ipsum.
+*What:* When laying out the website, you may not want to dig for the text either. You can generate a bunch of random text:
 
 For five words:
 ```
-<div data-lorem="5w">
+<div class="lorem-5w">
 ```
 
 For five sentences:
 ```
-<div data-lorem="5s">
+<div class="lorem-5s">
 ```
 
 For five paragraphs that take up a lot of the website:
 ```
-<div data-lorem="5">
+<div class="lorem-5p">
 ```
 
-After dynamically adding an element with attribute data-lorem=5s, you need to call initRapidLorem(); to have the text appear.
+If dynamically adding these classes, you will need to call initL().
 
 **TOOLTIPS AND STORIES**<br/>
 *What:* A much more matured version of Bootstrap tooltips that appear when you move your mouse over an element. It is setup through the attribute data-detail (_not_ data-toggle or data-tooltip because I needed to avoid clashes). This detailed version of tooltip allows shorthand codes to show icons (reference below). For example, there are icons for to-do and bugs, which are helpful to mark up the elements during the development phase among a team. Background color and font color are also customizable.
@@ -289,49 +276,50 @@ Rapid.assert(1==2, "alert('The numbers didn\\'t match.'); alert('And here\\'s a 
 ```
 <br/>
 
-**AJAX AND BACKEND EMULATION**<br/>
-*AJAX*: Ajax has many methods: get, post, put, patch, update, delete, head, and options. There are many ways to pass parameters and different ways to setup done callbacks. Rapids.iajax(..) offers a uniform way of making ajax requests regardless of method. Then when the request passes, Rapid gives you the ajax code in the console. You just copy and paste that to your code and be confident it will work!
+**AJAX**<br/>
+*AJAX*: Ajax has many methods: get, post, put, patch, update, delete, head, and options. There are many ways to pass parameters and different ways to setup done callbacks. Rapids.ajax(..) offers a uniform way of making ajax requests regardless of method. Then when the request passes, Rapid gives you the ajax code in the console. You just copy and paste that to your code and be confident it will work!
 
 Last parameter should be a done callback that handles the responseText on the client side. If you do not want to bother with a done callback, pass null. The console will still return a console.dir but the ajax code it gives you will exclude any done callback.
 
 ```
 //Customer seeing all items available
-Rapid.iajax("GET api.php/sales/items", function(data) { console.dir(data); });
+Rapid.ajax("GET api.php/sales/items", function(data) { console.dir(data); });
 ```
 ```
 //Viewing a specific item
-Rapid.iajax("GET api.php/sales/items/45", function(data) { console.dir(data); });
+Rapid.ajax("GET api.php/sales/items/45", function(data) { console.dir(data); });
 ```
 ```
 //The merchant seeing his items
-Rapid.iajax("GET api.php/sales/items", {merchantID: 1}, function(data) { console.dir(data); });
+Rapid.ajax("GET api.php/sales/items", {merchantID: 1}, function(data) { console.dir(data); });
 ```
 ```
 //The merchant adding a new item
-Rapid.iajax("POST api.php/sales/items", {merchantID: 1, category: "CDs", name: "John Doe's Music - Album 1", price:9.50}, null);
+Rapid.ajax("POST api.php/sales/items", {merchantID: 1, category: "CDs", name: "John Doe's Music - Album 1", price:9.50}, null);
 ```
 ```
 //The merchant changing the price
-Rapid.iajax("PATCH api.php/sales/items/46", {merchantID: 1, price: 9}, null);
+Rapid.ajax("PATCH api.php/sales/items/46", {merchantID: 1, price: 9}, null);
 ```
 Note: The above uses of GET, POST, and PATCH uses RESTful API conventions. Brief review: GET to read information. POST to write information when you don't have a precise URI path (notice it isn't POST api.php/sales/items/46). PUT is to write information when you do (correct: PUT api.php/sales/items/46). PATCH is to update partial information. UPDATE is to update all the information. DELETE is to remove information. HEAD is for debug information, meta information, or description about the resource. OPTIONS is to list all available API methods and URI paths.  
 
-*Backend:* Don't have external php pages setup for ajax requests to work on? Or you find PHP too troublesome to code because the feedback on errors aren't instant like it is in javascript? No Problem. You can quickly emulate a php page that queries the database, fetch any associated rows (if it is a query like SELECT), and echo a json as a response to ajax - all in command line. Of course, you need to setup your database credentials in a file rapid-backend.php beforehand and make sure you change the master password (aka Rapid Key) to your own.
+**JAVASCRIPT MYSQL**<br/>
+*Javascript mysql:* Don't have external php pages setup for ajax requests to work on? Or you find PHP too troublesome to code because the feedback on errors aren't instant like it is in javascript? No Problem. You can in javascript write an equivalent php page that queries the database, fetch any associated rows (if it is a query like SELECT), and echo a json as a response to ajax - all in command line. Of course, you need to setup your database credentials in rapid-mysql.php beforehand and make sure you change the master password (aka Rapid Key) to your own if the website is on a remote development server.
 
-Authenticate for the webpage. Then you can start querying the database on the emulated backend (This can be typed in command line or be part of your code.)
+Authenticate for the webpage. Then you can start querying the database in javascript mysql (This can be typed in command line or be part of your code.)
 ```
-Rapid.backend.db("./Rapid/js/rapid-backend.php","password123");
+Rapid.mysql.connect("./Rapid/js/rapid-mysql.php","password123");
 ```
 		
-Now for the actual emulation. You must first setup listeners for those requests using Rapid.backend.ilisten(..), then send the request using Rapid.backend.iajax(..) to correctly make ajax requests to the emulated backend (rather than call external php pages).
+Now for the actual rerouting to javascript mysql. You must first setup listeners for those requests using Rapid.serverListen(..), then send the request using Rapid.ajax(..). Rapid's Ajax will internally be rerouted from requesting external php pages to the javascript mysqli.
 
 In this example, we are querying the database with sql injection protection, then echoing the response to AJAX (initScope lets us initialize some PHP variables and that method is totally optional in the chain):
 
 ```
 //PEDANTIC EXAMPLE: Querying the database with sql injection protection and echo:
-Rapid.ilisten(Rapid.backend.Chain("GET api.php/sales/item").initScope("$arr1=array();").fetchQuery({$arr1:/"SELECT * FROM sales WHERE merchantID='" . mysqli_real_escape_string($_GET["merchantID"]) . "' LIMIT 1"/}).setFinalEcho("echo json_encode($arr1);"));
+Rapid.serverListen(Rapid.mysql.Chain("GET api.php/sales/item").initScope("$arr1=array();").fetchQuery({$arr1:/"SELECT * FROM sales WHERE merchantID='" . mysqli_real_escape_string($_GET["merchantID"]) . "' LIMIT 1"/}).setFinalEcho("echo json_encode($arr1);"));
 
-Rapid.iajax("GET api.php/sales/item", {merchantID:1}, function(data) { console.dir(data); });
+Rapid.ajax("GET api.php/sales/item", {merchantID:1}, function(data) { console.dir(data); });
 
 console.dir(Rapid.ihelpers.listeners["GET api.php/sales/item"]);
 ```
@@ -341,9 +329,9 @@ Make sure you pass a valid php snippet to setFinalEcho. Statements end in semi-c
 Skip sql injection protection during development with Rapid for something **simplified**:
 ```
 //Querying the database and echo:
-Rapid.ilisten(Rapid.backend.Chain("POST api.php/sales/item").initScope("$arr1=array();").fetchQuery({$arr1:/"SELECT * FROM sales WHERE merchantID='" . $_POST["merchantID"] . "' LIMIT 1"/}).execQuery(/"INSERT INTO `items` (`merchantID`, `category`, `name`, `price`) VALUES ($_POST['merchantID'], $_POST['category'], $_POST['name'], $_POST['price'])"/).setFinalEcho("echo json_encode($arr1);"));
+Rapid.serverListen(Rapid.mysql.Chain("POST api.php/sales/item").initScope("$arr1=array();").fetchQuery({$arr1:/"SELECT * FROM sales WHERE merchantID='" . $_POST["merchantID"] . "' LIMIT 1"/}).execQuery(/"INSERT INTO `items` (`merchantID`, `category`, `name`, `price`) VALUES ($_POST['merchantID'], $_POST['category'], $_POST['name'], $_POST['price'])"/).setFinalEcho("echo json_encode($arr1);"));
 
-Rapid.iajax("POST api.php/sales/item", {merchantID: 1, category: "CDs", name: "John Doe's Music - Album 1", price:9.50}, null);
+Rapid.ajax("POST api.php/sales/item", {merchantID: 1, category: "CDs", name: "John Doe's Music - Album 1", price:9.50}, null);
 
 console.dir(Rapid.ihelpers.listeners["POST api.php/sales/item"]);
 ```
@@ -352,9 +340,9 @@ Notice you can chain an execQuery too. You can actually chain as many fetchQuery
 
 Without initScope, even **more simplified**:
 ```
-Rapid.ilisten(Rapid.backend.Chain("POST api.php/sales/item").fetchQuery({$arr1:/"SELECT * FROM sales WHERE merchantID='" . $_POST["merchantID"] . "' LIMIT 1"/}).execQuery(/"INSERT INTO `items` (`merchantID`, `category`, `name`, `price`) VALUES ($_POST['merchantID'], $_POST['category'], $_POST['name'], $_POST['price'])"/).setFinalEcho("echo json_encode($arr1);"));
+Rapid.serverListen(Rapid.mysql.Chain("POST api.php/sales/item").fetchQuery({$arr1:/"SELECT * FROM sales WHERE merchantID='" . $_POST["merchantID"] . "' LIMIT 1"/}).execQuery(/"INSERT INTO `items` (`merchantID`, `category`, `name`, `price`) VALUES ($_POST['merchantID'], $_POST['category'], $_POST['name'], $_POST['price'])"/).setFinalEcho("echo json_encode($arr1);"));
 
-Rapid.iajax("POST api.php/sales/item", {merchantID: 1, category: "CDs", name: "John Doe's Music - Album 1", price:9.50}, null);
+Rapid.ajax("POST api.php/sales/item", {merchantID: 1, category: "CDs", name: "John Doe's Music - Album 1", price:9.50}, null);
 
 console.dir(Rapid.ihelpers.listeners["POST api.php/sales/item"]);
 ```
@@ -363,45 +351,47 @@ console.dir(Rapid.ihelpers.listeners["POST api.php/sales/item"]);
 Rapid will give you the php to generate method associative arrays from the input stream. You can access values directly as $_PUT["foobar"], $_PATCH["foobar"], $_UPDATE["foobar"], $_DELETE["foobar"], $_HEAD["foobar"], or $_OPTIONS["foobar"]. You're not limited to $_GET["foobar"] and $_POST["foobar"]. The method used just needs to be recognized in RESTful API practice.
 ```
 // Update price
-Rapid.ilisten(Rapid.backend.Chain("PATCH api.php/sales/item/46").execQuery(/"UPDATE `items` SET `price`=" . $_PATCH["price"] . " WHERE merchantID='" . $_POST["merchantID"]/).setFinalEcho("echo json_encode($arr1);"));
+Rapid.serverListen(Rapid.mysql.Chain("PATCH api.php/sales/item/46").execQuery(/"UPDATE `items` SET `price`=" . $_PATCH["price"] . " WHERE merchantID='" . $_POST["merchantID"]/).setFinalEcho("echo json_encode($arr1);"));
 
-Rapid.iajax("PATCH api.php/sales/item/46", {merchantID:1, price:9}, function(data) { console.dir(data); });
+Rapid.ajax("PATCH api.php/sales/item/46", {merchantID:1, price:9}, function(data) { console.dir(data); });
 
 console.dir(Rapid.ihelpers.listeners["PATCH api.php/sales/item/46"]);
 ```
 
-As you see in the above examples, you can make the iajax call and see the result from calling the emulated php (as if you are actually calling an external php page that's setup). If successful, Rapid gives you the php code. You can copy that into an external php page and make the iajax call for reals. No more headache about why your php isn't working.
+As you see in the above examples, you can make the Ajax call and see the result from calling the javascripy mysql. If successful, Rapid generates the php code. You can copy that into an external php page and make the Ajax call when you are ready to invest time. This is superior to relying on PHP's unfriendly linter.
 
-After setting up the actual php page, you would have to turn off listening to the emulated php page (or refresh the page). **To turn off listening and emulating**:
+After setting up the actual php page, you would have to turn off listening to the javascrip mysql (or you can simply refresh the page if the code was done in the console). 
+
+**To turn off listening and rerouting**:
 ```
-Rapid.ilisten("POST api.php/sales/item");
-```
-
-*What if you just want the php code immediately after querying the database? You don't want to have to call iajax successfully for the php code. The least cumbersome way is using a standalone testChain that is runnable. You must call .run() at the end of testChain when you are done chaining fetchQuery's and/or execQuery's. Since we are running the queries immediately rather than waiting for iajax to request the emulated backend, do not pass a request line like "GET somePage.php/somePath/" and instead of passing testChain to ilisten, testChain is called as a standalone function.
-
-
-```
-Rapid.backend.testChain().fetchQuery({$arr1:/"SELECT * FROM items WHERE id=45"/}).run();
+Rapid.serverListen("POST api.php/sales/item");
 ```
 
-*What if you just want to test that the plumbing is working between the ajax request and the external php page, and even parameters? Ajax would request the php page with or without parameters, get the json response, and then print that to console or manipulate some javascript or html. There's nothing you couldn't have done with ilisten and iajax. You aren't forced to query the database.
+*What if you just want the php code immediately after querying the database? You don't want to have to call ajax successfully for the php code. The least cumbersome way is using a standalone simpleChain that is runnable. You must call .run() at the end of simpleChain when you are done chaining fetchQuery's and/or execQuery's. Since we are running the queries immediately, we are not waiting for a listener to detect a Rapid Ajax request. Just call simpleChain on its own.
+
 
 ```
-Rapid.ilisten(Rapid.backend.Chain("GET api.php/sales/").setFinalEcho('echo json_encode(array("passed params"=>$_GET["id"]));'));
-Rapid.iajax("GET api.php/sales/", {id:45}, function(data) { console.dir(data); });
+Rapid.mysql.simpleChain().fetchQuery({$arr1:/"SELECT * FROM items WHERE id=45"/}).run();
 ```
 
+*What if you just want to test that the plumbing is working between the ajax request and the external php page, and even parameters? Ajax would request the php page with or without parameters, get the json response, and then print that to console or manipulate some javascript or html. There's nothing you couldn't have done with serverListen and ajax. You aren't forced to query the database.
+
 ```
-Rapid.ilisten(Rapid.backend.Chain("POST api.php/sales/").setFinalEcho('echo json_encode(array("passed params"=>$_POST["id"]));'));
-Rapid.iajax("POST api.php/sales/", {id:45}, function(data) { console.dir(data); });
+Rapid.serverListen(Rapid.mysql.Chain("GET api.php/sales/").setFinalEcho('echo json_encode(array("passed params"=>$_GET["id"]));'));
+Rapid.ajax("GET api.php/sales/", {id:45}, function(data) { console.dir(data); });
 ```
 
 ```
-Rapid.ilisten(Rapid.backend.Chain("PATCH api.php/sales/").setFinalEcho('echo json_encode(array("passed params"=>$_PATCH["id"]));'));
-Rapid.iajax("PATCH api.php/sales/", {id:45}, function(data) { console.dir(data); });
+Rapid.serverListen(Rapid.mysql.Chain("POST api.php/sales/").setFinalEcho('echo json_encode(array("passed params"=>$_POST["id"]));'));
+Rapid.ajax("POST api.php/sales/", {id:45}, function(data) { console.dir(data); });
+```
+
+```
+Rapid.serverListen(Rapid.mysql.Chain("PATCH api.php/sales/").setFinalEcho('echo json_encode(array("passed params"=>$_PATCH["id"]));'));
+Rapid.ajax("PATCH api.php/sales/", {id:45}, function(data) { console.dir(data); });
 ```
 **Caveats**<br/>
-Do not pass params in iajax with key names "rapidKey", "rapidMysqli", "rapidEcho", "rapidMultiFetchAssocs", "rapidMethod", or "rapidParams" if you are using emulated backend. These variables are needed to communicate with the rapid-backend.php file that's setup through Rapid.backend.db. In summary, the reserved ajax key names are:<br/>
+Do not pass params in ajax with key names "rapidKey", "rapidMysqli", "rapidEcho", "rapidMultiFetchAssocs", "rapidMethod", or "rapidParams" if you are using emulated mysql. These variables are needed to communicate with the rapid-mysql.php file that's setup through Rapid.mysql.connect. In summary, the reserved ajax key names are:<br/>
 rapidKey<br/>
 rapidMysqli<br/>
 rapidEcho<br/>
@@ -410,8 +400,8 @@ rapidMethod<br/>
 rapidParams<br/>
 <p/>
 
-**COMMAND-LINE BOOTSTRAP LAYOUTER**<br/>
-*What:* Find that Bootstrap is too much typing? Type commands into the browser console and have Bootstrap write the code for you. Then copy and paste it to your editor and be confident it will work. For more info including how to open the browser's console, read the FAQs in this ReadMe.
+**COMMAND-LINE BOOTSTRAP**<br/>
+*What:* Type commands into the browser console and have Rapid generate Bootstrap code. Then copy and paste it to your editor. For more info including how to open the browser's console, read the FAQs in this ReadMe.
 
 Have Rapid type the code for you. You can add "container", "well", "row", "col", "colxs", "colsm", "colmd", "collg", or any column class from "col-xs-1" to "col-lg-12".
 ```
@@ -466,25 +456,6 @@ Rapid.options({
                 }
 });
 ```
-
-When using the Bootstrap layouter, you may unintentionally nest a .row inside another .row which causes unpredictable layout changes like the container being off center or taking more than full width. By default, Rapid detects it whenever the page loads or whenever Rapid.add(..) is called, then returns the parent row in question. But if you know what you are doing and the nesting is intentional, add a .rapid-bootstrap-nested to the parent row. To disable all future warnings on the webpage, there is a Rapid bootstrap option nestedWarning:false.
-
-```
-<!-- Ignore specific warning: -->
-<div class="row rapid-bootstrap-nested"><div class="row"></div></div>
-```
-
-
-```
-/* Ignore all future warnings: */
-Rapid.options({
-    bootstrap: {
-                    nestedWarning: false,
-                }
-});
-```
-
-Note: If the nested warnings show when you reload the page, it's because nestedWarning:true in options run after the page loads and the check occurs at page loading. Add the class name to the parent row. The nestedWarning option is more useful for dynamically adding nested rows through command-line and not being warned. For final production, you are better off with adding the class rapid-bootstrap-nested to the parent row.
 
 **RESPONSIVE JAVASCRIPT AND CSS**<br/>
 *What:* Css media queries stress you out with their pixel numbers you haven't memorized or their confusing screen and width syntax? Have Rapid write the css media queries for you. Setup the responsive css thru options
@@ -557,33 +528,57 @@ var data = {
 Rapid.itemplate("{{#random_words}} {{#everyOther @index 2 }}<b>{{word}}</b>{{else}} {{word}} {{/everyOther}}  {{/random_words}}", data, ["everyOther", function (index, amount, scope) { if ( ++index % amount ) return scope.inverse(this); else return scope.fn(this);} ])
 ```
 
-**COMMAND-LINE SCRIPT LOADING**<br/>
-*What:* Are you trying code in the console before copying them over to the code? When you have to type a code that is too long in command line, just put it into a a script file and eval with iscript:
+**COMMAND-LINE LOADING**<br/>
+*iscript:* One way to rapidly develop is to figure out the javascript with the browser console opened. Some code may be more conveniently typed up because you need the syntax highlighting or there's newlines and spacing concerns.
 ```
 Rapid.iscript("temp_script.js");
 ```
-You can also run javascript right after the script's loaded in the same iscript function. You can place initialization code there. This helps the code to be more modular.
+You can also run javascript code after loading. You can also opt to load javascript files and initialize their code this way to be more modular.
 ```
 Rapid.iscript("controllers/section2.js", 'alert("Code for section 2 loaded!"); section2.someFlag=true; ');
 ```
+*istyle:* You can load stylesheets:
+```
+Rapid.istyle("temp_style.css")
+```
+*replaceStylesheet:* Or if you feel more comfortable, this function removes all previous stylesheets added by it and add the current spreadsheet:
+```
+Rapid.replaceStylesheet("temp_style.css");
+```
+*Localhost:* If you are running a local server before pushing to a production server and you are referencing an absolute path, the URI should be precededed with http://localhost
+```
+Rapid.iscript("http://localhost/test-site/js/main.js");
+Rapid.istyle("http://localhost/test-site/css/global.css");
+Rapid.replaceStylesheet("http://test-site/css/global.css");
+```
 <p/>
 **SHORTEN COMMANDS**<br/>
-Typing commands like Rapid.backend.iajax(..) sure is a lot to type. Shorten that command to iajax(..). Shorten many commands, in fact, by calling this function (which may be typed in command line or be part of your code.)
+Typing commands like Rapid.etcetc.etc(..) sure is a lot to type. Shorten that command to etc(..). Call this function to shorten many Rapid commands or functions.
 ```
 Rapid.i(); //interactive commands
 ```
 <p/>
-**BEST PRACTICE: FAST TRACK DEVELOPMENT**<br/>
-You can fast track your development by working on the layout before any heavy javascript (compiling view templates, adding controller logic, and making ajax calls) or working on the backend (php pages that ajax calls). You should work on the layout by using Command-Line Bootstrap Layouter, Placeholders, and Lorem Ipsum in conjunction with editing element styles using Chrome's DevTools to match your mockups as closely as possible. When entering html into Elements tab you can quickly switch to an editor that has auto-completion and syntactic colors, then copy and paste the finished snippet to the elements tab. When you are satisfied with the layout or want to save it before you lose any work, then copy and paste from "edit as html" or "copy outer html" on the html element to your editor. The doc type might not copy over well so make sure to retype or copy that separately. At other times, especially involving multilines of code, it may be faster to work exclusively at the editor (with the Emmet plugin and Keystrap plugin to speed up coding of course). Just dont forget where the latest changes are (Chrome DevTools or the editor) so you can save the right changes.<br/>
-This command-line approach is interactive and useful when you're not so sure about the specifications, functions, and mockups themselves. Other words that describe this approach are command-line, interactive, and exploratory programming. For more information:
+**BEST PRACTICE: RAPID DEVELOPMENT**<br/>
+You can develop faster by working on markup, css, then javascript and php. Have Rapid figure out the Ajax and PHP code for you, then add it over to your PHP.<br/>
+
+Use Command-Line Bootstrap, Placeholders, and Lorem Ipsum to make the website layout. Edit styles inside Chrome's DevTools. Have an editor opened so you can take advantage of the syntax highlighting and tabbing/newlines when needed.<br/>
+
+You may also want to take advantage of JSFiddle. Over at JSFiddle, try to leave CSS out of HTML. Write markup first and do your best to use HTML5 tags whenever possible (article, section, aside, nav, header, footer, etc). You can use JSFiddle to work on the entire site layout or part of a layout. In the latter case, you may want to wrap in a div so you can style only that part of the site in the CSS (you can use an online SASS editor to quickly change the CSS queries to reflect that div wrapping).<br/>
+
+To copy all the markup from Chrome DevTools (before adding javascript or PHP), click Element tab, then right-click the "HTML" tag => Copy => "Copy outerHTML".<br/>
+
+At other times, it may be faster to work exclusively at a coding editor. I suggest Adobe Bracket with Emmet and Keystrap extensions. If using a combination of editing in editor and editing in Chrome DevTools, don't forget which window has the latest version. I suggest getting apps or software that can split your screen in half with applications on each side.<br/>
+
+If you start working on javascript without a clear idea about the specifications, you can type javascript code inside the browser console and "hack away" until the code clicks. Rapid has several features to aide you. This command-line approach is also called exploratory programming:
 https://en.wikipedia.org/wiki/Exploratory_programming
 <br/>
-When you start working on javascript, you can use Test-Driven Development or Behavior-Driven Development methodologies for agile development. The Debugger features of Rapid will help. So will native  console functions such as console.assert(...) or the more semantic Rapid.assert(..). You can also use qunit or other TDD frameworks. Rapid's EZLOADER can load Qunit easily.
+
+You may instead opt for Test-Driven Development or Behavior-Driven Development methodologies where you rewrite tests until they pass and that creates valid code for your website. You can use Rapid's enhanced debugging that monitors several types of variables. Rapid also has a semantic Rapid.assert() that you might like over Chrome's console.assert(...). There are libraries and frameworks for TDD. Qunit is a simple library for TDD.
 <p/>
 
 <p/>
 **BEST PRACTICE: EXPLORING SPECIFICATIONS**<br/>
-1. Design the layout using Command-Line Bootstrap Layouter, placeholders, lorem ipsum and chrome devtools as discussed before.
+1. Design the layout using Command-Line Bootstrap, placeholders, lorem ipsum and Chrome DevTools as discussed before.
 3. Add a tooltip to each view that details on what happens when clicked on (program flow) or how models may change (data flows).
 ```
 <span class="top-text" style="font-weight:bold;" data-detail='{"title":"*TO DO* (checkmark=done)\n_DONE_USER: Sees number of new items from subscribed stores.\n_DONE_SYSTEM: \n\t_num1_Loads store id's from user id.\n\t_num2_Stores items that user clicked and explored.\n_DONE_DATA-FLOW:\nuser id-> most-recent id -> count of new items\nuser id -> last 20 items\n_DONE_API:\nGET /sales/item\nGET /subscribed/?most-recent\nGET /subscribed/?count-new\n_DONE_DATA-JSON: storeID, itemID, category, name, price, date\n_DONE_DATA-ATTR:data-most-recent to store most recent id of item to compare against\n_DONE_DATA-VIEW:Shows number of new items. Shows a list of view templates for the JSON.\n_DONE_EVENTS: Onclick for list of items.\n_DONE_POLL: every 1 sec for most recent item ID that's not been clicked/discovered","pos":"left","bgcolor":"blue","bind":"1","align":"left","font":"15px Helvetica"}'>New Items</span>
@@ -596,19 +591,18 @@ When you start working on javascript, you can use Test-Driven Development or Beh
 <p/>
 **FAQs:**<br/> 
 *Question:* What are commands or command lines?<br/>
-*Answer:* You enter them at the browser console. On Chrome, open the console with CMD+OPT+J (On Mac) or CTRL+SHIFT+J (On PC).<br/>
+*Answer:* You enter them at the browser console. On Chrome, open the console with CMD+OPT+J (On Mac) or CTRL+SHIFT+J (On PC). For Firefox, replace with the key 'K'. Instructions for other browsers [here](http://webmasters.stackexchange.com/questions/8525/how-to-open-the-javascript-console-in-different-browsers#answer-77337)<br/><br/>
 You are basically calling functions that have been defined in the webpage's javascript and still available after loading. But because you type them in the console, they are also called commands.<br/>
 <p/>
 **TROUBLESHOOTING:**<br/> 
 *Problem:* Tooltips won't load? Console shows error ".tooltip() is not a function"<br/>
-*Solution #1:* If not using EZLOADER's load_depends, then make sure you load jQuery before Bootstrap tooltips. Or just call load_depends() to make loading dependencies for Rapid Tools Suite easier..<br/>
+*Solution #1:* Make sure you load jQuery before Bootstrap (or custom build with tooltips).<br/>
 *Solution #2:* Make sure you don't load jQuery more than once because that can cause the error as well.<br/>
 <p/>
 
 **TEMPLATE: SEND TO TEAM MEMBERS:**<br/>
 There is a narration that explains the website layout. And as you read the narration, it may tell you to press a key to highlight the part of the website it's talking about.<br/>
-1. Open the webpage on Chrome/Firefox.<br/>
-2. The story appears in the console:<br/>
+1. With the webpage loaded, open the browser's console:<br/>
 <p/>
     A. On Chrome, to open the console:<br/>
        CTRL+SHIFT+J on PC<br/>
@@ -617,6 +611,8 @@ There is a narration that explains the website layout. And as you read the narra
     B. On Firefox, to open the console:<br/>
        CTRL+SHIFT+K on PC<br/>
        CMD+Opt+K on mac<br/>
+<p/>
+    C. For all other browsers, instructions [here](http://webmasters.stackexchange.com/questions/8525/how-to-open-the-javascript-console-in-different-browsers#answer-77337)
 <p/>
 3. Press  the backquote ` key (aka tilde key). You will see "Story Mode" is turned on at the console. If you don't see this message, please click a blank area on the website and press the backquote key again since the website's javascript wasn't able to hear for the key press with the focus on another part of the browser.<br/>
 4. Now press these keys for narrations that explain the website layout (again, make sure the focus is on the website before pressing the keys):<br/>

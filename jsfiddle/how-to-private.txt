@@ -1,0 +1,5 @@
+If you are using JSFiddle to design the site layout (or parts of the site) and you are bound by NDA, you would want to save a private JSFiddle. Here are some fast rules to make sure of that:
+
+1. Do not name the fiddle.
+2. Make sure you are logged in.
+3. Now you can save.

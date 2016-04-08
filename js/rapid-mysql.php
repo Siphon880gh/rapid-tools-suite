@@ -25,7 +25,6 @@ $db_username = "admin";
 $db_password = "password";
 $db_name = "db";
 
-
 $suspicious = array("_error"=>"Hack attempt detected with unexpected method and http method variables. Reported.");
 
 if($_SERVER["REQUEST_METHOD"]=="POST") {

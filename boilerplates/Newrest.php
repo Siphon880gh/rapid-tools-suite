@@ -9,6 +9,12 @@
 /* that has the code.
 */
 
+$db_server = "localhost";
+$db_username = "shuser1_admin";
+$db_password = "password";
+$db_name = "shuser1_db";
+$lnk1 = mysqli_connect($db_server, $db_username, $db_password) or die('{"status":"Couldn\'t connect to the SQL server with credentials."}');
+mysqli_select_db($lnk1, $db_name) or die('{"status":"Couldn\'t connect to database because either database does not exist or it is not privileged to the db user."}');
 
 ///////////////////////////
 //      DEBUG MODE       //
@@ -21,10 +27,6 @@
 //     BEST PRACTICES    //
 ///////////////////////////
 /*
-/* #RESTful API:
-/* https://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html
-/* http://restful-api-design.readthedocs.org/en/latest/methods.html
-/* 
 /* #RESTful Methods Scheme:
 /* get = get resource
 /* post = insert resource at a non-precise URI path
@@ -35,7 +37,7 @@
 /* head = get debug information, meta information, or description about a resource.
 /* options = returns available API methods and URI paths
 /*
-/* #Practical example of URI Path:
+/* #Example of URI:
 /* http://programmers.stackexchange.com/questions/218798/what-is-the-limit-on-rest-api-resource-levels
 /*
 /* #PATH_INFO
@@ -68,12 +70,12 @@ if (($stream = fopen('php://input', "r")) !== FALSE) {
 }
 
 //Prepare URI Path levels for IF statements
-$LEVEL1=count($request)>0 && $request[0]!=""?true:false;
-$LEVEL2=count($request)>1?true:false;
-$LEVEL3=count($request)>2?true:false;
-$LEVEL4=count($request)>3?true:false;
-$LEVEL5=count($request)>4?true:false;
-$LEVEL6=count($request)>5?true:false;
+$LEVEL0=count($request)>0 && $request[0]!=""?true:false;
+$LEVEL1=count($request)>1?true:false;
+$LEVEL2=count($request)>2?true:false;
+$LEVEL3=count($request)>3?true:false;
+$LEVEL4=count($request)>4?true:false;
+$LEVEL5=count($request)>5?true:false;
 
 //Reroute based on method
 switch ($method) {
@@ -108,9 +110,9 @@ switch ($method) {
         
 function get($request) {
     global $lnk1;
-    global $LEVEL1, $LEVEL2, $LEVEL3, $LEVEL4, $LEVEL5, $LEVEL6;
+    global $LEVEL0, $LEVEL1, $LEVEL2, $LEVEL3, $LEVEL4, $LEVEL5;
     
-    if(!$LEVEL1) die(json_encode(error_arr()));
+    if(!$LEVEL0) die(json_encode(error_arr()));
     else if($request[0]=="albums") {
         //additions to the row before echoing
 
@@ -128,7 +130,7 @@ function get($request) {
     else if($request[0]=="songs") {
     } // GET api.php/songs
     else if($request[0]=="count") {
-        if(!$LEVEL2) die(json_encode(error_arr()));
+        if(!$LEVEL1) die(json_encode(error_arr()));
         else if($request[1]=="songs") {
         } // GET api.php/count/songs
         else if($request[1]=="albums") {
@@ -146,7 +148,7 @@ function get($request) {
         
 function post($request) {
     global $lnk1;
-    global $LEVEL1, $LEVEL2, $LEVEL3, $LEVEL4, $LEVEL5, $LEVEL6;
+    global $LEVEL0, $LEVEL1, $LEVEL2, $LEVEL3, $LEVEL4, $LEVEL5;
     
 } // post
 
@@ -155,7 +157,7 @@ function put($request) {
     global $lnk1;
     global $_PARAMS;
     $_PUT = $_PARAMS;
-    global $LEVEL1, $LEVEL2, $LEVEL3, $LEVEL4, $LEVEL5, $LEVEL6;
+    global $LEVEL0, $LEVEL1, $LEVEL2, $LEVEL3, $LEVEL4, $LEVEL5;
     
 } // put
         
@@ -164,7 +166,7 @@ function patch($request) {
     global $lnk1;
     global $_PARAMS;
     $_PATCH = $_PARAMS;
-    global $LEVEL1, $LEVEL2, $LEVEL3, $LEVEL4, $LEVEL5, $LEVEL6;
+    global $LEVEL0, $LEVEL1, $LEVEL2, $LEVEL3, $LEVEL4, $LEVEL5;
     
 } // patch
 
@@ -172,9 +174,9 @@ function update($request) {
     global $lnk1;
     global $_PARAMS;
     $_UPDATE = $_PARAMS;
-    global $LEVEL1, $LEVEL2, $LEVEL3, $LEVEL4, $LEVEL5, $LEVEL6;
+    global $LEVEL0, $LEVEL1, $LEVEL2, $LEVEL3, $LEVEL4, $LEVEL5;
     
-    if(!$LEVEL1) die(json_encode(error_arr()));
+    if(!$LEVEL0) die(json_encode(error_arr()));
 } // update
         
 
@@ -182,7 +184,7 @@ function delete($request) {
     global $lnk1;
     global $_PARAMS;
     $_DELETE = $_PARAMS;
-    global $LEVEL1, $LEVEL2, $LEVEL3, $LEVEL4, $LEVEL5, $LEVEL6;
+    global $LEVEL0, $LEVEL1, $LEVEL2, $LEVEL3, $LEVEL4, $LEVEL5;
     
 } // delete
         
@@ -191,7 +193,7 @@ function head($request) {
     global $lnk1;
     global $_PARAMS;
     $_HEAD = $_PARAMS;
-    global $LEVEL1, $LEVEL2, $LEVEL3, $LEVEL4, $LEVEL5, $LEVEL6;
+    global $LEVEL0, $LEVEL1, $LEVEL2, $LEVEL3, $LEVEL4, $LEVEL5;
     
 } // head
         
@@ -200,7 +202,7 @@ function options($request) {
     global $lnk1;
     global $_PARAMS;
     $_OPTIONS = $_PARAMS;
-    global $LEVEL1, $LEVEL2, $LEVEL3, $LEVEL4, $LEVEL5, $LEVEL6;
+    global $LEVEL0, $LEVEL1, $LEVEL2, $LEVEL3, $LEVEL4, $LEVEL5;
     
 } // options
 

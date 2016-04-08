@@ -1,0 +1,5 @@
+What: Toggles full screen in JSFiddle.
+
+How: Run this in the browser console or as a bookmark:
+
+javascript:if(window.location.href.match(/embedded\/result/)==null) {  document.getElementById("update").click(); setTimeout(function() { window.location.href=window.location.href+"embedded/result"; }, 2000); } else window.history.back();

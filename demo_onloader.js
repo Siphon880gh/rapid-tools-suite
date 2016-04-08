@@ -1,1 +1,1 @@
-_ori.prepend('onloadered text<p/>');
+$(ori).prepend('onloadered text'); 
