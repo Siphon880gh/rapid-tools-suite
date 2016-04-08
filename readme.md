@@ -1,15 +1,15 @@
 ###Rapid Tools Suite
 ####A jquery library and microframework with frontend and backend tools to shorten development time. Attach load and click controllers that refer to external scripts, handlers, or inline javascript. If you use Handlebars JS for templating engine, test templates, contexts, and helpers in one function quickly before investing in the heavy API. Use the Boilerplate files for a new app or static page loaded with common libraries, stylesheets, and fonts you can customize. Rapid can generate Bootstrap code, Ajax code, and PHP mysql code.<br/>
 
-####Generate placeholder images and lorem ipsum text by adding class names. Test how some HTML code looks in a floating draggable div with the site's stylesheet before incorporating into the layout (ihtml). Load scripts or stylesheets in the browser console so you can experiment with different css and javascript on the fly (iscript and istyle). Replace the same stylesheet (replaceStylesheet). Rapid also comes with some tools to enhance JSFiddle so you can load the common libraries, stylesheets, and fonts and Rapid. There is also a tool to toggle fullscreen in JSFiddle. Useful if you prefer to fine tune the layout CSS or more naunced CSS in an online playground first before bringing it to development.<br/>
+####Generate placeholder images and lorem ipsum text by adding class names. Test how some HTML code looks in a floating draggable div with the site's stylesheet before incorporating into the layout (ihtml). Load scripts or stylesheets in the browser console so you can experiment with different css and javascript on the fly (iscript and istyle). Replace the same stylesheet (replaceStylesheet). Rapid also comes with some tools to enhance JSFiddle so you can load the common libraries, stylesheets, and fonts and Rapid. There is also a tool to toggle fullscreen in JSFiddle. Useful if you prefer to fine tune the layout CSS or more nuanced CSS in an online playground first before bringing it to development.<br/>
 
-####Create and modify Bootstrap columns on the fly with the browser console. Then you may copy the code over to your source code. Easily see where the Bootstrap columns are by toggling a lightblue border on them (Rapid Bootstrap gridlines). Resize your window to see your website layout change per xs, sm, md, and lg and a status bar tells you which breakpoint you are at (Rapid Bootstrap status). Run javascript code based on those breakpoints. Write media queries using Bootstrap classes rather than the breakpoint pixels and interchangeably generate its breakpoint pixel CSS.<br/>
+####Create and modify Bootstrap columns on the fly with the browser console. Then you may copy the code over to your source code. Easily see where the Bootstrap columns are by toggling a lightblue border on them (Rapid Bootstrap gridlines). Resize your window to see your site layout change per xs, sm, md, and lg and a status bar tells you which breakpoint you are at (Rapid Bootstrap status). Run javascript code based on those breakpoints. Write media queries using Bootstrap classes rather than the breakpoint pixels and interchangeably generate its breakpoint pixel CSS.<br/>
 
 ####Access the mysqli database in javascript with a capable API including inserting, deleting, selecting, and looping through records, so you don't have to invest heavily on the interplay of AJAX, JSON, and PHP until later. Also, have Rapid generate all the AJAX and PHP codeas as you use javascript mysqli. Rapid's Ajax uses an uniform API for all REST methods (get, post, put, patch, update, delete, options) so you don't have to remember syntax differences between $.ajax, $.get, and $.post. Use the Boilerplate php file to pick up on those REST requests and read request data with intuitive $_GET, $_POST, $_PATCH, $_UPDATE, etc arrays.<br/>
 
 ####Rapid enhanced Chrome's debugging tools with several functions that monitor different types of variables. Rapid also enhanced Javascript by allowing you to make enums for some quick constants to use across your app or functions.<p/>
 
-####Let teammembers know more about your website layout with explanations in the console and enhanced tooltips that appear over select elements. The tooltips have an assortment of icons like TO-DO list or bugs that can accompany the text. Let teammember developers see your notes about specific elements by having them inside attributes in the source code while loading the page in a browser removes them.<br/>
+####Let teammembers know more about your site layout with explanations in the console and enhanced tooltips that appear over select elements. The tooltips have an assortment of icons like TO-DO list or bugs that can accompany the text. Let teammember developers see your notes about specific elements by having them inside attributes in the source code while loading the page in a browser removes them.<br/>
 
 ####Fully compatible with Handlebars JS, Crossroads JS, and other libraries. This library and microframework is based in jQuery. Remove what you don't need for faster loading. -Weng Fei Fung*<br/>
 **Dependencies (must have):**<br/>
@@ -144,7 +144,7 @@ To turn cache back off for further development, set cache:false or simply remove
 This caching option is only for Controllers. All other Rapid's features uses cachebusting because their purpose is for development.
             
 **PLACEHOLDERS**<br/>
-*What:* When designing the website layout, you may want to forgo digging for the actual graphics. You can insert placeholders. There are a few different styles available:
+*What:* When designing the site layout, you may want to forgo digging for the actual graphics. You can insert placeholders. There are a few different styles available:
 
 A square or rectangle with a X through it (make sure to give a definitive width and height - not auto):
 ```
@@ -561,7 +561,7 @@ Rapid.i(); //interactive commands
 **BEST PRACTICE: RAPID DEVELOPMENT**<br/>
 You can develop faster by working on markup, css, then javascript and php. Have Rapid figure out the Ajax and PHP code for you, then add it over to your PHP.<br/>
 
-Use Command-Line Bootstrap, Placeholders, and Lorem Ipsum to make the website layout. Edit styles inside Chrome's DevTools. Have an editor opened so you can take advantage of the syntax highlighting and tabbing/newlines when needed.<br/>
+Use Command-Line Bootstrap, Placeholders, and Lorem Ipsum to make the site layout. Edit styles inside Chrome's DevTools. Have an editor opened so you can take advantage of the syntax highlighting and tabbing/newlines when needed.<br/>
 
 You may also want to take advantage of JSFiddle. Over at JSFiddle, try to leave CSS out of HTML. Write markup first and do your best to use HTML5 tags whenever possible (article, section, aside, nav, header, footer, etc). You can use JSFiddle to work on the entire site layout or part of a layout. In the latter case, you may want to wrap in a div so you can style only that part of the site in the CSS (you can use an online SASS editor to quickly change the CSS queries to reflect that div wrapping).<br/>
 
@@ -583,7 +583,7 @@ You may instead opt for Test-Driven Development or Behavior-Driven Development m
 ```
 <span class="top-text" style="font-weight:bold;" data-detail='{"title":"*TO DO* (checkmark=done)\n_DONE_USER: Sees number of new items from subscribed stores.\n_DONE_SYSTEM: \n\t_num1_Loads store id's from user id.\n\t_num2_Stores items that user clicked and explored.\n_DONE_DATA-FLOW:\nuser id-> most-recent id -> count of new items\nuser id -> last 20 items\n_DONE_API:\nGET /sales/item\nGET /subscribed/?most-recent\nGET /subscribed/?count-new\n_DONE_DATA-JSON: storeID, itemID, category, name, price, date\n_DONE_DATA-ATTR:data-most-recent to store most recent id of item to compare against\n_DONE_DATA-VIEW:Shows number of new items. Shows a list of view templates for the JSON.\n_DONE_EVENTS: Onclick for list of items.\n_DONE_POLL: every 1 sec for most recent item ID that's not been clicked/discovered","pos":"left","bgcolor":"blue","bind":"1","align":"left","font":"15px Helvetica"}'>New Items</span>
 ```
-4. If brainstorming specifications with team members, through Rapid options, narrate about the website layout with key toggleable tooltips that user can press as the narration goes on.
+4. If brainstorming specifications with team members, through Rapid options, narrate about the site layout with key toggleable tooltips that user can press as the narration goes on.
 <p/>
 
 
@@ -601,7 +601,7 @@ You are basically calling functions that have been defined in the webpage's java
 <p/>
 
 **TEMPLATE: SEND TO TEAM MEMBERS:**<br/>
-There is a narration that explains the website layout. And as you read the narration, it may tell you to press a key to highlight the part of the website it's talking about.<br/>
+There is a narration that explains the site layout. And as you read the narration, it may tell you to press a key to highlight the part of the website it's talking about.<br/>
 1. With the webpage loaded, open the browser's console:<br/>
 <p/>
     A. On Chrome, to open the console:<br/>
@@ -615,4 +615,4 @@ There is a narration that explains the website layout. And as you read the narra
     C. For all other browsers, instructions [here](http://webmasters.stackexchange.com/questions/8525/how-to-open-the-javascript-console-in-different-browsers#answer-77337)
 <p/>
 3. Press  the backquote ` key (aka tilde key). You will see "Story Mode" is turned on at the console. If you don't see this message, please click a blank area on the website and press the backquote key again since the website's javascript wasn't able to hear for the key press with the focus on another part of the browser.<br/>
-4. Now press these keys for narrations that explain the website layout (again, make sure the focus is on the website before pressing the keys):<br/>
+4. Now press these keys for narrations that explain the site layout (again, make sure the focus is on the website before pressing the keys):<br/>
