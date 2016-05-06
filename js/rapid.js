@@ -88,10 +88,6 @@
                     $('style.rapid-style').html(css);
                 }).error(function(jqXHR, error) { console.error("Rapid.replaceStylesheet: " + error); });
             }, // replaceDotCSS
-            staticCSS: function() {
-              console.info("Rapid.staticCSS:\n-These media queries are combined from xsCSS, smCSS, mdCSS, and lgCSS.\n-To validate the code, copy this to CSS Lint.\n-If your page has elements that grow or shrink while the page is loading, copy this to a style block. This would make sure the CSS media queries run before inline styles rather than the other way around, which causes two sets of style changes, hence the growing and shrinking during loading.\n\n");
-                return $("#rapid-bootstrap-css-media-queries").text();
-            },
             
             ibootstrap: {
                 latest: function() {
@@ -104,79 +100,42 @@
                         arr=[report];
                         arr.push("font-weight:bold;","font-weight:normal;");
                         console.info.apply(console, arr);
+                        return $("#bid" + (Rapid.bootstrap.helpers.htmlCount-1).toString());
                     }
                 },
-                mod: function(sel, nums, grid) {
+                staticCSS: function() {
+                  console.info("Rapid.bootstrap.staticCSS:\n-These media queries are combined from xsCSS, smCSS, mdCSS, and lgCSS.\n-To validate the code, copy this to CSS Lint.\n-If your page has elements that grow or shrink while the page is loading, copy this to a style block. This would make sure the CSS media queries run before inline styles rather than the other way around, which causes two sets of style changes, hence the growing and shrinking during loading.\n\n");
+                    return $("#rapid-bootstrap-css-media-queries").text();
+                },
+                mod: function(sel, mode, widths) {
                     var jqObj;
                     if(sel instanceof jQuery)
                         jqObj = sel;
                     else
                         jqObj = $(sel);
                     
-                  if($(jqObj).length==0) { console.error("Rapid.ibootstrap.mod: Selector matched no element."); return; }
-                  if(nums==undefined) { console.error("Rapid.ibootstrap.mod: Missing 2nd parameter of span number 1-12 as integer or array of integers."); return; }                    
-                  if(grid==undefined) grid = "xs";
-                  var shiftedLast = -1;
-                    
+                  var paramColIndex = 0;
+                  if($(jqObj).length==0) console.error("Rapid.ibootstrap.mod: Selector matched no element.");
                   $(jqObj).children().each(function() {
-                    $(this).removeClass("col-xs-1")
-                            .removeClass("col-xs-2")
-                            .removeClass("col-xs-3")
-                            .removeClass("col-xs-4")
-                            .removeClass("col-xs-5")
-                            .removeClass("col-xs-6")
-                            .removeClass("col-xs-7")
-                            .removeClass("col-xs-8")
-                            .removeClass("col-xs-9")
-                            .removeClass("col-xs-10")
-                            .removeClass("col-xs-11")
-                            .removeClass("col-xs-12")
-                            .removeClass("col-sm-1")
-                            .removeClass("col-sm-2")
-                            .removeClass("col-sm-3")
-                            .removeClass("col-sm-4")
-                            .removeClass("col-sm-5")
-                            .removeClass("col-sm-6")
-                            .removeClass("col-sm-7")
-                            .removeClass("col-sm-8")
-                            .removeClass("col-sm-9")
-                            .removeClass("col-sm-10")
-                            .removeClass("col-sm-11")
-                            .removeClass("col-sm-12")
-                            .removeClass("col-md-1")
-                            .removeClass("col-md-2")
-                            .removeClass("col-md-3")
-                            .removeClass("col-md-4")
-                            .removeClass("col-md-5")
-                            .removeClass("col-md-6")
-                            .removeClass("col-md-7")
-                            .removeClass("col-md-8")
-                            .removeClass("col-md-9")
-                            .removeClass("col-md-10")
-                            .removeClass("col-md-11")
-                            .removeClass("col-md-12")
-                            .removeClass("col-lg-1")
-                            .removeClass("col-lg-2")
-                            .removeClass("col-lg-3")
-                            .removeClass("col-lg-4")
-                            .removeClass("col-lg-5")
-                            .removeClass("col-lg-6")
-                            .removeClass("col-lg-7")
-                            .removeClass("col-lg-8")
-                            .removeClass("col-lg-9")
-                            .removeClass("col-lg-10")
-                            .removeClass("col-lg-11")
-                            .removeClass("col-lg-12");
+                    $(this).removeClass("col-" + mode + "-1")
+                           .removeClass("col-" + mode + "-2")
+                           .removeClass("col-" + mode + "-3")
+                           .removeClass("col-" + mode + "-4")
+                           .removeClass("col-" + mode + "-5")
+                           .removeClass("col-" + mode + "-6")
+                           .removeClass("col-" + mode + "-7")
+                           .removeClass("col-" + mode + "-8")
+                           .removeClass("col-" + mode + "-9")
+                           .removeClass("col-" + mode + "-10")
+                           .removeClass("col-" + mode + "-11")
+                           .removeClass("col-" + mode + "-12");
 
-                    if(typeof nums == "object") { // array
-                        if(nums.length!=0)
-                            shiftedLast = nums.shift();
-                        $(this).addClass("col-" + grid + "-" + shiftedLast);
-                        
+                    if (typeof widths.length!='undefined') {
+                        $(this).addClass("col-" + mode + "-" + widths[paramColIndex]);
+                        if (paramColIndex < widths.length-1) paramColIndex++;
+                    } else {
+                        $(this).addClass("col-" + mode + "-" + widths);
                     }
-                   else
-                        $(this).addClass("col-" + grid + "-" + nums); // nums as 1 integer
-                          
                     //console.log(paramColIndex);
                   }); // each child
                 }, // mod
@@ -224,7 +183,7 @@
                                 html = html.replace(new RegExp("\\$_SPECOL_\\$", "i"), preset);
                                 //console.log("+++" + html + "\n" + preset)
                             } else {
-                                console.error("Rapid.ibootstrap.preset: Could not create Bootstrap div. Please pass one of these as the first parameter: \"container\", \"well\", \"row\", \"col\", \"colxs\", \"colsm\", \"colmd\", \"collg\", or any column class from \"col-xs-1\" to \"col-lg-12\". Eg. Rapid.ibootstrap.preset(\"row\", \"bg-primary center-block\", \"data-lorem='5w'\")");
+                                console.error("Rapid.ibootstrap.preset: Could not create Bootstrap div. Please pass one of these as the first parameter: \"container\", \"well\", \"row\", \"col\", \"colxs\", \"colsm\", \"colmd\", \"collg\", or any column class from \"col-xs-1\" to \"col-lg-12\". Eg. Rapid.ibootstrap.add(\"row\", \"bg-primary center-block\", \"data-lorem='5w'\")");
                                 return "";
                             }
                     } // switch
@@ -277,16 +236,9 @@
                     
                     return html;
                 }, // add
-                presetHelp: function() {
-                    console.info("Rapid.ibootstrap.presetHelp: The correct syntax for adding bootstrap elements is\n%c\tRapid.ibootstrap.preset(type, classes, styles, attributes, text)\n%cNote: To create a Bootstrap div, the first parameter requires \"container\", \"well\", \"row\", \"col\", \"colxs\", \"colsm\", \"colmd\", \"collg\", or any column class from \"col-xs-1\" to \"col-lg-12\". All other parameters optional. You can omit parameters that trail. If you want to skip a parameter between two other parameters you are passing, you must pass one of these: blank string \"\", false, null, undefined, or 0.\nTo add HTML to the actual page, pass the function to jQuery's html, append, prepend, insertBefore, or insertAfter with it selecting the unique bid.\nCMD+SHIFT+C to quickly see the bid's of each element on mouseover. CMD+SHIFT+C again to toggle off the mouseover and resume normal browser behavior. CMD+# or Escape with the window focus on DevTools to switch back to Console. Or you can find the bid of nearby elements using jQuery's parent, prev, next, or children.", "font-style:italic;", "font-style:normal;");
-                }, // presetHelp
-                parentRow: function(sel) {
-                    var jqObj = $(sel).closest(".row");
-                    if(jqObj.length==0)
-                        console.error("Rapid.ibootstrap.parentRow: Can't find the parent row because you don't have the correct class, id, or attribute that selects for the child / grandchild / great grand child DOM.");
-                    else
-                        return $(sel).closest(".row");
-                } // parentRow
+                addHelp: function() {
+                    console.info("Rapid.ibootstrap.addHelp: The correct syntax for adding bootstrap elements is\n%c\tRapid.ibootstrap.add(type, classes, styles, attributes, text)\n%cNote: To create a Bootstrap div, the first parameter requires \"container\", \"well\", \"row\", \"col\", \"colxs\", \"colsm\", \"colmd\", \"collg\", or any column class from \"col-xs-1\" to \"col-lg-12\". All other parameters optional. You can omit parameters that trail. If you want to skip a parameter between two other parameters you are passing, you must pass one of these: blank string \"\", false, null, undefined, or 0.\nTo add HTML to the actual page, pass the function to jQuery's html, append, prepend, insertBefore, or insertAfter with it selecting the unique bid.\nCMD+SHIFT+C to quickly see the bid's of each element on mouseover. CMD+SHIFT+C again to toggle off the mouseover and resume normal browser behavior. CMD+# or Escape with the window focus on DevTools to switch back to Console. Or you can find the bid of nearby elements using jQuery's parent, prev, next, or children.", "font-style:italic;", "font-style:normal;");
+                }, // addHelp
             } // ibootstrap
         }); // extend
         
@@ -318,16 +270,16 @@
     $.extend(true, Rapid, 
         {
             i: function() {
-                console.info("Rapid.i: Shortened many interactive commands for faster typing.\nAvailable commands: options, staticCSS, presetHelp, preset, mod, latest, ihtml, itemplate, ajax, db, serverListen, Chain, simpleChain \n");
+                console.info("Rapid.i: Shortened many interactive commands for faster typing.\nAvailable commands: options, staticCSS, preset, presetHelp, mod, latest, ihtml, itemplate, ajax, db, serverListen, Chain, simpleChain \n");
                 
                 window.options = function() {
                     return Rapid.options.apply(this, arguments);
                 };
                 window.staticCSS = function() {
-                    return Rapid.staticCSS.apply(this, arguments);
+                    return Rapid.ibootstrap.staticCSS.apply(this, arguments);
                 };
-                window.presetHelp = function() {
-                    return Rapid.ibootstrap.presetHelp.apply(this, arguments);
+                window.addHelp = function() {
+                    return Rapid.ibootstrap.addHelp.apply(this, arguments);
                 };
                 window.preset = function() {
                     return Rapid.ibootstrap.preset.apply(this, arguments);
@@ -337,9 +289,6 @@
                 };
                 window.latest = function() {
                     return Rapid.ibootstrap.latest.apply(this, arguments);
-                };
-                window.parentRow = function() {
-                    return Rapid.ibootstrap.parentRow.apply(this, arguments);  
                 };
                 window.ihtml = function() {
                     return Rapid.ihtml.apply(this, arguments);

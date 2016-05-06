@@ -148,9 +148,9 @@ This caching option is only for Controllers. All other Rapid's features uses cac
 
 A square or rectangle with a X through it (make sure to give a definitive width and height - not auto):
 ```
-<img class="rapid-rect center-block img-responsive" style="width: 200; height: 200;">
+<img class="center-block rapid-rect img-responsive" style="width: 200; height: 200;">
 OR:
-<div class="rapid-rect center-block" style="width: 200; height: 200;"></div>
+<div class="center-block rapid-rect" style="width: 200; height: 200;"></div>
 ```
 
 Circle (again, definitive width and height!):
@@ -401,64 +401,54 @@ rapidParams<br/>
 <p/>
 
 **COMMAND-LINE BOOTSTRAP**<br/>
-*What:* Type commands into the browser console and have Rapid create the Bootstrap layout. Then copy and paste it to your editor. You can see the Bootstrap layout as it's created whether than relying on livereload or constant refreshes.
+*What:* Type commands into the browser console and have Rapid generate Bootstrap code. Then copy and paste it to your editor. For more info including how to open the browser's console, read the FAQs in this ReadMe.
 
-You'll want to initiate the shorthand by running Rapid.i() so you don't have to use Rapid.ibootstrap.preset, Rapid.ibootstrap.presetHelp, Rapid.ibootstrap.mod, Rapid.ibootstrap.latest, Rapid.ibootstrap.parentRow, and instead use preset, presetHelp, mod, latest, and parentRow.
-
-Rapid can add "container", "well", "row", "col", "colxs", "colsm", "colmd", "collg", or any column class from "col-xs-1" to "col-lg-12".
+Have Rapid type the code for you. You can add "container", "well", "row", "col", "colxs", "colsm", "colmd", "collg", or any column class from "col-xs-1" to "col-lg-12".
 ```
 $(".container").append(preset("row"));
 ```
-You can also use .html, .prepend, etc. to add the Bootstrap element code that Rapid generates.
+You can also use .html, .prepend, etc.
 
-preset also lets you assign classes, styles, add attributes, and add inner html or text.
+Rapid.add also lets you assign classes, styles, add attributes, and add inner html or text.
 ```
 $(".container").append(preset("row"), {style:"text-align:center;", class:"someClass", attr:"someAttr someOtherAttr='value'", inner:"someTextOrHTML"});
 ```
-
-If you create multiple columns inside a row, they could still all look collapsed because there's no content inside, so it's a good practice to use inner and give it some letter or word so you can see the columns as they are added.
-
+ 
+A quick reminder of what Rapid.add does:
 ```
-$(".container").append(preset("row"), {inner:"blank"});
-```
-
-A quick reminder of what Rapid.preset does:
-```
-presetHelp();
+Rapid.presetHelp();
 ```
 
 Each Bootstrap div that Rapid makes is given an unique id so you can select it in jQuery to do further html changes.
 
-You might forget what the unique id is and don't feel like scrolling up the console to hunt for it. Get the last generated id or jqObj with
+You might forget what the unique id is and don't feel like scrolling up the console to hunt for it. Get the last generated id with
 ```
-latest();
-```
-
-You can add inside a row or column that you just added:
-```
-latest().append(preset("col-xs-12", {inner: "blank"}));
+Rapid.latest();
 ```
 
-You can get the parent row easily:
+You might want to save that DOM position to add children to it later:
 ```
-parentRow(latest());
+var row = Rapid.latest();
+
+// so then you could use:
+row.preset("col-xs-4");
+row.preset("col-xs-4");
+row.preset("col-xs-4");
 ```
 
-So you can add to the parent row easily if you've been adding children at the same level:
+Let's say you wanted to add another column after the last column you made. You would have to hunt for the row's id so you can `$("#bidX").append(("col-xs-4"))`. You can get the parent row's id easily with (and it goes up to three levels in case you are calling from an element inside a column):
 ```
-latest().parent().append(preset("col-xs-12", {inner: "blank"})); 
-```
-
-So latest() keeps track of all the Bootstrap elements you created through Rapid.
-
-You can easily change the col sizes inside a row with:
-```
-mod($("#bid2"), [4, 4, 4]); // give the three children grid 4,4,4
-mod($("#bid2"), [3, 3, 3]); // give the four children grid 3,3,3,3. Notice that additional children follow the last value in the array.
-mod($("#bid2"), 4); // give all children grid 4
+Rapid.parentRow($("#bid2"));
 ```
 
-Can't see where all the Bootstrap div's made by Rapid are at? Rapid can toggle on borderlines for all rows and columns (do this in command line or have it as part of your code):
+Messed up on the column sizes? You can select a row and change all their children column sizes with one swoop in command line:
+```
+Rapid.parentRow($("#bid2"), [4, 4, 4]); // give col1-3 sizes 4,4,4
+Rapid.parentRow($("#bid2"), [3, 3, 3]); // give col1-4 sizes 3,3,3,3. Notice that additional columns follow the last value in the array.
+Rapid.parentRow($("#bid2"), 4); // give all columns the same size 4
+```
+
+Can't see where all the Bootstrap div's made by Rapid are at? Chrome has Cmd+Shift+C then you mouseover the webpage to see an element highlighted on the screen. Well, Rapid can toggle on borderlines for all rows and columns (do this in command line or have it as part of your code):
 ```
 //Note: This will add class rapid-bootstrap-gridlines to all column classes. You can turn off individual gridlines through Chrome's DevTools by removing that class.
 Rapid.options({
@@ -590,29 +580,10 @@ To copy all the markup from Chrome DevTools (before adding javascript or PHP), c
 At other times, it may be faster to work exclusively at a coding editor. I suggest Adobe Bracket with Emmet and Keystrap extensions. If using a combination of editing in editor and editing in Chrome DevTools, don't forget which window has the latest version. I suggest getting apps or software that can split your screen in half with applications on each side.<br/>
 
 If you start working on javascript without a clear idea about the specifications, you can type javascript code inside the browser console and "hack away" until the code clicks. Rapid has several features to aide you. This command-line approach is also called exploratory programming:
-https://en.wikipedia.org/wiki/Exploratory_programming<br/>
+https://en.wikipedia.org/wiki/Exploratory_programming
+<br/>
 
-The idea behind the Command-Line Bootstrap is you can create the layout using an exploratory approach so it cuts out all the thinking and typos involved (and constantly waiting on livereload).<br/>
-
-You may instead opt for Test-Driven Development or Behavior-Driven Development methodologies where you rewrite tests until they pass and that creates valid code for your website. You can use Rapid's enhanced debugging that monitors several types of variables. Rapid also has a semantic Rapid.assert() that you might like over Chrome's console.assert(...). There are libraries and frameworks for TDD. Qunit is a simple library for TDD.<br/>
-
-When you start working on javascript, my tools don't force you to fit all initialization, rendering, event handling, etc inside an object App and then initialize it like most frameworks do. However, the best practice is that you do it for big projects that require maintenance down the road since you want to see where the control flow. Here is essentially how it's done (Foobar can be Render or Events):
-
-```
-var App = {
-		init: function() {
-    		this.Foobar.echo();
-    },
-    Foobar: {
-    		echo: function() {
-        		alert('loaded');
-        }
-    }
-
-}
-
-App.init();
-```
+You may instead opt for Test-Driven Development or Behavior-Driven Development methodologies where you rewrite tests until they pass and that creates valid code for your website. You can use Rapid's enhanced debugging that monitors several types of variables. Rapid also has a semantic Rapid.assert() that you might like over Chrome's console.assert(...). There are libraries and frameworks for TDD. Qunit is a simple library for TDD.
 <p/>
 
 <p/>

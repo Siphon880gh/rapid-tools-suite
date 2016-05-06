@@ -23,7 +23,7 @@
     "php",
     "emulation",
     "bootstrap",
-    "mysqli js"
+    "mysqli js",
   ],
   "license": "Apache License",
   "ignore": [
