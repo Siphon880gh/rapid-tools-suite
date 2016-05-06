@@ -63,12 +63,12 @@
         
         //Gridline visibility
         if(Rapid.bootstrap.gridlines)
-            $('[class^="col-"]').each(function() {
+            $('[class*="col-"]').each(function() {
                 if( !$(this).hasClass("rapid-bootstrap-gridlines") )
                     $(this).addClass("rapid-bootstrap-gridlines");
             }); // gridlines
         else
-            $('[class^="col-"]').each(function() {
+            $('[class*="col-"]').each(function() {
                 $(this).removeClass("rapid-bootstrap-gridlines");
             }); // gridlines
             
@@ -1708,7 +1708,7 @@ $("#rapid-html a#normal").click(function() {
                 })
             };
             b(document).ready(function() {
-                $('[class^="lorem-"]').each(function() { $(this).lorem(); });
+                $('[class*="lorem-"]').each(function() { $(this).lorem(); });
             })
         })(jQuery);
     })();
