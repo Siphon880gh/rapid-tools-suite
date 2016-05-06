@@ -19,7 +19,7 @@ mysqli_select_db($lnk1, $db_name) or die('{"status":"Couldn\'t connect to databa
 ///////////////////////////
 //      DEBUG MODE       //
 ///////////////////////////
-//include_once("../rdebug/init.php");
+//include_once("../rdebug/loader.php");
 //
 
 

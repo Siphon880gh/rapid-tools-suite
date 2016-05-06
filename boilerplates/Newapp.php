@@ -8,60 +8,62 @@
 
     <!-- jQuery and Bootstrap  -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.css">
-    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
-    <script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
-    
+    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+
+    <!-- LATER DEV -->
     <script type="x/comments">
-        // Comments or PHP code don't persist in Chrome DevTools editing or Drag and Drop Editors.
-        // This section is an invalid script block to help you stash away comments, php code, or even scripts
-        //  that may be useful later in development.
-        // Browsers skip over invalid script blocks and retain them in the source code.
-        // So once you are done designing the website, you can move any code out into the production code.
-        // Note that if you have any < script> or </ script> blocks, those must be broken apart like so.
-        // If there's PHP echoing < /script> or < script>, they need to be concatenated like so rather than
-        //  echo the entire tag. This is because browsers will still parse nested script blocks inside an 
-        //  invalid script block and then break your code.
+        // If you are designing your webpage through Chrome DevTools then copying the markup (like the entire <html> outerHTML) to a code editor, you may notice it removes comments and of course - it can't save PHP code. This becomes an issue if you have boilerplate code that's useful later in development after designing. Another use is having code snippets here that may be useful depending on the type of project so you can choose to copy the snippet outside to the source code if needed after initializing a project with this boilerplate file.
+        
+        // By giving a script block an invalid type here, Chrome DevTools will not render whatever is inside and neither does it remove the content. Perfect for stashing away code snippets of any language.
+        
+        // However, if you have any < script> or </ script> blocks, they must be concatenated as < and script>. Browsers still parse script blocks inside invalid script blocks.
         
         
-        /* JS: VIEW TEMPLATE MODULAR */
-            //Just design the template where it's going to be rendered, then make it a comment when you are done. 
-            The code will check for a comment to make into a template then render it where it is. No more needing 
-            to have a template in the head block and coming up with ID names for it.
+        /* JS: TEMPLATE AS PART OF LAYOUT */
+            //Design the template where it's going to be rendered.
+            //When finished, make the template a HTML comment <!-- --> for parsing into Handlebar's renderer
+            //Advantage: Design the template where it goes in the layout with Chrome DevTools
             
-            //The markup:
+            //Markup:
             <div id="template-wrapper">
                 <!-- <span>{{var1}}</span> -->
             </div>
             
-            //The javascript:
+            //JS:
             var sel_ = "#template-wrapper";
             if(null!=$(sel_).html().match(/<!--/,"g"))
                 $(sel_).html(Handlebars.compile($(sel_).html().replace(/<!--([\s\S]*)-->/g, '$1'))(wrapper));
                 
         
-        /* JS: VIEW TEMPLATE NON-MODULAR */
-            // The old regular way is less as modular because you need to write template code elsewhere on the page
+        /* JS: TEMPLATE STASHED AWAY */
+        
+            // This is how Handlebars is typically done:
             < script id="template" type="x/template">
             </ script>
         
-        /* PHP: VIEW TEMPLATE */
-        if(isset($_GET["deviceuid"]) && $_GET["deviceuid"]=="c31b32364ce19ca8fcd150a417ecce58") {
-            echo '<'.'script id="templates" type="x/template">';
-            include("views/posts.php");
-            echo '<'.'/script>';
-        }
-    
+        /* PHP: TEMPLATE STASHED AWAY IN EXTERNAL PAGE */
+            if(isset($_GET["deviceuid"]) && $_GET["deviceuid"]=="c31b32364ce19ca8fcd150a417ecce58") {
+                echo '<'.'script id="templates" type="x/template">';
+                include("views/posts.php");
+                echo '<'.'/script>';
+            }
+
       
         /* PHP: JS CONSOLE */
-        if(isset($_GET["remote"])) {
-            $connID = "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX"; // replace here
-            echo '<' . 'script src="http://jsconsole.com/remote.js?' . $connID . '"><'.'/script>';
-            echo '<'.'script>console.log("' . $connID . '"); function jscid() { alert("Done. JS Console Listening ID inserted at the end of the URL as a hash value.");  window.location.hash = "' . $connID . '"; }<'.'/script>'; // paste alert from url: javascript:jsc_id();
-        }
-    </script> <!-- comments -->
+            // If the URL string query has "remote", activate remote access to the page at jsconsole.com using command :listen.
+            // This lets you see browser console errors from mobile that you would otherwise not see (great for javascript debugging). It also lets you change the layout using javascript and instantly see the results on mobile.
+            
+            if(isset($_GET["remote"])) {
+                $connID = "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX"; // replace here
+                echo '<' . 'script src="http://jsconsole.com/js/remote.js?' . $connID . '"><'.'/script>';
+                echo '<'.'script>console.log("' . $connID . '"); function jscid() { alert("Done. JS Console Listening ID inserted at the end of the URL as a hash value.");  window.location.hash = "' . $connID . '"; }<'.'/script>'; // paste alert from url: javascript:jsc_id();
+            }
+    </script> <!-- LATER DEV -->
+    
 
-    <!-- Note anywhere for marking DevTools -->
+    <!-- NOTE-ANYWHERE:
+    Chrome DevTools duplicates note-anywhere's. This extension
+    lets you take notes on the webpage. And if you copy the HTML element's outerHTML to source code, you can take notes between collaborators. This script removes duplicates. -->
     <script>
     $(function() {
         // Remove duplicate note-anywhere (Chrome extension)
@@ -97,9 +99,9 @@
         $(".note-anywhere").draggable();  
         
     });
-    </script>
+    </script> <!-- NOTE-ANYWHERE -->
     
-    <!-- Cookies management -->
+    <!-- COOKIES -->
     <script>
     function setCookie(obj, days)
     {
@@ -143,10 +145,12 @@
     function getAllCookies() {
         return document.cookie;
     }  
-    </script>
+    </script> <!-- COOKIES -->
     
+    
+    <!-- MEDIA QUERIES -->
     <style>
-    /* Mobile first with precise targetting */
+    /* Mobile first with precise device targetting */
     /*@media (min-width: 320px) {
 
     }
@@ -154,10 +158,10 @@
 
     }*/
         
-    /* Mobile first without precise targetting */
-    @media (max-width: 767px) {
+    /* Not mobile first and no precise device targeting */
+    /*@media (max-width: 767px) {
 
-    }
+    }*/
     @media (min-width: 768px) {
 
     }
@@ -169,7 +173,7 @@
     @media (min-width: 1200px) {
 
     }
-    </style>
+    </style> <!-- MEDIA QUERIES -->
     
     <script>
         $(function() {
@@ -181,10 +185,36 @@
                             }
             });
             
-            /* REMOVE THESE LINES BEFORE UPLOADING TO PRODUCTION SERVER */
+            /* REMOVE THE FOLLOWING BEFORE UPLOADING TO PRODUCTION */
             Rapid.i();
             //db("./rapid/js/rapid-mysqli.php", "password123");
         });
+    </script>
+    
+    <!-- APP -->
+    <script>
+    $(function() {
+        var app = {
+            init: function() {
+                this.Main.user.username="Joe";
+                this.Main.user.id=1;
+                this.Main.header.render();
+            }, // init
+            Main: {
+                user: {
+                    username: "",
+                  id: 0,
+              }, // user
+              header: {
+                    render: function() {
+
+                  },
+              }, // header
+            } // Main
+        } // app
+
+        app.init(); 
+    }); 
     </script>
     
 </head>
@@ -193,34 +223,42 @@
         Empty
         </div><!-- container -->
         
-        <!-- Designer fonts -->
+        <!-- Designer: Open Sans, Lato, FontAwesome, Waypoints, Skrollr, Pixel-Em-Converter -->
         <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300|Open+Sans+Condensed:300" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.0/jquery.waypoints.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/skrollr/0.6.30/skrollr.min.js"></script>
+        <script src="https://rawgit.com/filamentgroup/jQuery-Pixel-Em-Converter/master/pxem.jQuery.js"></script>
         
-        <!-- Modernizr -->
+        <!-- Rendering: Handlebars JS, Sprintf JS -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.js"></script>
+        <script src="https://rawgit.com/azatoth/jquery-sprintf/master/jquery.sprintf.js"></script>
+        
+        <!-- Compatibility: Modernizr, jQuery Migrate -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
+        <script src="https://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
         
-        <!-- Webapp: Qunit -->
-        <link href="//code.jquery.com/qunit/qunit-1.20.0.css" rel="stylesheet"/>
-        <script src="//code.jquery.com/qunit/qunit-1.20.0.js"></script>
-        
-        <!-- jQuery UI -->
-        <link href="http://code.jquery.com/ui/1.11.3/themes/ui-lightness/jquery-ui.css" rel="stylesheet"/>
-        <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+        <!-- Mobile: jQuery UI, jQuery UI Touch Punch -->
+        <link href="https://code.jquery.com/ui/1.11.3/themes/ui-lightness/jquery-ui.css" rel="stylesheet"/>
+        <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js"></script>
        
         <!-- Bootstrap JS -->
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
         
-        <!-- Handlebars JS -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.js"></script>
-        
-        <!-- Webapp: Crossroads JS -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/crossroads/0.12.2/crossroads.min.js"></script> 
+        <!-- Friendlier API: ListHandlers, Timeout -->
+        <script src="https://rawgit.com/Inducido/jquery-handler-toolkit.js/master/jquery-handler-toolkit.js"></script>
+        <script src="https://raw.githubusercontent.com/tkem/jquery-timeout/master/src/jquery.timeout.js"></script>
         
         <!-- Rapid Tools Suite (RawGit) -->
         <link href="https://rawgit.com/Siphon880gh/rapid-tools-suite/master/js/rapid.css" rel="stylesheet">
         <script src="https://rawgit.com/Siphon880gh/rapid-tools-suite/master/js/rapid.js"></script>
+                
+        <!-- Webapp: Crossroads JS, Qunit -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/crossroads/0.12.2/crossroads.min.js"></script>
+        <link href="//code.jquery.com/qunit/qunit-1.20.0.css" rel="stylesheet"/>
+        <script src="//code.jquery.com/qunit/qunit-1.20.0.js"></script>
    
     </body>
 </html>
