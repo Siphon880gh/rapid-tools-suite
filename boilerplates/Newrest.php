@@ -1,33 +1,10 @@
 <?php
 
-///////////////////////////
-//     CONNECT TO DB     //
-///////////////////////////
-/* Put your Mysqli connect 
-/* code here. Alternately,
-/* include the php page
-/* that has the code.
-*/
-
-$db_server = "localhost";
-$db_username = "shuser1_admin";
-$db_password = "password";
-$db_name = "shuser1_db";
-$lnk1 = mysqli_connect($db_server, $db_username, $db_password) or die('{"status":"Couldn\'t connect to the SQL server with credentials."}');
-mysqli_select_db($lnk1, $db_name) or die('{"status":"Couldn\'t connect to database because either database does not exist or it is not privileged to the db user."}');
-
-///////////////////////////
-//      DEBUG MODE       //
-///////////////////////////
-//include_once("../rdebug/loader.php");
-//
-
 
 ///////////////////////////
 //     BEST PRACTICES    //
 ///////////////////////////
 /*
-/* #RESTful Methods Scheme:
 /* get = get resource
 /* post = insert resource at a non-precise URI path
 /* put = insert resource at a precise URI path
@@ -40,28 +17,70 @@ mysqli_select_db($lnk1, $db_name) or die('{"status":"Couldn\'t connect to databa
 /* #Example of URI:
 /* http://programmers.stackexchange.com/questions/218798/what-is-the-limit-on-rest-api-resource-levels
 /*
-/* #PATH_INFO
-/* E.g. If the request line is 
-/*      GET http://example.com/test.php/testing/123/hello/
-/* Then $_SERVER['PATH_INFO'] returns the string:
-/*      "testing/123/hello/"
-/* If the request line hadn't ended in a forward slash, add
-/* a / to the end.
-/* Then exploding that string with delimiter '/' returns:
-/*      ["testing", "123", "hello"]
-/* To see for yourself, turn on debug mode and log to file: 
-/*      rdebug($request);
+
+
+
+///////////////////////////
+//      CLIENT USAGE     //
+///////////////////////////
+/*
+/* Some servers don't accept restful URI like api.php/a/b. Instead use api.php?PATH=a/b
+/* 
+/* PATH is a reserved keyword. Do not use ?PATH=PATH/b or api.php/PATH/b
 */
 
 
+
+///////////////////////////
+//     CONNECT TO DB     //
+///////////////////////////
+/* Put your Mysqli connect 
+/* code here. Alternately,
+/* include the php page
+/* that has the code.
+*/
+
+$db_server = "localhost";
+$db_username = "admin";
+$db_password = "password!";
+$db_name = "db1";
+$lnk1 = mysqli_connect($db_server, $db_username, $db_password) or die('{"status":"Couldn\'t connect to the SQL server with credentials."}');
+mysqli_select_db($lnk1, $db_name) or die('{"status":"Couldn\'t connect to database because either database does not exist or it is not privileged to the db user."}');
+
+
+///////////////////////////
+//        ENGINE         //
+///////////////////////////
+/* 
+*/
+
 //Prepare DB auth, HTTP method, and URI Path
-if(!isset($lnk1)) die(json_encode(array("_error"=>"\$lnk1 not set. Did you put the database connect code near the top of the page yet? Or did you save the link identifier returned by mysqli_connect() as another name besides \$lnk1?")));
 $method = $_SERVER['REQUEST_METHOD'];
 $path_info = "";
-$path_info = @$_SERVER['PATH_INFO'];
-if($path_info[strlen($path_info)-1]!='/') $path_info .= "/";
+$path_info_thru_get_var = isset($_GET["PATH"]);
+
+if($path_info_thru_get_var)
+    $path_info = $_GET["PATH"];
+
+    // Paths need a / to begin
+    if(strlen($path_info)>0 && $path_info[0]!='/')
+        $path_info = '/' . $path_info;
+    else {
+    $path_info = @$_SERVER['PATH_INFO'];
+}
+
+// Makes sure path ends with /
+if($path_info[strlen($path_info)-1]!='/')
+    $path_info .= "/";
+
 $request = explode("/", substr($path_info, 1));
 if($request[count($request)-1]=="") array_pop($request); // Edge case: last element empty ""
+
+///////////////////////////
+//   TEST CLIENT SIDE    //
+///////////////////////////
+//var_dump($request);
+//die();
 
 //Prepare RESTful HTTP methods
 $_PARAMS = array();
@@ -76,6 +95,13 @@ $LEVEL2=count($request)>2?true:false;
 $LEVEL3=count($request)>3?true:false;
 $LEVEL4=count($request)>4?true:false;
 $LEVEL5=count($request)>5?true:false;
+
+
+///////////////////////////
+//     IMPLEMENTATION    //
+///////////////////////////
+/* 
+*/
 
 //Reroute based on method
 switch ($method) {
@@ -120,11 +146,11 @@ function get($request) {
         //modifications to the row before echoing
         
         
-        //debugging mode (if on)
-        //rdebug_stamp();
-        //rdebug($row, true);
-
-        //echo json_encode($results[0]);
+        //mock data
+        $albums = array("album #1", "album #2", "album #3");
+        $json = array("albums"=>$albums);
+        echo json_encode($json);
+        die();
         
     } // GET api.php/albums
     else if($request[0]=="songs") {
@@ -144,14 +170,12 @@ function get($request) {
     }
     
 } // get
-
         
 function post($request) {
     global $lnk1;
     global $LEVEL0, $LEVEL1, $LEVEL2, $LEVEL3, $LEVEL4, $LEVEL5;
     
 } // post
-
         
 function put($request) {
     global $lnk1;
@@ -161,7 +185,6 @@ function put($request) {
     
 } // put
         
-
 function patch($request) {
     global $lnk1;
     global $_PARAMS;
@@ -179,7 +202,6 @@ function update($request) {
     if(!$LEVEL0) die(json_encode(error_arr()));
 } // update
         
-
 function delete($request) {
     global $lnk1;
     global $_PARAMS;
@@ -188,7 +210,6 @@ function delete($request) {
     
 } // delete
         
-
 function head($request) {
     global $lnk1;
     global $_PARAMS;
@@ -197,7 +218,6 @@ function head($request) {
     
 } // head
         
-
 function options($request) {
     global $lnk1;
     global $_PARAMS;
@@ -205,7 +225,6 @@ function options($request) {
     global $LEVEL0, $LEVEL1, $LEVEL2, $LEVEL3, $LEVEL4, $LEVEL5;
     
 } // options
-
         
 function method_error($request) {
     global $lnk1;
