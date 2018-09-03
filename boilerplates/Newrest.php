@@ -54,6 +54,9 @@ mysqli_select_db($lnk1, $db_name) or die('{"status":"Couldn\'t connect to databa
 /* 
 */
 
+//Prepare session variables, eg. username
+session_start();
+
 //Prepare DB auth, HTTP method, and URI Path
 $method = $_SERVER['REQUEST_METHOD'];
 $path_info = "";
@@ -146,10 +149,25 @@ function get($request) {
         //modifications to the row before echoing
         
         
-        //mock data
+        //mock data (DEMO: comment out to try mock SQL)
         $albums = array("album #1", "album #2", "album #3");
         $json = array("albums"=>$albums);
         echo json_encode($json);
+        die();
+        
+        //mock SQL
+        $_SESSION['user_id'] = "2khy44jIHjXXy4PFRgEfe7MoSKD3";
+        $user_id = $_SESSION['user_id'];
+        
+        $rsQuery = mysqli_query($lnk1, sprintf('SELECT * FROM Favorites WHERE user_id = "%s" LIMIT 1', $user_id));
+        
+        $data = array();
+        while($rsQuery!=FALSE && mysqli_num_rows($rsQuery) && $row = mysqli_fetch_assoc($rsQuery)) {
+            $row["a"] = $_GET["a"];
+            array_push($data, $row);
+        } // while
+        
+        echo(json_encode($data));
         die();
         
     } // GET api.php/albums
