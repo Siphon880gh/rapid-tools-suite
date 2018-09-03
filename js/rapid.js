@@ -1070,10 +1070,10 @@ $("#rapid-html a#normal").click(function() {
         });
         arr.forEach(function(elWithAttrName) { var $el = elWithAttrName.$el, attrName = elWithAttrName.dataNoteAttr; $el.removeAttr(attrName); })
 
-        //Onloader and onload attributes without a letter is assigned to "a":
-        $("[data-onloader]").each(function() { 
-            $(this).attr("data-onloader-a", $(this).attr("data-onloader")); 
-            $(this).removeAttr("data-onloader"); 
+        //onload-src and onload attributes without a letter is assigned to "a":
+        $("[data-onload-src]").each(function() { 
+            $(this).attr("data-onload-src-a", $(this).attr("data-onload-src")); 
+            $(this).removeAttr("data-onload-src"); 
         });
         $("[data-onload]").each(function() { 
             $(this).attr("data-onload-a", $(this).attr("data-onload")); 
@@ -1081,9 +1081,9 @@ $("#rapid-html a#normal").click(function() {
         });
         
         //A:
-        $("[data-onloader-a]").each(function() {
+        $("[data-onload-src-a]").each(function() {
             if(typeof $(this).attr("data-async-id")!='undefined') return;
-            filename=$(this).data("onloader-a");
+            filename=$(this).data("onload-src-a");
             alwaysMax++;
             elAsync.push($(this));
             $.get(filename+(Rapid.cache?"?v="+$.now():""), function(data) { 
@@ -1105,9 +1105,9 @@ $("#rapid-html a#normal").click(function() {
 
         
         //B:
-        $("[data-onloader-b]").each(function() {
+        $("[data-onload-src-b]").each(function() {
             if(typeof $(this).attr("data-async-id")!='undefined') return;
-            filename=$(this).data("onloader-b");
+            filename=$(this).data("onload-src-b");
             alwaysMax++;
             elAsync.push($(this));
             $.get(filename+(Rapid.cache?"?v="+$.now():""), function(data) { 
@@ -1129,9 +1129,9 @@ $("#rapid-html a#normal").click(function() {
 
         
         //C:
-        $("[data-onloader-c]").each(function() {
+        $("[data-onload-src-c]").each(function() {
             if(typeof $(this).attr("data-async-id")!='undefined') return;
-            filename=$(this).data("onloader-c");
+            filename=$(this).data("onload-src-c");
             alwaysMax++;
             elAsync.push($(this));
             $.get(filename+(Rapid.cache?"?v="+$.now():""), function(data) { 
@@ -1153,9 +1153,9 @@ $("#rapid-html a#normal").click(function() {
 
         
         //D:
-        $("[data-onloader-d]").each(function() {
+        $("[data-onload-src-d]").each(function() {
             if(typeof $(this).attr("data-async-id")!='undefined') return;
-            filename=$(this).data("onloader-d");
+            filename=$(this).data("onload-src-d");
             alwaysMax++;
             elAsync.push($(this));
             $.get(filename+(Rapid.cache?"?v="+$.now():""), function(data) { 
@@ -1188,7 +1188,7 @@ $("#rapid-html a#normal").click(function() {
             }
             }, 1);
         
-        //S-4. The onclick, data-onclick, data-onclicker:
+        //S-4. The onclick, data-onclick, data-onclick-src:
         
         //Desc: Keep ori use consistent in onclick too
         $("[onclick]").each(function() {
@@ -1201,10 +1201,10 @@ $("#rapid-html a#normal").click(function() {
             $(this).removeAttr("data-onclick");
         });
          
-        //Desc: data-onclicker refers to external script
-        $("[data-onclicker]").each(function() {
+        //Desc: data-onclick-src refers to external script
+        $("[data-onclick-src]").each(function() {
             if(typeof $(this).attr("data-async-id")!='undefined') return;
-            filename=$(this).data("onclicker");
+            filename=$(this).data("onclick-src");
             alwaysMax++;
             elAsync.push($(this));
             $.get(filename+(Rapid.cache?"?v="+$.now():""), function(data) {

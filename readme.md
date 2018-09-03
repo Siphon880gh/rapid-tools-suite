@@ -1,144 +1,89 @@
-###Rapid Tools Suite
-####A jquery library and microframework with frontend and backend tools to shorten development time. Attach load and click controllers that refer to external scripts, handlers, or inline javascript. If you use Handlebars JS for templating engine, test templates, contexts, and helpers in one function quickly before investing in the heavy API. Use the Boilerplate files for a new app or static page loaded with common libraries, stylesheets, and fonts you can customize. Rapid can generate Bootstrap code, Ajax code, and PHP mysql code.<br/>
+Rapid Tools Suite
+==================
+By Weng Fei Fung<br/>
+Various utilities to help speed up development and improve work between team members on jQuery/Bootstrap/PHP/mySQL projects. Scroll down to see the features. For an in-depth summary, go near the bottom of page.
 
-####Generate placeholder images and lorem ipsum text by adding class names. Test how some HTML code looks in a floating draggable div with the site's stylesheet before incorporating into the layout (ihtml). Load scripts or stylesheets in the browser console so you can experiment with different css and javascript on the fly (iscript and istyle). Replace the same stylesheet (replaceStylesheet). Rapid also comes with some tools to enhance JSFiddle so you can load the common libraries, stylesheets, and fonts and Rapid. There is also a tool to toggle fullscreen in JSFiddle. Useful if you prefer to fine tune the layout CSS or more nuanced CSS in an online playground first before bringing it to development.<br/>
-
-####Create and modify Bootstrap columns on the fly with the browser console. Then you may copy the code over to your source code. Easily see where the Bootstrap columns are by toggling a lightblue border on them (Rapid Bootstrap gridlines). Resize your window to see your site layout change per xs, sm, md, and lg and a status bar tells you which breakpoint you are at (Rapid Bootstrap status). Run javascript code based on those breakpoints. Write media queries using Bootstrap classes rather than the breakpoint pixels and interchangeably generate its breakpoint pixel CSS.<br/>
-
-####Access the mysqli database in javascript with a capable API including inserting, deleting, selecting, and looping through records, so you don't have to invest heavily on the interplay of AJAX, JSON, and PHP until later. Also, have Rapid generate all the AJAX and PHP codeas as you use javascript mysqli. Rapid's Ajax uses an uniform API for all REST methods (get, post, put, patch, update, delete, options) so you don't have to remember syntax differences between $.ajax, $.get, and $.post. Use the Boilerplate php file to pick up on those REST requests and read request data with intuitive $_GET, $_POST, $_PATCH, $_UPDATE, etc arrays.<br/>
-
-####Rapid enhanced Chrome's debugging tools with several functions that monitor different types of variables. Rapid also enhanced Javascript by allowing you to make enums for some quick constants to use across your app or functions.<p/>
-
-####Let teammembers know more about your site layout with explanations in the console and enhanced tooltips that appear over select elements. The tooltips have an assortment of icons like TO-DO list or bugs that can accompany the text. Let teammember developers see your notes about specific elements by having them inside attributes in the source code while loading the page in a browser removes them.<br/>
-
-####Fully compatible with Handlebars JS, Crossroads JS, and other libraries. This library and microframework is based in jQuery. Remove what you don't need for faster loading. -Weng Fei Fung*<br/>
-**Dependencies (must have):**<br/>
-Requires jQuery<p/>
-**Dependencies (depends what you use):**<br/>
-jQuery Migrate, Jquery UI, Bootstrap, Handlebars<br/>
-(jQuery Migrate for enhanced debugging, jQuery UI for draggable Bootstrap status and draggable, resizable, styled ihtml, Bootstrap css for Bootstrap status and gridlines and Command-line Bootstrap, Bootstrap js for tooltips, and Handlebars for itemplate.)
+**Dependencies:**<br/>
+jQuery (must)<br/>
+jQuery Migrate (optional for enhanced debugger)<br/>
+Jquery UI (optional for draggable Bootstrap status and draggable, resizable, styled ihtml)<br/>
+Bootstrap CSS (optional for Bootstrap status and gridlines and Command-line Bootstrap)<br/>
+Bootstrap JS (optional for enhanced tooltips and Handlebars itemplate.)
 
 **Installation:**<br/>
 ```
 <script src="rapid/js/rapid.js"> 
+<script src="rapid/js/rapid.css"> 
 ```
-The minified production js is coming soon and will only contain essentials that are useful outside of development. These are onload, onloader, onclick, onclicker, responsive javascript, and Bootstrap-styled media queries.
-
-You can install Rapid and its dependencies via `bower install rts`.
-  
-**Legal:**
-In rapid.js.
-
-**LATEST VERSION**<br/>
-Latest version removed quite a lot from this tool to make things simple.<br/>
--Some renames js/bundle.js to js/rapid.js and js/bundle.css to js/rapid.css to avoid developer confusion with Browserify<br/>
--Renamed rapid-backend.php to rapid-mysql.php to make the purpose clearer.<br/>
--Removed bootstrap.tooltip.min.js and bootstrap.tooltip.min.css to simplify things and you can custom build bootstrap anyways.<br/>
--Rapid.backend.db is now Rapid.mysql.connect<br/>
--Rapid.ilisten is now Rapid.serverListen (because it matches NodeJS's server.listen notation)<br/>
--Rapid.mysql.testChain is now Rapid.mysqli.simpleChain (because you want a simple Chain API)<br/>
--Rapid.iajax is now Rapid.ajax (because we aren't always going to use ajax interactively or in console. Also, Rapid's unique brand of ajax can just be called Rapid Ajax)<br/>
--ori_ is now ori in controller scope
--Removed nestedWarning (the intricacies of nesting .row inside .row causing layout problems and how to ignore the warning in console or code will just overwhelm devs and it's more of a Bootstrap fundamental than anything else)<br/>
--Removed ezloader because it should be clear what the dependencies are from the ReadMe. You also have boilerplates that load Rapid and dependencies.<br/>
+```
+bower install rts
+```
 
 **BOILERPLATES**<br/>
 *What:* For frontend static webpages, web apps, and backend. There is a boilerplate that contains HTML, Bootstrap, jQuery, and Handlebar that helps you get started on your static webpage. Another boilerplate includes libraries such as Crossroads JS to help start a web app. Finally, a RESTful PHP boilerplate lets you access your mysql database, use the intuitive $_GET, $_POST, $_PATCH, $_UPDATE, etc arrays, and respond in JSON.
 
-**SEMANTICS AND MODULARITY**<br/>
-*What:* Add semantics and modularity for more readable code. Here's a brief summary of those features. Following that are example codes.
-
-Add attributes data-note, data-note-john, data-note-cindy, etc to any element and those notes can be for you or collaborators with the source code - the attributes are removed during page loads.
-
-Add enum types that help you pass flags to functions or use switch statements without the tedious work of making sure you have the same ID's or strings. The enum randomly generates an integer underneath.
-
-Your HTML elements can have attributes to script file controllers or inline javascript controllers. The javascript can refer to the element it is associated to and can transverse in jQuery using parent(), children(), next(), previous(), etc., and on any matched set, first() and last().
-
-Controllers are optional but keeps the code modular so you don't have to scroll up and down and also makes it easier to expand features. You have access to the global scope through "global" or "window."
-
-Rapid Tools Suite controllers don't need to refer to an ID in the element it is associated with, so there's the extra bonus of not having to come up with ID names for elements, speeding up development time. 
-
-jQuery plugins remain available to your controller logic, unlike frameworks out there like Angular JS.
-
-**A. Notes**<br/>
-You can add notes directly inside the elements rather than have comments near elements. They are removed during page loads. This is more for teammember developers looking at the source code.
+**SEMANTICS**<br/>
+Add <b>enum</b> types that help you pass flags to functions or use switch statements without the tedious work of making sure you have unique ID's, or making sure the constant values are the same across the app. The enum generates an integer underneath.
 ```
-<div id="main-content" data-note="this is where the main content goes" data-notes="and so forth, and so forth"></div>
+var SWITCH = {ON:enumer(), OFF:enumer()}
+var GENDER = {FEMALE:enumer(), MALE:enumer()}
+//Then call with: SWITCH.ON, etc.
 ```
 
-**B. Enums**<br/>
-You can create enums by calling enumer() which returns a unique integer. The last integer is remembered across all scopes so you are guaranteed unique numbers whenever enumer is called and wherever in the webapp it is needed.
+**OPTIONAL CONTROLLERS: INLINE JS OR INLINE SCRIPT SRC**<br/>
+Add <b>inline logic to your elements</b>. If your inline logic is too long, you can include a <b>src path to .js files in your elements</b>. The javascript has access to the element so can transverse with parent(), children(), next(), previous(), etc. This helps keep code modular and also you <b>don't have to come up with ID's or class names for your javascript to refer to</b>. You also have access to the global scope through the variable window. Unlike frameworks, you are not forced to adopt certain semantics.
 
+There are two inline logic: onload and onclick. 
 ```
-var enums = { section1: {a:enumer(), b:enumer()}, section2: {a:enumer(), b:enumer()}}
-var enums2 = { section3: {a:enumer(), b:enumer()}, section4: {a:enumer(), b:enumer()}}
+<div data-onload="alert('this div was clicked and its text is' + $(ori).text());"></div>
+<div data-onclick="alert('this div is loaded and its text is' + $(ori).text());"></div>
 ```
 
-Note: You can't name a variable enum because that's a reserved word. But you can name it enums. Although the word is reserved, Javascript still doesn't have enum types.
+You can assign <b>the order they run</b>. Just suffix with a letter a-d (d runs last). Without a letter, it's run as a. This lets you use dependencies.
+```
+// onload's
+onload-a
+onload-b
+onload-c
+onload-d
 
-**C. Controllers as external scripts: onloader**
+// onclick's
+onclick-a
+onclick-b
+onclick-c
+onclick-d
 ```
-<div data-onloader="demo_onloader.js"></div>
+
+When you want to include a .js file, suffix with a src (but before any letters)
 ```
-You can refer to the element using $(ori). This is because of onloader using ajax replacing $(this) with the jqXHR. Functions can also refer to $(ori).
+<div data-onload-src="surprise1.js"></div>
+<div data-onload-src-b="surprise2.js"></div>
+```
+
+Lastly, you can refer to the element using variables ori or $(ori).
 ```
 $(ori).css("background-color", "green");
 ```
 
-**D. Controllers as inline scripts: onload**
+Don't forget you can transverse with $(ori), so elements can have access to each other even if they have their own onload:
 ```
-<div data-onload="alert('this div is loaded and its text is' + $(ori).text());"></div>
-```
-
-Again use $(ori) because these inline codes are actually pushed into a script block and then ran in order to support dependencies (onload-a, onload-b, onload-c, onload-d) but because $(this) is immutable I have to use another variable. Functions can also refer to $(ori). Make sure your javascript ends with semi-colon. You can have the inline code just be a function call and in this way you can have a handler take care of the controller code.
-
-**Misc. Controllers for clicking events: onclicker and onclick**
-```
-<div data-onclicker="demo_onclicker.js"></div>
+$(ori).closest("ul").css("background-color", "red);
 ```
 
-For onclick and onclicker, you may use either $(this) or $(ori) (if you want to keep consistent). Also working, data-onclick (if you want to be consistent).
-```
-<div data-onclick="alert('clicked!');"></div>
-```
+You can also pass this $(ori) to a global function. You can be as modular or global as you want.
 
-**Misc. a-d**
-You can append onload and onloader attributes with letters a-d to establish an order of dependencies. Do not use data-onload or data-onloader with data-onload-a or data-onloader-a in the same element since they're the samething essentially and will cause the "a" counterpart to be erased.
-
-The order that external and inline scripts run are:
-data-onloader-a (aka data-onloader),
-data-onload-a (aka data-onload),
-data-onloader-b,
-data-onload-b,
-*... (continue on) ..*
-data-onloader-d,
-data-onload-d.
-
-You can mix external and inline scripts in the same element. You can also mix them with onclick and onclicker controllers.
-
-**Misc. Functions**
-You can define functions in any controllers that can be accessed by other controllers. Even though this violates MVC, you can encapsulate functions that's closely associated to a view and keep code readable. To allow this, I had to discard the immutable $(this) in favor of $(ori). Now you can have a function that is housed by an element to refer to another element that called it by passing $(ori) during that call.
-
-**Misc. Runtime**
-Dynamically loaded elements or those elements rendered through Handlebars may have trouble with onload, onloader, and onclicker working. This is because Rapid looks for those attributes on loading to initialize the controllers. You must re-initialize the controllers if the elements with attached controllers are created during runtime (they're dynamically loaded or rendered through Handlebars).
+<i>Dynamically</i>: If you dynamically create DOM that has onload, onload-src, onclick-src, etc, you need to re-init with initS:
 
 ```
 initS();
 ```
 
-**Misc. Caching**
-Caching onloaders and onclickers mean repeat visitors load the site faster because the same old script files just load from the browser cache rather than completing multiple requests to the server. However, caching is off by default because it's assumed you are going to be fiddling with onloader and onclicker script files during most of your use with Rapid for development purposes. You wouldn't want your scripts to be cached when you need to see the changes you are making.
-
-When you push to production server, you may want to turn on cache for performance:
+<i>Caching</i>: When you are ready for production, you may want to turn on cache for onload-src, onclick-src:
 ```
 Rapid.options({
-    cache:true
+    cache:true // default: false
 });
 ```
-
-To turn cache back off for further development, set cache:false or simply remove that option. 
-           
-This caching option is only for Controllers. All other Rapid's features uses cachebusting because their purpose is for development.
             
 **PLACEHOLDERS**<br/>
 *What:* When designing the site layout, you may want to forgo digging for the actual graphics. You can insert placeholders. There are a few different styles available:
@@ -163,7 +108,7 @@ Another style is full control over the color, label, and alignment of the paceho
 <div data-circ='{"title":"Valid centered text","bgcolor":"orange","top":"120px","font":"16px Helvetica","color":"black"}'></div>`
 ```
 
-Because full placeholder control has so many options, here is the full reference:
+Because full placeholder control has so many options, here is the full reference:<br/>
 ATTRIBUTE: [data-rect], [data-circ]<br/>
 JSON KEYS: bgcolor, color, top, align, font, title<br/>
 JSON VALUES (E.g.): "title":"Page Container","font":"12px Times New Roman"
@@ -445,21 +390,11 @@ Rapid.parentRow($("#bid2"), [3, 3, 3]); // give col1-4 sizes 3,3,3,3. Notice tha
 Rapid.parentRow($("#bid2"), 4); // give all columns the same size 4
 ```
 
-Can't see where all the Bootstrap div's made by Rapid are at? Chrome has Cmd+Shift+C then you mouseover the webpage to see an element highlighted on the screen. Well, Rapid can toggle on borderlines for all rows and columns (do this in command line or have it as part of your code):
-```
-//Note: This will add class rapid-bootstrap-gridlines to all column classes. You can turn off individual gridlines through Chrome's DevTools by removing that class.
-Rapid.options({
-    bootstrap: {
-                    gridlines: true,
-                }
-});
-```
-
-What to know if you are in mobile, tablet, desktop, or large desktop (equivalent to xs, sm, md, lg)? When you zoom and/or resize the browser window, you could go between them. Rapid lets you toggle a device status on the screen.
 ```
 Rapid.options({
     bootstrap: {
-                    status: true,
+                    gridlines: true, // default: false. // visualize all bootstrap columns and rows
+                    status: true // default: false // Shows if your webpage is applying xs, sm, md, or lg. Useful to see responsive views by resizing the web browser window or changing the zoom level
                 }
 });
 ```
@@ -559,6 +494,34 @@ Rapid.istyle("http://localhost/test-site/css/global.css");
 Rapid.replaceStylesheet("http://test-site/css/global.css");
 ```
 <p/>
+
+
+**TEAMWORK**<br/>
+*What:* Add semantics and modularity for more readable code. Here's a brief summary of those features. Following that are example codes.
+
+Add <b>notes for your developer team</b> by using attributes data-note, data-note-john, data-note-cindy, etc that are removed when the webpage loads. You can ask your developers to grep for their names to refer to certain elements.
+```
+<div id="main-content" data-note="this is where the main content goes" data-notes="and so forth, and so forth"></div>
+```
+
+**TEMPLATE: SEND TO TEAM MEMBERS:**<br/>
+There is a narration that explains the site layout. And as you read the narration, it may tell you to press a key to highlight the part of the website it's talking about.<br/>
+1. With the webpage loaded, open the browser's console:<br/>
+<p/>
+    A. On Chrome, to open the console:<br/>
+       CTRL+SHIFT+J on PC<br/>
+       CMD+Opt+J on mac<br/>
+<p/>
+    B. On Firefox, to open the console:<br/>
+       CTRL+SHIFT+K on PC<br/>
+       CMD+Opt+K on mac<br/>
+<p/>
+    C. For all other browsers, instructions [here](http://webmasters.stackexchange.com/questions/8525/how-to-open-the-javascript-console-in-different-browsers#answer-77337)
+<p/>
+3. Press  the backquote ` key (aka tilde key). You will see "Story Mode" is turned on at the console. If you don't see this message, please click a blank area on the website and press the backquote key again since the website's javascript wasn't able to hear for the key press with the focus on another part of the browser.<br/>
+4. Now press these keys for narrations that explain the site layout (again, make sure the focus is on the website before pressing the keys):<br/>
+
+
 **SHORTEN COMMANDS**<br/>
 Typing commands like Rapid.etcetc.etc(..) sure is a lot to type. Shorten that command to etc(..). Call this function to shorten many Rapid commands or functions.
 ```
@@ -607,19 +570,35 @@ You are basically calling functions that have been defined in the webpage's java
 *Solution #2:* Make sure you don't load jQuery more than once because that can cause the error as well.<br/>
 <p/>
 
-**TEMPLATE: SEND TO TEAM MEMBERS:**<br/>
-There is a narration that explains the site layout. And as you read the narration, it may tell you to press a key to highlight the part of the website it's talking about.<br/>
-1. With the webpage loaded, open the browser's console:<br/>
-<p/>
-    A. On Chrome, to open the console:<br/>
-       CTRL+SHIFT+J on PC<br/>
-       CMD+Opt+J on mac<br/>
-<p/>
-    B. On Firefox, to open the console:<br/>
-       CTRL+SHIFT+K on PC<br/>
-       CMD+Opt+K on mac<br/>
-<p/>
-    C. For all other browsers, instructions [here](http://webmasters.stackexchange.com/questions/8525/how-to-open-the-javascript-console-in-different-browsers#answer-77337)
-<p/>
-3. Press  the backquote ` key (aka tilde key). You will see "Story Mode" is turned on at the console. If you don't see this message, please click a blank area on the website and press the backquote key again since the website's javascript wasn't able to hear for the key press with the focus on another part of the browser.<br/>
-4. Now press these keys for narrations that explain the site layout (again, make sure the focus is on the website before pressing the keys):<br/>
+**BRIEF SUMMARY**<br/>
+A collection of frontend and backend tools to shorten development time on jQuery/Bootstrap/PHP/mySQL projects. Layouts with placeholders, lorem ipsum, and a command line Bootstrap layouter. Discover specifications while making quick layouts and emulating backend queries to the database. Write code faster with controllers attached to elements. Collaborate better using tooltips and narration
+
+**IN-DEPTH SUMMARY**<br/>
+A jquery library and microframework with frontend and backend tools to shorten development time. Attach load and click controllers that refer to external scripts, handlers, or inline javascript. If you use Handlebars JS for templating engine, test templates, contexts, and helpers in one function quickly before investing in the heavy API. Use the Boilerplate files for a new app or static page loaded with common libraries, stylesheets, and fonts you can customize. Rapid can generate Bootstrap code, Ajax code, and PHP mysql code.<br/>
+
+Generate placeholder images and lorem ipsum text by adding class names. Test how some HTML code looks in a floating draggable div with the site's stylesheet before incorporating into the layout (ihtml). Load scripts or stylesheets in the browser console so you can experiment with different css and javascript on the fly (iscript and istyle). Replace the same stylesheet (replaceStylesheet). Rapid also comes with some tools to enhance JSFiddle so you can load the common libraries, stylesheets, and fonts and Rapid. There is also a tool to toggle fullscreen in JSFiddle. Useful if you prefer to fine tune the layout CSS or more nuanced CSS in an online playground first before bringing it to development.<br/>
+
+Create and modify Bootstrap columns on the fly with the browser console. Then you may copy the code over to your source code. Easily see where the Bootstrap columns are by toggling a lightblue border on them (Rapid Bootstrap gridlines). Resize your window to see your site layout change per xs, sm, md, and lg and a status bar tells you which breakpoint you are at (Rapid Bootstrap status). Run javascript code based on those breakpoints. Write media queries using Bootstrap classes rather than the breakpoint pixels and interchangeably generate its breakpoint pixel CSS.<br/>
+
+Access the mysqli database in javascript with a capable API including inserting, deleting, selecting, and looping through records, so you don't have to invest heavily on the interplay of AJAX, JSON, and PHP until later. Also, have Rapid generate all the AJAX and PHP codeas as you use javascript mysqli. Rapid's Ajax uses an uniform API for all REST methods (get, post, put, patch, update, delete, options) so you don't have to remember syntax differences between $.ajax, $.get, and $.post. Use the Boilerplate php file to pick up on those REST requests and read request data with intuitive $_GET, $_POST, $_PATCH, $_UPDATE, etc arrays.<br/>
+
+Rapid enhanced Chrome's debugging tools with several functions that monitor different types of variables. Rapid also enhanced Javascript by allowing you to make enums for some quick constants to use across your app or functions.<p/>
+
+Let teammembers know more about your site layout with explanations in the console and enhanced tooltips that appear over select elements. The tooltips have an assortment of icons like TO-DO list or bugs that can accompany the text. Let teammember developers see your notes about specific elements by having them inside attributes in the source code while loading the page in a browser removes them.<br/>
+
+Fully compatible with Handlebars JS, Crossroads JS, and other libraries. This library and microframework is based in jQuery. Remove what you don't need for faster loading. -Weng Fei Fung*<br/>
+
+**LATEST VERSION**<br/>
+-Renamed js/bundle.js => js/rapid.js, js/bundle.css => js/rapid.css to avoid confusion with bundlers<br/>
+-Renamed rapid-backend.php to rapid-mysql.php to make the purpose clearer.<br/>
+-Removed bootstrap.tooltip.min.js and bootstrap.tooltip.min.css to simplify things and you can custom build bootstrap anyways.<br/>
+-Rapid.backend.db is now Rapid.mysql.connect<br/>
+-Rapid.ilisten is now Rapid.serverListen (because it matches NodeJS's server.listen notation)<br/>
+-Rapid.mysql.testChain is now Rapid.mysqli.simpleChain (because you want a simple Chain API)<br/>
+-Rapid.iajax is now Rapid.ajax (because we aren't always going to use ajax interactively or in console. Also, Rapid's unique brand of ajax can just be called Rapid Ajax)<br/>
+-Removed bootstrap.tooltip.min.js and bootstrap.tooltip.min.css to simplify things and you can custom build bootstrap anyways.<br/>
+
+**FUTURE VERSIONS**<br/>
+-Minified js
+-Production essentials version will only contain essentials that are useful outside of development. These are onload, onload-src, onclick, onclick-src, responsive javascript, and Bootstrap-styled media queries.
+  
