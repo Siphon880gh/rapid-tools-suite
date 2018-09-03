@@ -1061,7 +1061,14 @@ $("#rapid-html a#normal").click(function() {
         //Rapid.watchArr("window.scripts", true);
         
         //Notes are only for developer eyes in development environment:
-        $("[data-notes],[data-note]").removeAttr("data-notes").removeAttr("data-note");
+        var arr = [];
+        $('*').filter(function() {
+          for (attr of this.attributes)
+            if (attr.name.startsWith("data-note")) {
+                arr.push({$el:$(this), dataNoteAttr:attr.name}); // attr.name - native type attribute has a name property
+            }
+        });
+        arr.forEach(function(elWithAttrName) { var $el = elWithAttrName.$el, attrName = elWithAttrName.dataNoteAttr; $el.removeAttr(attrName); })
 
         //Onloader and onload attributes without a letter is assigned to "a":
         $("[data-onloader]").each(function() { 

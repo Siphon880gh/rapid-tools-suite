@@ -39,7 +39,6 @@ Latest version removed quite a lot from this tool to make things simple.<br/>
 -Rapid.mysql.testChain is now Rapid.mysqli.simpleChain (because you want a simple Chain API)<br/>
 -Rapid.iajax is now Rapid.ajax (because we aren't always going to use ajax interactively or in console. Also, Rapid's unique brand of ajax can just be called Rapid Ajax)<br/>
 -ori_ is now ori in controller scope
--Removed variable global (I realize most javascript devs already know of window)<br/>
 -Removed nestedWarning (the intricacies of nesting .row inside .row causing layout problems and how to ignore the warning in console or code will just overwhelm devs and it's more of a Bootstrap fundamental than anything else)<br/>
 -Removed ezloader because it should be clear what the dependencies are from the ReadMe. You also have boilerplates that load Rapid and dependencies.<br/>
 
@@ -49,11 +48,9 @@ Latest version removed quite a lot from this tool to make things simple.<br/>
 **SEMANTICS AND MODULARITY**<br/>
 *What:* Add semantics and modularity for more readable code. Here's a brief summary of those features. Following that are example codes.
 
-You get a "global" namespace that's more semantic than "window". 
+Add attributes data-note, data-note-john, data-note-cindy, etc to any element and those notes can be for you or collaborators with the source code - the attributes are removed during page loads.
 
-You can add attributes data-note or data-notes to any element and those notes can be for you or collaborators with the source code - the attributes are removed during page loads.
-
-You can easily generate the equivalent of Java and C++ enum types in javascript which helps you pass flags to functions or use enums in switch cases. All without the messy business of coming up with strings that must match across your web app. Or coming up with integers for each constant and making sure those integers are unique (which Java and C++ does automatically for enums).
+Add enum types that help you pass flags to functions or use switch statements without the tedious work of making sure you have the same ID's or strings. The enum randomly generates an integer underneath.
 
 Your HTML elements can have attributes to script file controllers or inline javascript controllers. The javascript can refer to the element it is associated to and can transverse in jQuery using parent(), children(), next(), previous(), etc., and on any matched set, first() and last().
 
