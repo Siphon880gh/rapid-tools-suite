@@ -1,89 +1,59 @@
 <?php
 
+///////////////////////////
+//    CONNECT TO DB      //
+///////////////////////////
+/*  Put your credentials
+ */
+
+// If using MeekroDB library:
+if (class_exists('DB')) {
+    DB::$user = 'foobar';
+    DB::$password = 'foobar';
+    DB::$dbName = 'foobar';
+    DB::$host = "localhost";
+    DB::$encoding = 'utf8';
+}
+
+// If using mysqli:
+$db_username = "foobar";
+$db_password = "foobar";
+$db_name = "foobar";
+$db_server = "localhost";
+$lnk1 = mysqli_connect($db_server, $db_username, $db_password) or die('{"status":"Couldn\'t connect to the SQL server with credentials."}');
+mysqli_select_db($lnk1, $db_name) or die('{"status":"Couldn\'t connect to database because either database does not exist or it is not privileged to the db user."}');
+mysqli_set_charset($lnk1, "utf8");
 
 ///////////////////////////
 //     BEST PRACTICES    //
 ///////////////////////////
-/*
-/* get = get resource
-/* post = insert resource at a non-precise URI path
-/* put = insert resource at a precise URI path
-/* patch = update a resource partially
-/* update = update a resource completely
-/* delete = remove a resource
-/* head = get debug information, meta information, or description about a resource.
-/* options = returns available API methods and URI paths
-/*
-/* #Example of URI:
-/* http://programmers.stackexchange.com/questions/218798/what-is-the-limit-on-rest-api-resource-levels
-/*
 
+/* The convention of Restful API methods:
+   get = get resource
+   post = insert resource at a non-precise URI path
+   put = insert resource at a precise URI path
+   update = update a resource completely
+   delete = remove a resource
+   head = get debug information, meta information, or description about a resource.
+   options = returns available API methods and URI paths
 
+   E.g. If the request line is 
+        GET http://example.com/api.php/songs/1
+                            or
+        GET http://example.com/api.php/songs/1/
 
-///////////////////////////
-//      CLIENT USAGE     //
-///////////////////////////
-/*
-/* Some servers don't accept restful URI like api.php/a/b. Instead use api.php?PATH=a/b
-/* 
-/* PATH is a reserved keyword. Do not use ?PATH=PATH/b or api.php/PATH/b
+   Then $_SERVER['PATH_INFO'] returns the string:
+        "songs/1/"
 */
-
-
-
-///////////////////////////
-//     CONNECT TO DB     //
-///////////////////////////
-/* Put your Mysqli connect 
-/* code here. Alternately,
-/* include the php page
-/* that has the code.
-*/
-
-$db_server = "localhost";
-$db_username = "admin";
-$db_password = "password!";
-$db_name = "db1";
-$lnk1 = mysqli_connect($db_server, $db_username, $db_password) or die('{"status":"Couldn\'t connect to the SQL server with credentials."}');
-mysqli_select_db($lnk1, $db_name) or die('{"status":"Couldn\'t connect to database because either database does not exist or it is not privileged to the db user."}');
-
-
-///////////////////////////
-//        ENGINE         //
-///////////////////////////
-/* 
-*/
-
-//Prepare session variables, eg. username
-session_start();
 
 //Prepare DB auth, HTTP method, and URI Path
+if(!isset($lnk1)) die(json_encode(error_arr("\$lnk1 not set. Did you put the database connect code near the top of the page yet? Or did you save the link identifier returned by mysqli_connect() as another name besides \$lnk1?")));
 $method = $_SERVER['REQUEST_METHOD'];
 $path_info = "";
-$path_info_thru_get_var = isset($_GET["PATH"]);
-
-if($path_info_thru_get_var)
-    $path_info = $_GET["PATH"];
-
-    // Paths need a / to begin
-    if(strlen($path_info)>0 && $path_info[0]!='/')
-        $path_info = '/' . $path_info;
-    else {
-    $path_info = @$_SERVER['PATH_INFO'];
-}
-
-// Makes sure path ends with /
-if($path_info[strlen($path_info)-1]!='/')
-    $path_info .= "/";
-
+$path_info = @$_SERVER['PATH_INFO'];
+if($path_info[strlen($path_info)-1]!='/') $path_info .= "/";
 $request = explode("/", substr($path_info, 1));
-if($request[count($request)-1]=="") array_pop($request); // Edge case: last element empty ""
-
-///////////////////////////
-//   TEST CLIENT SIDE    //
-///////////////////////////
-//var_dump($request);
-//die();
+if($request[count($request)-1]=="") array_pop($request); // Edge case: last exploded element "" needs to pop off
 
 //Prepare RESTful HTTP methods
 $_PARAMS = array();
@@ -99,13 +69,6 @@ $LEVEL3=count($request)>3?true:false;
 $LEVEL4=count($request)>4?true:false;
 $LEVEL5=count($request)>5?true:false;
 
-
-///////////////////////////
-//     IMPLEMENTATION    //
-///////////////////////////
-/* 
-*/
-
 //Reroute based on method
 switch ($method) {
   case 'GET':
@@ -116,9 +79,6 @@ switch ($method) {
     break;
   case 'PUT':
     put($request);  
-    break;
-  case 'PATCH':
-    patch($request);  
     break;
   case 'UPDATE':
     update($request);  
@@ -133,7 +93,7 @@ switch ($method) {
     options($request);    
     break;
   default:
-    error($request);  
+    die(json_encode(error_arr("Invalid Method")));
     break;
 } // switch
         
@@ -141,37 +101,18 @@ function get($request) {
     global $lnk1;
     global $LEVEL0, $LEVEL1, $LEVEL2, $LEVEL3, $LEVEL4, $LEVEL5;
     
-    if(!$LEVEL0) die(json_encode(error_arr()));
-    else if($request[0]=="albums") {
+    if(!$LEVEL0) die(json_encode(error_arr("Invalid get path")));
+    else if($request[0]=="songs") {
         //additions to the row before echoing
 
         
         //modifications to the row before echoing
-        
-        
-        //mock data (DEMO: comment out to try mock SQL)
-        $albums = array("album #1", "album #2", "album #3");
-        $json = array("albums"=>$albums);
-        echo json_encode($json);
-        die();
-        
-        //mock SQL
-        $_SESSION['user_id'] = "2khy44jIHjXXy4PFRgEfe7MoSKD3";
-        $user_id = $_SESSION['user_id'];
-        
-        $rsQuery = mysqli_query($lnk1, sprintf('SELECT * FROM Favorites WHERE user_id = "%s" LIMIT 1', $user_id));
-        
-        $data = array();
-        while($rsQuery!=FALSE && mysqli_num_rows($rsQuery) && $row = mysqli_fetch_assoc($rsQuery)) {
-            $row["a"] = $_GET["a"];
-            array_push($data, $row);
-        } // while
-        
-        echo(json_encode($data));
-        die();
+
+
+        //echo json_encode($fetchedAssocArr[0]);
         
     } // GET api.php/albums
-    else if($request[0]=="songs") {
+    else if($request[0]=="albums") {
     } // GET api.php/songs
     else if($request[0]=="count") {
         if(!$LEVEL1) die(json_encode(error_arr()));
@@ -184,32 +125,38 @@ function get($request) {
         }
     }
     else {
-        die(json_encode(error_arr()));
+        die(json_encode(error_arr("Invalid get path")));
     }
     
 } // get
+
         
 function post($request) {
     global $lnk1;
     global $LEVEL0, $LEVEL1, $LEVEL2, $LEVEL3, $LEVEL4, $LEVEL5;
+
+    if(!$LEVEL0) die(json_encode(error_arr("Invalid post path")));
+    else if($request[0]==="foobar")
+    else {
+        die(json_encode(error_arr("Invalid post path")));
+    }
     
 } // post
+
         
 function put($request) {
     global $lnk1;
     global $_PARAMS;
     $_PUT = $_PARAMS;
     global $LEVEL0, $LEVEL1, $LEVEL2, $LEVEL3, $LEVEL4, $LEVEL5;
+
+    if(!$LEVEL0) die(json_encode(error_arr("Invalid put path")));
+    else if($request[0]==="foobar")
+    else {
+        die(json_encode(error_arr("Invalid put path")));
+    }
     
 } // put
-        
-function patch($request) {
-    global $lnk1;
-    global $_PARAMS;
-    $_PATCH = $_PARAMS;
-    global $LEVEL0, $LEVEL1, $LEVEL2, $LEVEL3, $LEVEL4, $LEVEL5;
-    
-} // patch
 
 function update($request) {
     global $lnk1;
@@ -217,41 +164,57 @@ function update($request) {
     $_UPDATE = $_PARAMS;
     global $LEVEL0, $LEVEL1, $LEVEL2, $LEVEL3, $LEVEL4, $LEVEL5;
     
-    if(!$LEVEL0) die(json_encode(error_arr()));
+    if(!$LEVEL0) die(json_encode(error_arr("Invalid update path")));
+    else if($request[0]==="foobar")
+    else {
+        die(json_encode(error_arr("Invalid update path")));
+    }
 } // update
         
+
 function delete($request) {
     global $lnk1;
     global $_PARAMS;
     $_DELETE = $_PARAMS;
     global $LEVEL0, $LEVEL1, $LEVEL2, $LEVEL3, $LEVEL4, $LEVEL5;
     
+    if(!$LEVEL0) die(json_encode(error_arr("Invalid update path")));
+    else if($request[0]==="foobar")
+    else {
+        die(json_encode(error_arr("Invalid update path")));
+    }
 } // delete
         
+
 function head($request) {
     global $lnk1;
     global $_PARAMS;
     $_HEAD = $_PARAMS;
     global $LEVEL0, $LEVEL1, $LEVEL2, $LEVEL3, $LEVEL4, $LEVEL5;
     
+    if(!$LEVEL0) die(json_encode(error_arr("Invalid head path")));
+    else if($request[0]==="foobar")
+    else {
+        die(json_encode(error_arr("Invalid head path")));
+    }
 } // head
         
+
 function options($request) {
     global $lnk1;
     global $_PARAMS;
     $_OPTIONS = $_PARAMS;
     global $LEVEL0, $LEVEL1, $LEVEL2, $LEVEL3, $LEVEL4, $LEVEL5;
     
+    if(!$LEVEL0) die(json_encode(error_arr("Invalid options path")));
+    else if($request[0]==="foobar")
+    else {
+        die(json_encode(error_arr("Invalid options path")));
+    }
 } // options
-        
-function method_error($request) {
-    global $lnk1;
-    
-} // method_error
 
 function error_arr() {
-    $strExtra = "";
-    if(func_num_args()>0) $strExtra = ". Code '" . func_get_arg(0) . "'";
-    
-    return array("error"=>"Invalid connection" . $strExtra . ".");
+    return array( "error"=>$sprintf("API error: %s", func_get_arg(0)) );
 }
+
+?>
