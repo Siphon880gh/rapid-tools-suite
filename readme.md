@@ -1,7 +1,7 @@
 Rapid Tools Suite
 ==================
 By Weng Fei Fung<br/>
-Various utilities to help speed up development and improve work between team members on jQuery/Bootstrap/PHP/mySQL projects. Scroll down to see the features. For an in-depth summary, go near the bottom of page.
+Utilities to speed up development full stack and all around development stages. For frontend, jQuery, Bootstrap, crossroad, and handlebar gets developed quicker especially if you are not an expert yet. For backend, php and mySQL, there is a restful API template (with variables $_GET, $_POST, $_PUT, $_UPDATE, $_DELETE, $_HEAD, $_OPTIONS) (supports mysqli and meekroDB) and a javascript equivalent of mySQL so you can test queries and PHP variables in the browser console. There are utilities to communicate between team members in the web browser or code. And when you're back months later, there are utilities to explore the CSS and js variables. There is an enhanced debugging tool for when you're developing. Scroll down to see the features. For an in-depth summary, go near the bottom of page.
 
 **Dependencies:**<br/>
 jQuery (must)<br/>
@@ -12,11 +12,13 @@ Bootstrap JS (optional for enhanced tooltips and Handlebars itemplate.)
 
 **Installation:**<br/>
 ```
-<script src="rapid/js/rapid.js"> 
-<script src="rapid/js/rapid.css"> 
-```
-```
-bower install rts
+Frontend:
+<script src="src/rapid.js">
+<link href="src/rapid.css" type="stylesheet">
+
+Backend:
+Setup your phpMyAdmin credentials at src/rapid-mysql.php
+Ajax to src/rapid-mysql.php
 ```
 
 **BOILERPLATES**<br/>
