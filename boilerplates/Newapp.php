@@ -260,5 +260,8 @@
         <link href="//code.jquery.com/qunit/qunit-1.20.0.css" rel="stylesheet"/>
         <script src="//code.jquery.com/qunit/qunit-1.20.0.js"></script>
    
+        <!-- Knockout JS -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js">
+        
     </body>
 </html>

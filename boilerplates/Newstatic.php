@@ -139,5 +139,9 @@
         <link href="https://rawgit.com/Siphon880gh/rapid-tools-suite/master/js/rapid.css" rel="stylesheet">
         <script src="https://rawgit.com/Siphon880gh/rapid-tools-suite/master/js/rapid.js"></script>
 
+        <!-- Knockout JS -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js">
+
+
     </body>
 </html>

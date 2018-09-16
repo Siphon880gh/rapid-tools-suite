@@ -1,7 +1,7 @@
 Rapid Tools Suite
 ==================
 By Weng Fei Fung<br/>
-Utilities to speed up development full stack and all around development stages. For frontend, jQuery, Bootstrap, crossroad, and handlebar gets developed quicker especially if you are not an expert yet. For backend, php and mySQL, there is a restful API template (with variables $_GET, $_POST, $_PUT, $_UPDATE, $_DELETE, $_HEAD, $_OPTIONS) (supports mysqli and meekroDB) and a javascript equivalent of mySQL so you can test queries and PHP variables in the browser console. There are utilities to communicate between team members in the web browser or code. And when you're back months later, there are utilities to explore the CSS and js variables. There is an enhanced debugging tool for when you're developing. Scroll down to see the features. For an in-depth summary, go near the bottom of page.
+Utilities to speed up development full stack and all around development stages. For frontend, jQuery, Bootstrap, crossroad, knockout, and handlebar gets developed quicker especially if you are not an expert yet. You can have clean code by loading js module files into div's. For backend, php and mySQL, there is a restful API template (with variables $_GET, $_POST, $_PUT, $_UPDATE, $_DELETE, $_HEAD, $_OPTIONS) (supports mysqli and meekroDB) and a javascript equivalent of mySQL so you can test queries and PHP variables in the browser console. There are utilities to communicate between team members in the web browser or code. And when you're back months later, there are utilities to explore the CSS and js variables. There is an enhanced debugging tool for when you're developing. Scroll down to see the features. For an in-depth summary, go near the bottom of page.
 
 **Dependencies:**<br/>
 jQuery (must)<br/>
@@ -22,7 +22,9 @@ Ajax to src/rapid-mysql.php
 ```
 
 **BOILERPLATES**<br/>
-*What:* For frontend static webpages, web apps, and backend. There is a boilerplate that contains HTML, Bootstrap, jQuery, and Handlebar that helps you get started on your static webpage. Another boilerplate includes libraries such as Crossroads JS to help start a web app. Finally, a RESTful PHP boilerplate lets you access your mysql database, use the intuitive $_GET, $_POST, $_PATCH, $_UPDATE, etc arrays, and respond in JSON.
+*What:* 
+-For static frontend, web app, and backend. <br/>
+-Static frontend boilerplate with HTML, Bootstrap, jQuery, Knockout, and Handlebar that helps you get started on your static webpage with two way binding and visibility directives. Another boilerplate includes libraries such as Crossroads JS to help start a web app. Finally, a RESTful PHP boilerplate lets you access your mysql database, use the intuitive $_GET, $_POST, $_PATCH, $_UPDATE, etc arrays, and respond in JSON.
 
 **SEMANTICS**<br/>
 Add <b>enum</b> types that help you pass flags to functions or use switch statements without the tedious work of making sure you have unique ID's, or making sure the constant values are the same across the app. The enum generates an integer underneath.
