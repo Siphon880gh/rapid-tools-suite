@@ -263,9 +263,13 @@
         return mysqli_real_escape_string(str);
     }
     //For semantics - easily add enums in javascript
-    function enumer() {
-        return ++Rapid.constants.itrEnum;
-    }
+    $.extend(true, Rapid,
+        {
+            newEnum: function() {
+                return ++Rapid.constants.itrEnum;
+            }
+        }
+    );
 
     $.extend(true, Rapid, 
         {
@@ -312,7 +316,7 @@
                     return Rapid.mysql.simpleChain.apply(this, arguments);  
                 };
             }, // i for shortening interactive commands
-            cache: false, // for controllers
+            modularCache: false, // for controllers
             constants: { // internal use only
                 phpEmulate: "phpEmulate", 
                 ibootstrapAddContainer: '<div id="" class="container" style="" data-rapid-target></div>',
@@ -1055,7 +1059,7 @@ $("#rapid-html a#normal").click(function() {
     //S-2. Controllers
     var countScript=-1, countAsync=-1, elAsync = []; // next script
     var always=0, alwaysMax=0; // $.get(...).always(...)
-    function initS() {
+    function initM() {
         var scripts = [], scripts2 = [];
         //window.scripts = scripts;
         //Rapid.watchArr("window.scripts", true);
@@ -1228,7 +1232,7 @@ $("#rapid-html a#normal").click(function() {
             }
             }, 1); 
         
-    } //initS
+    } //initM
 
     /**
     * PLACEHOLDERS
@@ -2027,7 +2031,7 @@ $("#rapid-html a#normal").click(function() {
 
     $(function() {
         (function init_rapid() {
-            initS(); // Semantics incl. global, controllers (as inline js or external script)
+            initM(); // Semantics incl. global, controllers (as inline js or external script)
             initP(); // Placeholders including rects and circles
             initT(); // Tooltips
             initSM(); // Storymode that combines tooltips with a console narrative
