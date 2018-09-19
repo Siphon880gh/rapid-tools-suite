@@ -265,8 +265,13 @@
     //For semantics - easily add enums in javascript
     $.extend(true, Rapid,
         {
-            newEnum: function() {
-                return ++Rapid.constants.itrEnum;
+            Enum: {
+                new: function() {
+                    return ++Rapid.constants.itrEnum;
+                },
+                last: function() {
+                    return Rapid.constants.itrEnum;
+                }
             }
         }
     );
