@@ -12,7 +12,7 @@
  * You changed the files or code where they occured.
  *
  * Requires jQuery, Jquery UI, Handlebars, Bootstrap
- * - jQuery for general functions, jQuery migrate for Chrome debugging functions (if using), Query UI for draggable Bootstrap status and draggable styled ihtml box, Bootstrap css for Bootstrap features, Bootstrap js for detailed tooltips, and Handlebars for itemplate
+ * - jQuery for general functions, jQuery migrate for Chrome debugging functions (if using), Query UI for draggable Bootstrap status and draggable styled ihtml box, Bootstrap css for Bootstrap features, Bootstrap js for detailed tooltips, and Handlebars for ihandlebars
  * Date: 2015-04-28 T16:19Z
  * Version: 2
  */
@@ -279,7 +279,7 @@
     $.extend(true, Rapid, 
         {
             i: function() {
-                console.info("Rapid.i: Shortened many interactive commands for faster typing.\nAvailable commands: options, staticCSS, preset, presetHelp, mod, latest, ihtml, itemplate, ajax, db, serverListen, Chain, simpleChain \n");
+                console.info("Rapid.i: Shortened many interactive commands for faster typing.\nAvailable commands: options, staticCSS, preset, presetHelp, mod, latest, ihtml, ihandlebars, ajax, db, serverListen, Chain, simpleChain \n");
                 
                 window.options = function() {
                     return Rapid.options.apply(this, arguments);
@@ -302,8 +302,8 @@
                 window.ihtml = function() {
                     return Rapid.ihtml.apply(this, arguments);
                 };
-                window.itemplate = function() {
-                    return Rapid.itemplate.apply(this, arguments);
+                window.ihandlebars = function() {
+                    return Rapid.ihandlebars.apply(this, arguments);
                 };
                 window.ajax = function() {
                     return Rapid.ajax.apply(this, arguments);
@@ -373,31 +373,52 @@
                 return true;
               } // validateResponse
             },
-        	itemplate: function(lang, data /*polymorphic*/) {
+        	ihandlebars: function(lang, data /*polymorphic*/) {
                 if(typeof Handlebars==="undefined") {
-                    console.error("Rapid.itemplate: Make sure to load Handlebars JS before Rapid Tools Suite if you want to use this function to validate Handlebars code with a javascript object.");
+                    console.error("Rapid.ihandlebars: Make sure to load Handlebars JS before Rapid Tools Suite if you want to use this function to validate Handlebars code with a javascript object.");
                     return;   
                 }
-                error_incorrect_parameters = "Rapid.itemplate: Make sure to pass a string Handlebars template code (Eg. \"{{#wrapper}} {{row}} {{/wrapper}}\") and a context Javascript object (Eg. {wrapper: [{row:1},{row:2},{row:3}]}). Third parameter is optional and if provided, must be an array of one or more Handlebars helpers.";
+                error_incorrect_parameters = "Rapid.ihandlebars: Make sure to pass a string Handlebars template code (Eg. \"{{#wrapper}} {{row}} {{/wrapper}}\") and a context Javascript object (Eg. {wrapper: [{row:1},{row:2},{row:3}]}). Third parameter is optional and if provided, must be an array of one or more Handlebars helpers.";
                 if(arguments.length<2) {
                     console.error(error_incorrect_parameters);
                     return; 
                 }
                 if(typeof arguments[0]!="string" || typeof arguments[1]!="object") {
                     console.error(error_incorrect_parameters);
-                    return; 
+                    return;
                 }
                 
+                var arrHelpers = [];
+                // Any helper functions passed
                 if(arguments.length>2) {
                   for(var i=2; i<arguments.length; i++) {
                         var fxnName = arguments[i][0],
                       fxn = arguments[i][1];
                       Handlebars.registerHelper(fxnName, fxn);
+                      arrHelpers.push( {fxnName:fxnName, fxn:fxn} )
                   } // for
                 } // if provided helpers
 
-                console.info("Validated: " + Handlebars.compile(lang)(data));
-            }, //itemplate
+                console.log("%cRendered:\n%c" + Handlebars.compile(lang)(data) + '\n', "color:green;", "color:black;");
+
+                console.log("%cYour Handlebar code:", "color:green");
+
+                if(arrHelpers.length) {
+                    for(var i = 0; i<arrHelpers.length; i++) {
+                        console.log(`Handlebars.registerHelper('${arrHelpers[i].fxnName}', ${arrHelpers[i].fxn});
+                        `);
+                    }
+                }
+                console.log(`
+$("body").append("<template id='template-temp'>${lang}</template>");
+var source   = $("#template-temp").html();
+var template = jsTemplate = Handlebars.compile(source);
+var context = jsData = ${JSON.stringify(data)};
+var html = contextualizedIntoFinalHTML = template(context);
+$("body").append(html); // or change to another element
+`, "color:green", "color:black");
+
+            }, //ihandlebars
             ihtml: function() {
                 //toggling ihtml canvas
                 if(arguments.length==0)

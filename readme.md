@@ -15,7 +15,7 @@ jQuery
 jQuery Migrate (enhanced Chrome debugger)  
 Jquery UI (Bootstrap utility: screen size status. Design utility: ihtml)  
 Bootstrap CSS (Bootstrap utility: scren size status, column gridlines, and in-console command-line Bootstrap)  
-Bootstrap JS (Teamwork utility: Tooltips. Handlebar utility: itemplate.)
+Bootstrap JS (Teamwork utility: Tooltips. Handlebar utility: ihandlebars.)
 
 Installation:
 ---
@@ -45,9 +45,9 @@ boilerplates/newrest.php
 ---
 A php backend file to access your mysql database, either with meekrodb or mysqli. Uses intuitive variables to access your inputs: $_GET, $_POST, $_PUT, $_UPDATE, $_DELETE, $_HEAD, $_OPTIONS.
 
-MAINTENANCE: Enum
+MAINTENANCE: Enums 
 ===
-Add <b>enum</b> types that help you pass flags to functions or to use switch statements without the tedious work of making sure you have unique ID's or making sure the constants are the same across the app. The enum generates an incrementing unique integer underneath irrespective of where it's called in the app. Syntactic sugar enum's make less tedious reading because constants are initialized once and used everywhere else.
+Add <b>enums</b> that help you pass flags to functions or to use switch statements without the tedious work of making sure you have unique ID's or making sure the constants are the same across the app. The enum generates an incrementing unique integer underneath irrespective of where it's called in the app. Syntactic sugar enum's make less tedious reading because constants are initialized once and used everywhere else.
 ```
 var SWITCH = {ON:Rapid.Enum.new(), OFF:Rapid.Enum.new()};
 var GENDER = {FEMALE:Rapid.Enum.new(), MALE:Rapid.Enum.new()};
@@ -368,7 +368,7 @@ Rapid.options({
 });
 ```
 
-**DESIGN UTILITIES: ihtml and itemplate**  
+**DESIGN UTILITIES: ihtml and ihandlebars**  
 *ihtml:* DOM - You want to add html thru jQuery's html, append, or prepend to see how it looks but you already have a good layout going on there? Just use ihtml to create a floating draggable area that acts like scratch paper for html rendering. You can adjust transparency and move it out of the way of the website's main elments.
 ```
 ihtml("<b>I should look bolded.</b>");
@@ -379,7 +379,9 @@ Finished scratch papering your renders? Just destroy it with:
 ihtml();
 ```
 
-*itemplate:* HANDLEBAR - Not confident you can write Handlebar expressions without screwing up? Write them in command line and get instant feedback. Rapid.itemplate(..) helps with this. Pass the Handlebar expressions with html in the first parameter without that much focus on making the html look good. Then pass the javascript object in the second parameter as the context. Optionally, you can pass a third parameter, an array of helpers.
+*ihandlebars:* HANDLEBAR - Not confident you can write Handlebar expressions without screwing up? Write them in command line and get instant feedback. Rapid.ihandlebars(..) helps with this. Pass the Handlebar expressions with html in the first parameter without that much focus on making the html look good. Then pass the javascript object in the second parameter as the context. Optionally, you can pass an array of helper name and its implementation in the third parameter. For extra helpers, you pass the same onto the fourth parameter, fifth parameter, etc etc.  
+
+Below is an example. Once you run with ihandlebars, you can look at the "render" section to see if it's correct, then there's the "code" section you can copy and paste to. So ihandlebars not only lets you test out Handlebar templates but also generates the wordy Handlebar code.
 ```
 var data = { 
 	random_words: [ 
@@ -389,7 +391,7 @@ var data = {
     						] 
 };
 
-Rapid.itemplate("{{#random_words}} {{#everyOther @index 2 }}<b>{{word}}</b>{{else}} {{word}} {{/everyOther}}  {{/random_words}}", data, ["everyOther", function (index, amount, scope) { if ( ++index % amount ) return scope.inverse(this); else return scope.fn(this);} ])
+Rapid.ihandlebars("{{#random_words}} {{#everyOther @index 2 }}<b>{{word}}</b>{{else}} {{word}} {{/everyOther}}  {{/random_words}}", data, ["everyOther", function (index, amount, scope) { if ( ++index % amount ) return scope.inverse(this); else return scope.fn(this);} ])
 ```
 
 **DESIGN UTILITIES: CLI Adding of Stylsheets and Scripts**  
@@ -544,7 +546,7 @@ rapidParams
 
 
 
-TEAMWORK UTILITIES: Notes inside the element
+TEAMWORK UTILITIES: Notes inside elements
 ===
 *What:* Add semantics and modularity for more readable code. Here's a brief summary of those features. Following that are example codes.
 
