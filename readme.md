@@ -15,7 +15,7 @@ jQuery
 jQuery Migrate (enhanced Chrome debugger)  
 Jquery UI (Bootstrap utility: screen size status. Design utility: ihtml)  
 Bootstrap CSS (Bootstrap utility: scren size status, column gridlines, and in-console command-line Bootstrap)  
-Bootstrap JS (Teamwork utility: Tooltips. Handlebar utility: ihandlebars.)
+Bootstrap JS (Teamwork utility: Tooltips. Handlebar utility: handlebars.)
 
 Installation:
 ---
@@ -45,7 +45,7 @@ boilerplates/newrest.php
 ---
 A php backend file to access your mysql database, either with meekrodb or mysqli. Uses intuitive variables to access your inputs: $_GET, $_POST, $_PUT, $_UPDATE, $_DELETE, $_HEAD, $_OPTIONS.
 
-MAINTENANCE: Enums 
+MAINTENANCE: Enums
 ===
 Add <b>enums</b> that help you pass flags to functions or to use switch statements without the tedious work of making sure you have unique ID's or making sure the constants are the same across the app. The enum generates an incrementing unique integer underneath irrespective of where it's called in the app. Syntactic sugar enum's make less tedious reading because constants are initialized once and used everywhere else.
 ```
@@ -61,9 +61,9 @@ MAINTENANCE: Reverse-engineer styles going up
 Use in your browser console. Lists ancestral DOMs with the value of your desired CSS property. You can indicate how many ancestors you go up. Useful when you know that a higher DOM is causing the page to display a certain way but there are too many DOMs to click thru in Inspect Element. If you do not indicate the number of ancestors, it will just go up one parent.
 
 ```
-Rapid2.cssUp($DOMtoTransverse, cssProperty, levelsGoingUp) 
+Rapid.cssUp($DOMtoTransverse, cssProperty, levelsGoingUp) 
 
-Rapid2.cssUp($("#goUpFromMe_andLookForElementsWithBgColorDefined_andStop4LevelsUp"), "background-color", 4);
+Rapid.cssUp($("#goUpFromMe_andLookForElementsWithBgColorDefined_andStop4LevelsUp"), "background-color", 4);
 ```
 
 MAINTENANCE: Reverse-engineer styles going down
@@ -74,25 +74,25 @@ Use in your browser console.
 - You can exclude the value or rule to list all the children with the CSS value.
 
 Format:
-`Rapid2.cssDown($DOMtoTransverse, cssProperty, cssValue_or_matchingRule);`
+`Rapid.cssDown($DOMtoTransverse, cssProperty, cssValue_or_matchingRule);`
 
 Examples:
 ```
-Rapid2.cssDown($("ul"), "width");
-Rapid2.cssDown($("ul"), "width", "100%");
-Rapid2.cssDown($("ul"), "width", "^5");
-Rapid2.cssDown($("ul"), "width", >=10);
-Rapid2.cssDown($("ul"), "background-color", "lightyellow");
+Rapid.cssDown($("ul"), "width");
+Rapid.cssDown($("ul"), "width", "100%");
+Rapid.cssDown($("ul"), "width", "^5");
+Rapid.cssDown($("ul"), "width", >=10);
+Rapid.cssDown($("ul"), "background-color", "lightyellow");
 ```
 
 Explanations:
-a. `Rapid2.cssDown($("ul"), "width");`
+a. `Rapid.cssDown($("ul"), "width");`
    list all the children DOM with their width properties
-b. `Rapid2.cssDown($("ul"), "font-weight", "^5")`
+b. `Rapid.cssDown($("ul"), "font-weight", "^5")`
    find children DOM with font-weight that starts with a 5, so effectively 500-599
-c.` Rapid2.cssDown($("ul"), "width", >=10)`
+c.` Rapid.cssDown($("ul"), "width", >=10)`
    find children DOM with width greater than 10px, but this also shows 100% because remember mathematical expressions ignore units
-d. `Rapid2.cssDown($("ul"), "background-color", "lightyellow");`
+d. `Rapid.cssDown($("ul"), "background-color", "lightyellow");`
    find children with that specific color. does not matter if you use human readable color names or rgb because the script converts to rgb from the DOM and your input before matching. No mathematical expression and regular expression would work on color CSS, so do not use them.
 
 
@@ -141,35 +141,16 @@ var $container = $(ori).parent(".container");
 $container.css("border", "1px solid black");
 ```
 
-
 Certain Cases:
 ---
 - You can pass the current element ori or $(ori) to a global function.  
-- **You can dynamically add new elements with these features**. For example, you add multiple elements that load .js files with dependencies. Make sure to run `initM()` to initialize those new elements. M for modular.  
+- **You can dynamically add new elements with these features**. For example, you add multiple elements that load .js files with dependencies. Make sure to run `reinitM()` to initialize those new elements. M for modular.  
 - You can turn on **caching** for performance when you go live.
 ``
 Rapid.options({
     modularCache:true // default: false
 });
 ``
-
-DEBUGGING: Watch
-===
-*Watch:* Monitor for changes in Javascript Objects, Javascript Object Keys, HTML attributes, HTML5 data attributes, and HTML/text content. If you want to pause on changes like in a breakpoint, pass "true" to the monitoring function(s) and run the website with Chrome's DevTools opened (must be opened for the pauses to work). If you don't want pauses, skip that parameter or pass "false."  
-FUNCTION: Rapid.watchObj("object", [true]);  
-FUNCTION: Rapid.watchKey("object", "key", [true]);  
-FUNCTION: Rapid.watchArr("array", [true]);  
-FUNCTION: Rapid.watchDOM("css-selector(s)", [true]);  
-FUNCTION: Rapid.watchDOMOptions({key:value[, key:value, key:value, ..]});  
-OPTIONS: {childList: true/false, attributes: true/false, characterData: true/false, subtree: true/false, attributeOldValue: true/false, characterDataOldValue: true/false}  
-
-DEBUGGING: Delay Debugger
-Runs debugger after x ms. Useful for some scenarious like setting a debugger when you move the mouse over and that triggers a state change in an object or html, and you do not want to go back to the code and figure out where to put the debugger statement, in which case you give yourself 3000 milliseconds to move your mouse over the element.
-```
-Rapid2.delayDebugger(3000);
-```
-
-===
 
 DEBUGGING: assert
 ===
@@ -208,7 +189,43 @@ Assess values at different points of the script without boilerplate. For help du
 
 After passing, if you want to keep the RapidAssert calls for other developers but not pollute, instead of commenting out you can define RapidAssert as RapidAssert = function() {} at the top of your code
 
-If you have to pass multiple values, use an array of those values.    
+If you have to pass multiple values, use an array of those values.
+
+DEBUGGING: Watch
+===
+*Watch:* Monitor for changes in Javascript Objects, Javascript Object Keys, HTML attributes, HTML5 data attributes, and HTML/text content. If you want to pause on changes like in a breakpoint, pass "true" to the monitoring function(s) and run the website with Chrome's DevTools opened (must be opened for the pauses to work). If you don't want pauses, skip that parameter or pass "false."
+
+FUNCTION: Rapid.watchObj("object", [true]);  
+FUNCTION: Rapid.watchKey("object", "key", [true]);  
+FUNCTION: Rapid.watchArr("array", [true]);  
+FUNCTION: Rapid.watchDOM("css-selector(s)", [true]);  
+FUNCTION: Rapid.watchDOMOptions({key:value[, key:value, key:value, ..]});  
+OPTIONS: {childList: true/false, attributes: true/false, characterData: true/false, subtree: true/false, attributeOldValue: true/false, characterDataOldValue: true/false} 
+
+**Examples:**  
+var fooObj = {foo:13,baz:"42",bar:"33"};
+var fooObj2 = {a:1, b:"2"};
+Rapid.watchLit(var);
+Rapid.watchObj("fooObj2");
+Rapid.watchKey("fooObj", "baz");
+Rapid.watchArr("arr");
+Rapid.watchDOMOptions({subtree:false});
+Rapid.watchDOM("#target");
+Rapid.watchDOM("#target2", true);
+
+**What could trigger alerts in the console:**  
+foo.bar=30;   
+$("#target").text("inserted");
+$("#target").html("<b>changed</b>");
+$("#target").data("attr","2");
+$("#target2").data("attr","3");
+
+DEBUGGING: Delay Debugger
+===
+Runs debugger after x ms. Useful for some scenarios like having your mouse positioned before debugger runs. This is useful because opening the console and running the debugger statement would place the focus away from the DOM and may not trigger the function you want to debug.
+```
+Rapid.delayDebugger(3000);
+```
 
 DESIGN UTILITIES: Img and Block Placeholders
 ===
@@ -239,7 +256,7 @@ ATTRIBUTE: [data-rect], [data-circ]
 JSON KEYS: bgcolor, color, top, align, font, title  
 JSON VALUES (E.g.): "title":"Page Container","font":"12px Times New Roman"
 
-DESIGN UTILITIES: Lorem IPsum
+DESIGN UTILITIES: Lorem Ipsum
 ===
 *What:* When laying out the website, you may not want to dig for the text either. You can generate a bunch of random text:
 
@@ -258,10 +275,38 @@ For five paragraphs that take up a lot of the website:
 <div class="lorem-5p">
 ```
 
-If dynamically adding these classes, you will need to call initL().
+If dynamically adding these classes, you will need to call reinitL().
 
 
-DESIGN UTILITIES: RESPONSIVE JAVASCRIPT AND CSS
+DESIGN UTILITIES: ihtml and handlebars
+===
+*ihtml:* DOM - You want to add html thru jQuery's html, append, or prepend to see how it looks but you already have a good layout going on there? Just use ihtml to create a floating draggable area that acts like scratch paper for html rendering. You can adjust transparency and move it out of the way of the website's main elments.
+```
+ihtml("<b>I should look bolded.</b>");
+```
+
+Finished scratch papering your renders? Just destroy it with:
+```
+ihtml();
+```
+
+*handlebars:* HANDLEBAR - Not confident you can write Handlebar expressions without screwing up? Write them in command line and get instant feedback. Rapid.handlebars(..) helps with this. Pass the Handlebar expressions with html in the first parameter without that much focus on making the html look good. Then pass the javascript object in the second parameter as the context. Optionally, you can pass an array of helper name and its implementation in the third parameter. For extra helpers, you pass the same onto the fourth parameter, fifth parameter, etc etc.  
+
+Below is an example. Once you run with handlebars, you can look at the "render" section to see if it's correct, then there's the "code" section you can copy and paste to. So handlebars not only lets you test out Handlebar templates but also generates the wordy Handlebar code.
+```
+var data = { 
+	random_words: [ 
+                    {word: "Alpha"},
+                    {word: "Beta"},
+                    {word: "Omega"} 
+    						] 
+};
+
+Rapid.handlebars("{{#random_words}} {{#everyOther @index 2 }}<b>{{word}}</b>{{else}} {{word}} {{/everyOther}}  {{/random_words}}", data, ["everyOther", function (index, amount, scope) { if ( ++index % amount ) return scope.inverse(this); else return scope.fn(this);} ])
+```
+
+
+DESIGN UTILITIES: JS Bootstrap Media Queries
 ===
 *What:* Css media queries stress you out with their pixel numbers you haven't memorized or their confusing screen and width syntax? Have Rapid write the css media queries for you. Setup the responsive css thru options
 ```
@@ -275,11 +320,11 @@ Rapid.options({
 });
 ```
 
-Since you are typing CSS code into these xsCSS..lgCSS options, your IDE wont be auto-completing, syntatic coloring, or offering hints for the CSS. If you feel uncomfortable, you can validate your CSS at CSS Lint or you can open a blank css on your editor to type your CSS there first. `Rapid.ibootstrap.staticCSS();` also helps by returning a concatenated form of all the responsive CSS options with their approproate CSS media queries, something you can validate at CSS Lint.
+Since you are typing CSS code into these xsCSS..lgCSS options, your IDE wont be auto-completing, syntatic coloring, or offering hints for the CSS. If you feel uncomfortable, you can validate your CSS at CSS Lint or you can open a blank css on your editor to type your CSS there first. `Rapid.bootstrap.toStaticCSS();` also helps by returning a concatenated form of all the responsive CSS options with their approproate CSS media queries, something you can validate at CSS Lint.
 
 If the page loads as expected on different screen resolutions, you are good to go. But if the elements take a brief moment to rescale and/or move to fit the css rules targeted for the screen resolution, then ask Rapid for the css and just copy and paste that into a style block, and delete the Rapid options. You get that static css media queries with:
 ```
-Rapid.ibootstrap.staticCSS();
+Rapid.bootstrap.toStaticCSS();
 ```
 
 When the css media queries are not enough and you want to use jquery to change the html using .css, .offset, etc to tailor fit certain screen resolutions; Or when you just want to run scripts based on screen resolutions: There are responsive scripts you can setup in Rapid options:
@@ -312,114 +357,112 @@ Rapid.options({
 
 DESIGN UTILITIES: CLI Bootstrap
 ===
-*What:* Type commands into the browser console and have Rapid generate Bootstrap code. Then copy and paste it to your editor. For more info including how to open the browser's console, read the FAQs in this ReadMe.
+- Get the Bootstrap code for the most common components.
+- Modify column widths in console.
 
-Have Rapid type the code for you. You can add "container", "well", "row", "col", "colxs", "colsm", "colmd", "collg", or any column class from "col-xs-1" to "col-lg-12".
+Recommend running this so Rapid.bootstrap.preset can be called as preset(), etc
+```
+Rapid.i(); // load aliases so you can be quicker with being interactive in the console
+```
+
+Get or append the Bootstrap code for the most common components
 ```
 $(".container").append(preset("row"));
 ```
-You can also use .html, .prepend, etc.
+
+You can use the components:
+-"container"
+-"well"
+-"row"
+-"col"
+-"colxs"
+-"colsm"
+-"colmd"
+-"collg"
+
+And you can be specific with the column widths, including:
+-"col-xs-1"
+-"col-lg-12".
+
+Another workflow is you can get the code inside console and edit the DOM in DevTools.
 
 Rapid.add also lets you assign classes, styles, add attributes, and add inner html or text.
 ```
 $(".container").append(preset("row"), {style:"text-align:center;", class:"someClass", attr:"someAttr someOtherAttr='value'", inner:"someTextOrHTML"});
-```
- 
-A quick reminder of what Rapid.add does:
-```
-Rapid.presetHelp();
 ```
 
 Each Bootstrap div that Rapid makes is given an unique id so you can select it in jQuery to do further html changes.
 
 You might forget what the unique id is and don't feel like scrolling up the console to hunt for it. Get the last generated id with
 ```
-Rapid.latest();
+Rapid.lastID();
 ```
 
-You might want to save that DOM position to add children to it later:
+You might want to save that DOM position to add multiple children to it:
 ```
-var row = Rapid.latest();
+var row = Rapid.lastID();
 
 // so then you could use:
-row.preset("col-xs-4");
-row.preset("col-xs-4");
-row.preset("col-xs-4");
+row.append(Rapid.bootstrap.preset("col-xs-4"));
+row.append(Rapid.bootstrap.preset("col-xs-4"));
+row.append(Rapid.bootstrap.preset("col-xs-4"));
 ```
 
-Let's say you wanted to add another column after the last column you made. You would have to hunt for the row's id so you can `$("#bidX").append(("col-xs-4"))`. You can get the parent row's id easily with (and it goes up to three levels in case you are calling from an element inside a column):
+You can assign or modify the direct descendants' column widths:
 ```
-Rapid.parentRow($("#bid2"));
-```
-
-Messed up on the column sizes? You can select a row and change all their children column sizes with one swoop in command line:
-```
-Rapid.parentRow($("#bid2"), [4, 4, 4]); // give col1-3 sizes 4,4,4
-Rapid.parentRow($("#bid2"), [3, 3, 3]); // give col1-4 sizes 3,3,3,3. Notice that additional columns follow the last value in the array.
-Rapid.parentRow($("#bid2"), 4); // give all columns the same size 4
+Rapid.cols($("#bid2"), "xs",[4, 4, 4]); // give col-xs the widths 4,4,4
+Rapid.cols($("#bid2"), "sm", [3, 3, 3]); // give col-sm the widths 3,3,3,3. Notice that additional widths follow the last value.
+Rapid.cols($("#bid2"), "sm", 3); // give all col-sm the widths  3
 ```
 
+
+DESIGN UTILITIES: Bootstrap More Visual
+===
+
+Show gridlines of all Bootstrap rows and columns (default = false)
 ```
 Rapid.options({
     bootstrap: {
-                    gridlines: true, // default: false. // visualize all bootstrap columns and rows
-                    status: true // default: false // Shows if your webpage is applying xs, sm, md, or lg. Useful to see responsive views by resizing the web browser window or changing the zoom level
+                    gridlines: false
                 }
 });
 ```
 
-**DESIGN UTILITIES: ihtml and ihandlebars**  
-*ihtml:* DOM - You want to add html thru jQuery's html, append, or prepend to see how it looks but you already have a good layout going on there? Just use ihtml to create a floating draggable area that acts like scratch paper for html rendering. You can adjust transparency and move it out of the way of the website's main elments.
+Shows which column the browser is showing - xs, sm, md, or lg - at the lower right corner. Zoom or resize window to test responsiveness (default = false)
 ```
-ihtml("<b>I should look bolded.</b>");
-```
-
-Finished scratch papering your renders? Just destroy it with:
-```
-ihtml();
+Rapid.options({
+    bootstrap: {
+                    status: false
+                }
+});
 ```
 
-*ihandlebars:* HANDLEBAR - Not confident you can write Handlebar expressions without screwing up? Write them in command line and get instant feedback. Rapid.ihandlebars(..) helps with this. Pass the Handlebar expressions with html in the first parameter without that much focus on making the html look good. Then pass the javascript object in the second parameter as the context. Optionally, you can pass an array of helper name and its implementation in the third parameter. For extra helpers, you pass the same onto the fourth parameter, fifth parameter, etc etc.  
+ASSET UTILITIES: Load Stylsheets and Scripts from Console
+===
+For example, you can try out different themes and jquery plugins quickly from the console. You can also have javascript code that loads after a js file's loaded. Here's how to load scripts and styles:
 
-Below is an example. Once you run with ihandlebars, you can look at the "render" section to see if it's correct, then there's the "code" section you can copy and paste to. So ihandlebars not only lets you test out Handlebar templates but also generates the wordy Handlebar code.
+Loading a js file:
 ```
-var data = { 
-	random_words: [ 
-                    {word: "Alpha"},
-                    {word: "Beta"},
-                    {word: "Omega"} 
-    						] 
-};
-
-Rapid.ihandlebars("{{#random_words}} {{#everyOther @index 2 }}<b>{{word}}</b>{{else}} {{word}} {{/everyOther}}  {{/random_words}}", data, ["everyOther", function (index, amount, scope) { if ( ++index % amount ) return scope.inverse(this); else return scope.fn(this);} ])
+Rapid.assets.script("load_me.js");
 ```
 
-**DESIGN UTILITIES: CLI Adding of Stylsheets and Scripts**  
-*iscript:* One way to rapidly develop is to figure out the javascript with the browser console opened. Some code may be more conveniently typed up because you need the syntax highlighting or there's newlines and spacing concerns.
+Loading a js file then run js code:
 ```
-Rapid.iscript("temp_script.js");
-```
-You can also run javascript code after loading. You can also opt to load javascript files and initialize their code this way to be more modular.
-```
-Rapid.iscript("controllers/section2.js", 'alert("Code for section 2 loaded!"); section2.someFlag=true; ');
-```
-*istyle:* You can load stylesheets:
-```
-Rapid.istyle("temp_style.css")
-```
-*replaceStylesheet:* Or if you feel more comfortable, this function removes all previous stylesheets added by it and add the current spreadsheet:
-```
-Rapid.replaceStylesheet("temp_style.css");
-```
-*Localhost:* If you are running a local server before pushing to a production server and you are referencing an absolute path, the URI should be precededed with http://localhost
-```
-Rapid.iscript("http://localhost/test-site/js/main.js");
-Rapid.istyle("http://localhost/test-site/css/global.css");
-Rapid.replaceStylesheet("http://test-site/css/global.css");
+Rapid.assets.script("controllers/section2.js", 'console.log("Code for section 2 loaded!"); section2.someFlag=true; ');
+Rapid.assets.script("controllers/section3.js", 'console.log("Code for section 3 loaded!");');
 ```
 
+Loading a css file:
+```
+Rapid.assets.style("temp_style.css")
+```
 
-BACKEND: AJAX generator
+Remove all css files added with Rapid.assets (just call blank):
+```
+Rapid.assets.style();
+```
+
+BACKEND: AJAX Generator
 ===
 *AJAX*: Ajax has many methods: get, post, put, patch, update, delete, head, and options. There are many ways to pass parameters and different ways to setup done callbacks. Rapids.ajax(..) offers a uniform way of making ajax requests regardless of method. Then when the request passes, Rapid gives you the ajax code in the console. You just copy and paste that to your code and be confident it will work!
 
@@ -447,9 +490,9 @@ Rapid.ajax("PATCH api.php/sales/items/46", {merchantID: 1, price: 9}, null);
 ```
 Note: The above uses of GET, POST, and PATCH uses RESTful API conventions. Brief review: GET to read information. POST to write information when you don't have a precise URI path (notice it isn't POST api.php/sales/items/46). PUT is to write information when you do (correct: PUT api.php/sales/items/46). PATCH is to update partial information. UPDATE is to update all the information. DELETE is to remove information. HEAD is for debug information, meta information, or description about the resource. OPTIONS is to list all available API methods and URI paths.  
 
-BACKEND: Javascript equivalent PHP and MYSQL
+BACKEND: JS Console of PHP and MySQL
 ===
-*Javascript mysql:* Do it in the console! Don't have external php pages setup for ajax requests to work on? Or you find PHP too troublesome to code because the feedback on errors aren't instant like it is in javascript? No Problem. You can in javascript write an equivalent php page that queries the database, fetch any associated rows (if it is a query like SELECT), and echo a json as a response to ajax - all in command line. Of course, you need to setup your database credentials in rapid-mysql.php beforehand and make sure you change the master password (aka Rapid Key) to your own if the website is on a remote development server.
+*Javascript mysql:* Try PHP and MySQL in the console! Then generate the PHP code to copy over. This is a faster workflow where you don't have to setup new php pages and test ajax requests and have to refresh the webpage to see results. You canwrite an equivalent php page in the console to query the database, fetch any associated rows (if it is a query like SELECT), and echo a json as a response to ajax - all in command line. Just setp your database credentials in rapid-mysql.php. Recommend not uploading rapid-mysql.php to production server but if you must, change the master password (aka Rapid Key) to your own.
 
 Authenticate for the webpage. Then you can start querying the database in javascript mysql (This can be typed in command line or be part of your code.)
 ```
@@ -566,7 +609,7 @@ To show a story you have to press the key assigned to it while Story Mode is act
 
 You may want to disable mouseover on these tooltips if their description only applies to a narration or a team member because the tooltip would appear on mouseover outside of Story Mode as well. For example, using _data-detail_ always mouseovers and it is key toggleable only in Story Mode. But using _data-story-detail_ designates a story tooltip that has no mouseovers and its purpose is only to be key toggleable while in Story Mode. In terms of coding, the only difference is the attribute name.
 
-If you dynamically loaded new elements, their tooltips may need to be re-initialized by calling initT(). T for toolbars.
+If you dynamically loaded new elements, their tooltips may need to be re-initialized by calling reinitT(). T for toolbars.
 
 Here is the full reference for tooltips:  
 ATTRIBUTE: [data-detail]  
@@ -701,7 +744,7 @@ A collection of frontend and backend tools to shorten development time on jQuery
 **IN-DEPTH SUMMARY**  
 A jquery library and microframework with frontend and backend tools to shorten development time. Attach load and click controllers that refer to external scripts, handlers, or inline javascript. If you use Handlebars JS for templating engine, test templates, contexts, and helpers in one function quickly before investing in the heavy API. Use the Boilerplate files for a new app or static page loaded with common libraries, stylesheets, and fonts you can customize. Rapid can generate Bootstrap code, Ajax code, and PHP mysql code.  
 
-Generate placeholder images and lorem ipsum text by adding class names. Test how some HTML code looks in a floating draggable div with the site's stylesheet before incorporating into the layout (ihtml). Load scripts or stylesheets in the browser console so you can experiment with different css and javascript on the fly (iscript and istyle). Replace the same stylesheet (replaceStylesheet). Rapid also comes with some tools to enhance JSFiddle so you can load the common libraries, stylesheets, and fonts and Rapid. There is also a tool to toggle fullscreen in JSFiddle. Useful if you prefer to fine tune the layout CSS or more nuanced CSS in an online playground first before bringing it to development.  
+Generate placeholder images and lorem ipsum text by adding class names. Test how some HTML code looks in a floating draggable div with the site's stylesheet before incorporating into the layout (ihtml). Load scripts or stylesheets in the browser console so you can experiment with different css and javascript on the fly (assets.script and assets.style). Replace the same stylesheet (replaceStylesheet). Rapid also comes with some tools to enhance JSFiddle so you can load the common libraries, stylesheets, and fonts and Rapid. There is also a tool to toggle fullscreen in JSFiddle. Useful if you prefer to fine tune the layout CSS or more nuanced CSS in an online playground first before bringing it to development.  
 
 Create and modify Bootstrap columns on the fly with the browser console. Then you may copy the code over to your source code. Easily see where the Bootstrap columns are by toggling a lightblue border on them (Rapid Bootstrap gridlines). Resize your window to see your site layout change per xs, sm, md, and lg and a status bar tells you which breakpoint you are at (Rapid Bootstrap status). Run javascript code based on those breakpoints. Write media queries using Bootstrap classes rather than the breakpoint pixels and interchangeably generate its breakpoint pixel CSS.  
 
