@@ -260,16 +260,6 @@
         //window.scripts = scripts;
         //Rapid.watchArr("window.scripts", true);
         
-        //Notes are only for developer eyes in development environment:
-        var arr = [];
-        $('*').filter(function() {
-          for (attr of this.attributes)
-            if (attr.name.startsWith("data-note")) {
-                arr.push({$el:$(this), dataNoteAttr:attr.name}); // attr.name - native type attribute has a name property
-            }
-        });
-        arr.forEach(function(elWithAttrName) { var $el = elWithAttrName.$el, attrName = elWithAttrName.dataNoteAttr; $el.removeAttr(attrName); })
-
         //onload-src and onload attributes without a letter is assigned to "a":
         $("[data-onload-src]").each(function() { 
             $(this).attr("data-onload-src-a", $(this).attr("data-onload-src")); 
@@ -1957,6 +1947,22 @@ $.extend(true, Rapid.assets, {
           } // serverListen
     }); // extend
 
+
+/**
+* TEAMWORK UTILITIES: Notes inside elements
+* Removed when loaded in browser. For dev code eyes only.
+*/
+    $(function(){
+        //Notes are only for developer eyes in development environment:
+        var arr = [];
+        $('*').filter(function() {
+          for (attr of this.attributes)
+            if (attr.name.startsWith("data-note")) {
+                arr.push({$el:$(this), dataNoteAttr:attr.name}); // attr.name - native type attribute has a name property
+            }
+        });
+        arr.forEach(function(elWithAttrName) { var $el = elWithAttrName.$el, attrName = elWithAttrName.dataNoteAttr; $el.removeAttr(attrName); })
+    });
 
 /**
 * TEAMWORK UTILITIES: Tooltips
