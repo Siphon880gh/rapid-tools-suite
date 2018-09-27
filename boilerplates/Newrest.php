@@ -136,8 +136,8 @@ function post($request) {
     global $LEVEL0, $LEVEL1, $LEVEL2, $LEVEL3, $LEVEL4, $LEVEL5;
 
     if(!$LEVEL0) die(json_encode(error_arr("Invalid post path")));
-    else if($request[0]==="foobar")
-    else {
+    else if($request[0]==="foobar") {
+    } else {
         die(json_encode(error_arr("Invalid post path")));
     }
     
@@ -151,8 +151,8 @@ function put($request) {
     global $LEVEL0, $LEVEL1, $LEVEL2, $LEVEL3, $LEVEL4, $LEVEL5;
 
     if(!$LEVEL0) die(json_encode(error_arr("Invalid put path")));
-    else if($request[0]==="foobar")
-    else {
+    else if($request[0]==="foobar") {
+    } else {
         die(json_encode(error_arr("Invalid put path")));
     }
     
@@ -165,8 +165,8 @@ function update($request) {
     global $LEVEL0, $LEVEL1, $LEVEL2, $LEVEL3, $LEVEL4, $LEVEL5;
     
     if(!$LEVEL0) die(json_encode(error_arr("Invalid update path")));
-    else if($request[0]==="foobar")
-    else {
+    else if($request[0]==="foobar") {
+    } else {
         die(json_encode(error_arr("Invalid update path")));
     }
 } // update
@@ -179,8 +179,8 @@ function delete($request) {
     global $LEVEL0, $LEVEL1, $LEVEL2, $LEVEL3, $LEVEL4, $LEVEL5;
     
     if(!$LEVEL0) die(json_encode(error_arr("Invalid update path")));
-    else if($request[0]==="foobar")
-    else {
+    else if($request[0]==="foobar") {
+    } else {
         die(json_encode(error_arr("Invalid update path")));
     }
 } // delete
@@ -193,8 +193,8 @@ function head($request) {
     global $LEVEL0, $LEVEL1, $LEVEL2, $LEVEL3, $LEVEL4, $LEVEL5;
     
     if(!$LEVEL0) die(json_encode(error_arr("Invalid head path")));
-    else if($request[0]==="foobar")
-    else {
+    else if($request[0]==="foobar") {
+    } else {
         die(json_encode(error_arr("Invalid head path")));
     }
 } // head
@@ -207,8 +207,8 @@ function options($request) {
     global $LEVEL0, $LEVEL1, $LEVEL2, $LEVEL3, $LEVEL4, $LEVEL5;
     
     if(!$LEVEL0) die(json_encode(error_arr("Invalid options path")));
-    else if($request[0]==="foobar")
-    else {
+    else if($request[0]==="foobar") {
+    } else {
         die(json_encode(error_arr("Invalid options path")));
     }
 } // options

@@ -3,87 +3,66 @@
   <head>
    <title>Untitled</title>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">  
-    <!--<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">  -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 
     <!-- jQuery and Bootstrap  -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    
+    
+    <!-- CACHE BUSTING CSS AND JS -->
+    <!--<link href="css/global.css?v=<?php echo time(); ?>" rel="stylesheet">-->
+    <!--<script src="js/app.js?v=<?php echo time(); ?>"></script>-->
 
    
-    <!-- COOKIES -->
-    <script>
-    function setCookie(obj, days)
-    {
-        var date=new Date();
-        var exdays = days*24*60*60*1000;
-        date.setDate(date.getDate() + exdays);
-
-
-        for (var key in obj) {
-          if (obj.hasOwnProperty(key)) {
-              var value = obj[key];
-              var c_value=escape(value) + ((days==null) ? "" : "; expires="+date.toUTCString());
-              document.cookie=key + "=" + c_value;
-          }
-        }
-    } // setCookie >setCookie({foo:"bar"}, 4);
-
-    function getCookie(c_name)
-    {
-        if(arguments.length==0) {
-            return document.cookie;
-        }
-        var i,x,y,ARRcookies=document.cookie.split(';');
-        for (i=0; i < ARRcookies.length;i++)
-        {
-          x=ARRcookies[i].substr(0,ARRcookies[i].indexOf('='));
-          y=ARRcookies[i].substr(ARRcookies[i].indexOf("=")+1);
-          x=x.replace(/^\s+|\s+$/g,"");
-          if (x==c_name)
-          {
-            return unescape(y);
-          }
-        }
-          return null;
-    } // getCookie >getCookie("foo"); >getCookie(); [return value or null]
-
-    function eraseCookie(c_name) {
-        document.cookie = c_name + '=; Max-Age=0'
-    } // eraseCookie >eraseCookie("foo");
-
-    function getAllCookies() {
-        return document.cookie;
-    }  
-    </script> <!-- COOKIES -->
+    <!-- OPTIONAL: COOKIES
+    <script src="cookies.js"></script>
+    -->
     
     
     <!-- MEDIA QUERIES -->
     <style>
-    /* Mobile first with precise device targetting */
-    /*@media (min-width: 320px) {
-
+    body {
+        margin-top: 30px;
     }
-    @media (min-width: 480px) {
+    .width-uniform {
+        width: 90%;
+    }
 
-    }*/
+    @media (max-width: 320px) {
+        /* Smallest */
+    }
         
-    /* Not mobile first and no precise device targeting */
-    /*@media (max-width: 767px) {
-
-    }*/
-    @media (min-width: 768px) {
-
+    @media (min-width: 320px) and (max-width: 480px) {
+        /* Small */
     }
 
-    @media (min-width: 992px) {
-
+    @media (min-width: 480px) and (max-width: 768px) {
+        body {
+            margin-top: 20%;
+        }
+        .width-uniform {
+            width: 70%;
+        }
     }
-
+    @media (min-width: 768px) and (max-width: 1200px) {
+        body {
+            margin-top: 10%;
+        }
+        .width-uniform {
+            width: 50%;
+        }
+    }
     @media (min-width: 1200px) {
-
+        body {
+            margin-top: 5%;
+        }
+        .width-uniform {
+            width: 50%;
+        }
     }
-    </style> <!-- MEDIA QUERIES -->
+    </style> <!-- /MEDIA QUERIES -->
+    
     
     <script>
         $(function() {
@@ -105,7 +84,7 @@
     <body>
         <div class="container">
         Empty
-        </div><!-- container -->
+        </div> <!-- /.container -->
         
         <!-- Designer: Open Sans, Lato, FontAwesome, Waypoints, Skrollr, Pixel-Em-Converter -->
         <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300|Open+Sans+Condensed:300" rel="stylesheet">
@@ -115,11 +94,12 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/skrollr/0.6.30/skrollr.min.js"></script>
         <script src="https://rawgit.com/filamentgroup/jQuery-Pixel-Em-Converter/master/pxem.jQuery.js"></script>
         
-        <!-- Rendering: Handlebars JS, Sprintf JS -->
+        <!-- Rendering: Handlebars JS, LiveQuery, Sprintf JS -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.js"></script>
+        <script src="https://rawgit.com/hazzik/livequery/master/src/jquery.livequery.js"></script>
         <script src="https://rawgit.com/azatoth/jquery-sprintf/master/jquery.sprintf.js"></script>
         
-        <!-- Compatibility: Modernizr, jQuery Migrate -->
+        <!-- Compatibility: Modernizr, jQuery Migrate (check browser) -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
         <script src="https://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
         
@@ -135,13 +115,9 @@
         <script src="https://rawgit.com/Inducido/jquery-handler-toolkit.js/master/jquery-handler-toolkit.js"></script>
         <script src="https://rawgit.com/tkem/jquery-timeout/master/src/jquery.timeout.js"></script>
         
-        <!-- Rapid Tools Suite (RawGit) -->
+        <!-- Rapid Tools Suite (Weng's tool) -->
         <link href="https://rawgit.com/Siphon880gh/rapid-tools-suite/master/js/rapid.css" rel="stylesheet">
         <script src="https://rawgit.com/Siphon880gh/rapid-tools-suite/master/js/rapid.js"></script>
-
-        <!-- Knockout JS -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js">
-
 
     </body>
 </html>
