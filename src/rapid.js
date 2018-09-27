@@ -1426,7 +1426,7 @@ $.extend(true, Rapid.assets, {
     }
 
     $.extend(true, Rapid, {
-        ihelpers: {
+        backend_helpers: {
             listeners: {},
             validateRequestLine: function(id, requestLine) {
               if(requestLine.indexOf(" ")==-1) {
@@ -1471,7 +1471,7 @@ $.extend(true, Rapid.assets, {
                   console.error("Rapid.ajax: Missing parameter. You need to pass 'METHOD some-url'. For example, 'GET list/'.");
                   return;
               }
-              if(!Rapid.ihelpers.validateRequestLine("Rapid.ajax", arguments[0])) {
+              if(!Rapid.backend_helpers.validateRequestLine("Rapid.ajax", arguments[0])) {
                   return;
               }
               if(typeof arguments[arguments.length-1]!=="function" && arguments[arguments.length-1]!=null) {
@@ -1492,7 +1492,7 @@ $.extend(true, Rapid.assets, {
                   forGet: function(data) { // done wrapper
                           var strJS="";
                           if(data!==Rapid.constants.phpEmulate) {
-                              if(!Rapid.ihelpers.validateResponse("Rapid.ajax", data)) return;
+                              if(!Rapid.backend_helpers.validateResponse("Rapid.ajax", data)) return;
                               if(data.length)
                                   data = JSON.parse(data);
                               else
@@ -1516,7 +1516,7 @@ $.extend(true, Rapid.assets, {
                   forPost: function(data) { // done wrapper
                           var strJS="";
                           if(data!=Rapid.constants.phpEmulate) {
-                              if(!Rapid.ihelpers.validateResponse("Rapid.ajax", data)) return;
+                              if(!Rapid.backend_helpers.validateResponse("Rapid.ajax", data)) return;
                               if(data.length)
                                   data = JSON.parse(data);
                               else
@@ -1543,7 +1543,7 @@ $.extend(true, Rapid.assets, {
                   forMiscMethod: function(data) { // done wrapper
                           var strJS="";
                           if(data!==Rapid.constants.phpEmulate) {
-                              if(!Rapid.ihelpers.validateResponse("Rapid.ajax", data)) return;
+                              if(!Rapid.backend_helpers.validateResponse("Rapid.ajax", data)) return;
                               if(data.length)
                                   data = JSON.parse(data);
                               else
@@ -1572,7 +1572,7 @@ $.extend(true, Rapid.assets, {
               
               
               //Listeners overriding Ajax, part 2:
-                  if(typeof Rapid.ihelpers.listeners[requestLine]!='undefined') {
+                  if(typeof Rapid.backend_helpers.listeners[requestLine]!='undefined') {
                       switch (method) {
                           case "GET":
                               cbInternalDone = internalDone.forGet;
@@ -1591,15 +1591,15 @@ $.extend(true, Rapid.assets, {
                           default:
                               console.log("Rapid.ajax: Wrong method.");
                       } // switch
-                      Rapid.ihelpers.listeners[requestLine].curParams=params;
-                      Rapid.ihelpers.listeners[requestLine].cbInternalDone=cbInternalDone;
-                      Rapid.ihelpers.listeners[requestLine].cbClientDone=cbClientDone;
+                      Rapid.backend_helpers.listeners[requestLine].curParams=params;
+                      Rapid.backend_helpers.listeners[requestLine].cbInternalDone=cbInternalDone;
+                      Rapid.backend_helpers.listeners[requestLine].cbClientDone=cbClientDone;
                       //console.log("here I am here I am!")
-                      var jsExecAjaxStart = Rapid.ihelpers.listeners[requestLine].jsExecAjax;
+                      var jsExecAjaxStart = Rapid.backend_helpers.listeners[requestLine].jsExecAjax;
                       if(jsExecAjaxStart.length>0) { // start async sequence over at serverListen
-                          Rapid.ihelpers.listeners[requestLine].jsExecAjaxStarter();
+                          Rapid.backend_helpers.listeners[requestLine].jsExecAjaxStarter();
                       } else { // no ajax response over at serverListen so just echo manually
-                          Rapid.ihelpers.listeners[requestLine].runFinalEcho();
+                          Rapid.backend_helpers.listeners[requestLine].runFinalEcho();
                       }
                       return;
                   } // if overridden by serverListen
@@ -1607,7 +1607,7 @@ $.extend(true, Rapid.assets, {
               //No listeners, use Ajax:
               switch (method) {
                   case "GET":
-                          $.get(url, $.extend(params, {rapidKey: Rapid.mysql.ihelpers.rapidKey}))
+                          $.get(url, $.extend(params, {rapidKey: Rapid.mysql.backend_helpers.rapidKey}))
                               .done(function(data) {
                                   internalDone.forGet(data);
                               }) // done
@@ -1616,7 +1616,7 @@ $.extend(true, Rapid.assets, {
                               }); // fail
                       break;
                   case "POST":
-                          $.post(url, $.extend(params, {rapidKey: Rapid.mysql.ihelpers.rapidKey}))
+                          $.post(url, $.extend(params, {rapidKey: Rapid.mysql.backend_helpers.rapidKey}))
                               .done(function(data) {
                                   internalDone.forPost(data);
                               }) // done
@@ -1637,7 +1637,7 @@ $.extend(true, Rapid.assets, {
                   case "OPTIONS":
                           $.ajax({
                               url : url,
-                              data: $.extend(params, {rapidKey: Rapid.mysql.ihelpers.rapidKey}),
+                              data: $.extend(params, {rapidKey: Rapid.mysql.backend_helpers.rapidKey}),
                               method: method,
                               }).done(function(data) {
                                       internalDone.forMiscMethod(data);
@@ -1662,7 +1662,7 @@ $.extend(true, Rapid.assets, {
                           console.error("Rapid.mysql's Chain: Missing parameter. You need to pass 'METHOD uri' to start a Chain object of the mysql code. For example, 'GET list/'.");
                           return;
                       }
-                      if(!Rapid.ihelpers.validateRequestLine("Rapid.mysql.Chain constructor", arguments[0]))
+                      if(!Rapid.backend_helpers.validateRequestLine("Rapid.mysql.Chain constructor", arguments[0]))
                           return;
                   
                       return {
@@ -1706,7 +1706,7 @@ $.extend(true, Rapid.assets, {
                                   return this;
                               }
                               
-                              if(Rapid.mysql.ihelpers.rapidKey.length==0) {
+                              if(Rapid.mysql.backend_helpers.rapidKey.length==0) {
                                   console.error("Rapid.mysql.Chain's fetchQuery/execQuery: Access denied. Did not authenticate with Rapid.mysql.db(path, rapidKey)");
                                   return $.extend(this, {_error:true});
                               }
@@ -1750,12 +1750,12 @@ $.extend(true, Rapid.assets, {
                               this.ajaxMax++;
                               //console.dir(this.jsExecAjax);
                               //PROBLEM:
-                              this.jsExecAjax.push("eval(Rapid.ihelpers.listeners[\"" + requestLine + "\"].jsBeforeAjax); $.post(\"" + Rapid.mysql.ihelpers.path + "\", $.extend({rapidKey:\"" + Rapid.mysql.ihelpers.rapidKey + "\", cacheBuster:" + $.now() + ", rapidMysqli:" + asIsQuery.replace(/\./g, '+') + "}, Rapid.ihelpers.listeners[\"" + requestLine + "\"].curParams)).done(function(data) { var curRequest = Rapid.ihelpers.listeners[\"" + requestLine + "\"]; curRequest.responseHolderKeys.push(\"" + _getArrayName + "\"); curRequest.responseHolderVals.push(data); if(curRequest.ajaxCounter<curRequest.jsExecAjax.length) { curRequest.ajaxCounter++; eval(Rapid.ihelpers.listeners[\"" + requestLine + "\"].jsExecAjax[curRequest.ajaxCounter]); } if(curRequest.ajaxCounter==curRequest.jsExecAjax.length) { curRequest.ajaxCounter=0; curRequest.runFinalEcho();} });");
+                              this.jsExecAjax.push("eval(Rapid.backend_helpers.listeners[\"" + requestLine + "\"].jsBeforeAjax); $.post(\"" + Rapid.mysql.backend_helpers.path + "\", $.extend({rapidKey:\"" + Rapid.mysql.backend_helpers.rapidKey + "\", cacheBuster:" + $.now() + ", rapidMysqli:" + asIsQuery.replace(/\./g, '+') + "}, Rapid.backend_helpers.listeners[\"" + requestLine + "\"].curParams)).done(function(data) { var curRequest = Rapid.backend_helpers.listeners[\"" + requestLine + "\"]; curRequest.responseHolderKeys.push(\"" + _getArrayName + "\"); curRequest.responseHolderVals.push(data); if(curRequest.ajaxCounter<curRequest.jsExecAjax.length) { curRequest.ajaxCounter++; eval(Rapid.backend_helpers.listeners[\"" + requestLine + "\"].jsExecAjax[curRequest.ajaxCounter]); } if(curRequest.ajaxCounter==curRequest.jsExecAjax.length) { curRequest.ajaxCounter=0; curRequest.runFinalEcho();} });");
                               
                               var requestLine_arr = requestLine.split(" ");
                               var method = requestLine_arr[0].toUpperCase();
                               
-                              this.jsBeforeAjax="var $_" + method + "={}; $.extend($_" + method + ", Rapid.ihelpers.listeners[\"" + requestLine + "\"].curParams);";
+                              this.jsBeforeAjax="var $_" + method + "={}; $.extend($_" + method + ", Rapid.backend_helpers.listeners[\"" + requestLine + "\"].curParams);";
                               //console.log(this.jsBeforeAjax);
                               
                               if(method!="GET" && method!="POST") {
@@ -1791,18 +1791,18 @@ $.extend(true, Rapid.assets, {
                               //alert("reached!");
                               requestLine = this.requestLine;
                               cbInternalDone = this.cbInternalDone;
-                              if(Rapid.ihelpers.listeners[requestLine].jsExecAjax.length>0) {
+                              if(Rapid.backend_helpers.listeners[requestLine].jsExecAjax.length>0) {
                                  console.info("Your php code would be:");
-                                 var str = Rapid.ihelpers.listeners[requestLine].phpSrcInitScope + Rapid.ihelpers.listeners[requestLine].phpSrcMysqli + Rapid.ihelpers.listeners[requestLine].phpSrcEcho;
+                                 var str = Rapid.backend_helpers.listeners[requestLine].phpSrcInitScope + Rapid.backend_helpers.listeners[requestLine].phpSrcMysqli + Rapid.backend_helpers.listeners[requestLine].phpSrcEcho;
                                  console.log(str);
-                                 eval(Rapid.ihelpers.listeners[requestLine].jsExecAjax[0]);
+                                 eval(Rapid.backend_helpers.listeners[requestLine].jsExecAjax[0]);
                               } else {
                                   // has been handled earlier in the stack
                               }
                           }, // jsExecAjaxStart
 
                           runFinalEcho: function() {
-                              var curRequest = Rapid.ihelpers.listeners[requestLine];
+                              var curRequest = Rapid.backend_helpers.listeners[requestLine];
                               var rsObj = {};
                               var cbClientDone = curRequest.cbClientDone;
 
@@ -1818,7 +1818,7 @@ $.extend(true, Rapid.assets, {
                               //-
 
                               if(typeof this.testingChain=='undefined')
-                                  $.post(Rapid.mysql.ihelpers.path, {rapidKey: Rapid.mysql.ihelpers.rapidKey, 
+                                  $.post(Rapid.mysql.backend_helpers.path, {rapidKey: Rapid.mysql.backend_helpers.rapidKey, 
                                                                        rapidEcho: curRequest.phpSrcEcho, 
                                                                        rapidMethod: method, 
                                                                        rapidParams: typeof curRequest.curParams=="object"?JSON.stringify(curRequest.curParams):JSON.stringify({"_error":"Can't echo a method without parameters."}), 
@@ -1845,12 +1845,12 @@ $.extend(true, Rapid.assets, {
                                   return this;    
                               }
                               
-                              //Rapid.ihelpers.listeners[requestLine] = this;
+                              //Rapid.backend_helpers.listeners[requestLine] = this;
                               this.curParams=params;
                               //this.cbInternalDone=cbInternalDone;
                               //this.cbClientDone=cbClientDone;
                               var jsExecAjaxStart = this.jsExecAjax;
-                              Rapid.ihelpers.listeners[requestLine] = this;
+                              Rapid.backend_helpers.listeners[requestLine] = this;
                               if(jsExecAjaxStart.length>0) { // start async sequence over at serverListen
                                   this.jsExecAjaxStarter();
                               } else { // no ajax response over at serverListen so just echo manually
@@ -1859,7 +1859,7 @@ $.extend(true, Rapid.assets, {
                           } // run if not waiting for ajax (doing a simpleChain)
                         }; // return 
                       }, // ChainBuilder with implicit build                
-              ihelpers: {
+              backend_helpers: {
                 path: "", // path to mysql with access to mysql database
                 rapidKey: "" // the password that grants access to mysql
               },
@@ -1874,10 +1874,10 @@ $.extend(true, Rapid.assets, {
                   try {
                       $.post(path, {rapidKey: rapidKey, authenticating: true})
                           .done(function(data) {
-                              if(!Rapid.ihelpers.validateResponse("Rapid.mysql.db", data)) return false;
+                              if(!Rapid.backend_helpers.validateResponse("Rapid.mysql.db", data)) return false;
                               if(typeof JSON.parse(data).authenticated!='undefined') {
-                                  Rapid.mysql.ihelpers.path=path;
-                                  Rapid.mysql.ihelpers.rapidKey=rapidKey;
+                                  Rapid.mysql.backend_helpers.path=path;
+                                  Rapid.mysql.backend_helpers.rapidKey=rapidKey;
                                   console.info("Rapid.idb: " + JSON.parse(data).status);
                                   console.info("Your php code would be: " + JSON.parse(data).phpSrc);
                               } else {
@@ -1915,11 +1915,11 @@ $.extend(true, Rapid.assets, {
                   var requestLine = arguments[0];
                   
                   //Validation
-                  if(!Rapid.ihelpers.validateRequestLine("Rapid.serverListen", requestLine)) return;
+                  if(!Rapid.backend_helpers.validateRequestLine("Rapid.serverListen", requestLine)) return;
 
                   //Unset
-                  if(typeof Rapid.ihelpers.listeners[requestLine]!='undefined') {
-                      delete Rapid.ihelpers.listeners[requestLine];
+                  if(typeof Rapid.backend_helpers.listeners[requestLine]!='undefined') {
+                      delete Rapid.backend_helpers.listeners[requestLine];
                       console.info("Rapid.serverListen: Listener %cUNSET%c.\nRapid Ajax requests will route to external pages.", "color:gray;", "color:black;");
                       return;
                   } else {
@@ -1949,8 +1949,8 @@ $.extend(true, Rapid.assets, {
               }
               
               var requestLine = arguments[0].requestLine;
-              Rapid.ihelpers.listeners[requestLine] = {};
-              $.extend(true, Rapid.ihelpers.listeners[requestLine], arguments[0]); // ChainBuilder returns an object representing JS and PHP code 
+              Rapid.backend_helpers.listeners[requestLine] = {};
+              $.extend(true, Rapid.backend_helpers.listeners[requestLine], arguments[0]); // ChainBuilder returns an object representing JS and PHP code 
               
               console.info("Rapid.serverListen: Listener %cSET%c.\nRapid Ajax requests will route to your Chain's code.\nTo turn off, call serverListen with the string (%cGET api.php/list%c).", "color:green;", "color:black;", "font-style:italic;", "font-style:normal;");
                   
