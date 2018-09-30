@@ -793,6 +793,6 @@ Fully compatible with Handlebars JS, Crossroads JS, and other libraries. This li
 
 LATEST VERSION
 ===
--Adding delayDebugger, parseHTMLComment, Assert, cssUP, cssDown.
--Renamed js/ => src/ because it contains multiple file formats.
-  
+- Added delayDebugger, parseHTMLComment, Assert, cssUP, cssDown.
+- Renamed js/ => src/ because it contains multiple file formats.
+- Added Table of Contents
