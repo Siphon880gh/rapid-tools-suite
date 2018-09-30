@@ -29,6 +29,40 @@ Setup your phpMyAdmin credentials at src/rapid-mysql.php
 Ajax to src/rapid-mysql.php
 ```
 
+Table of Contents
+=================
+
+   * [BOILERPLATES](#boilerplates)
+      * [boilerplates/newstatic.php](#boilerplatesnewstaticphp)
+      * [boilerplates/newapp.php](#boilerplatesnewappphp)
+      * [boilerplates/newrest.php](#boilerplatesnewrestphp)
+   * [MAINTENANCE: Enums](#maintenance-enums)
+   * [MAINTENANCE: Reverse-engineer styles going up](#maintenance-reverse-engineer-styles-going-up)
+   * [MAINTENANCE: Reverse-engineer styles going down](#maintenance-reverse-engineer-styles-going-down)
+   * [MODULAR PATTERNS](#modular-patterns)
+      * [JS Files:](#js-files)
+      * [Code Snippets:](#code-snippets)
+      * [Dependencies: (optional a-d)](#dependencies-optional-a-d)
+      * [ori or $(ori):](#ori-or-ori)
+      * [Certain Cases:](#certain-cases)
+   * [DEBUGGING: assert](#debugging-assert)
+   * [DEBUGGING: Assert](#debugging-assert-1)
+   * [DEBUGGING: Watch](#debugging-watch)
+   * [DEBUGGING: Delay Debugger](#debugging-delay-debugger)
+   * [DESIGN UTILITIES: Img and Block Placeholders](#design-utilities-img-and-block-placeholders)
+   * [DESIGN UTILITIES: Lorem Ipsum](#design-utilities-lorem-ipsum)
+   * [DESIGN UTILITIES: ihtml and handlebars](#design-utilities-ihtml-and-handlebars)
+   * [DESIGN UTILITIES: JS Bootstrap Media Queries](#design-utilities-js-bootstrap-media-queries)
+   * [DESIGN UTILITIES: CLI Bootstrap](#design-utilities-cli-bootstrap)
+   * [DESIGN UTILITIES: Bootstrap More Visual](#design-utilities-bootstrap-more-visual)
+   * [ASSET UTILITIES: Load Stylsheets and Scripts from Console](#asset-utilities-load-stylsheets-and-scripts-from-console)
+   * [BACKEND: AJAX Generator](#backend-ajax-generator)
+   * [BACKEND: JS Console of PHP and MySQL](#backend-js-console-of-php-and-mysql)
+   * [TEAMWORK UTILITIES: Notes inside elements](#teamwork-utilities-notes-inside-elements)
+   * [TEAMWORK UTILITIES: Tooltips With or Without Stories](#teamwork-utilities-tooltips-with-or-without-stories)
+      * [How to instruct your team members](#how-to-instruct-your-team-members)
+   * [LATEST VERSION](#latest-version)
+
 BOILERPLATES
 ===
 For frontend and backend: Static webpage, web app, or restful api.  
