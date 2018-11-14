@@ -34,8 +34,10 @@ Table of Contents
 
    * [BOILERPLATES](#boilerplates)
       * [boilerplates/newstatic.php](#boilerplatesnewstaticphp)
+      * [boilerplates/newmin.php](#boilerplatesnewminphp)
       * [boilerplates/newapp.php](#boilerplatesnewappphp)
       * [boilerplates/newrest.php](#boilerplatesnewrestphp)
+      * [Suggested aliases](#suggested-aliases)
    * [MAINTENANCE: Enums](#maintenance-enums)
    * [MAINTENANCE: Reverse-engineer styles going up](#maintenance-reverse-engineer-styles-going-up)
    * [MAINTENANCE: Reverse-engineer styles going down](#maintenance-reverse-engineer-styles-going-down)
@@ -71,6 +73,10 @@ boilerplates/newstatic.php
 ---
 Static webpage HTML, Bootstrap, jQuery, Knockout, and Handlebar that helps you get started on your static webpage with two way binding (knockout), visibility directives (knockout), and template rendering (handlebar).  
 
+boilerplates/newmin.php
+---
+Same as New Static except this tools suite is excluded. Running a min boilerplate means you are going to get this running fast and don't need the heavy lifting that my tools help with. Instructions on compass and livereload included at the top of the boilerplate.
+
 boilerplates/newapp.php
 ---
 Includes the static webpage libraries. Also has Crossroads JS to setup URL routers that enable the user to use the browser back/forward buttons to change the state of the DOM.  
@@ -78,6 +84,19 @@ Includes the static webpage libraries. Also has Crossroads JS to setup URL route
 boilerplates/newrest.php
 ---
 A php backend file to access your mysql database, either with meekrodb or mysqli. Uses intuitive variables to access your inputs: $_GET, $_POST, $_PUT, $_UPDATE, $_DELETE, $_HEAD, $_OPTIONS.
+
+Suggested aliases
+---
+Add aliases like this so you can create new files based off of boilerplates using console commands on the fly (don't forget to `source ~/.bash_profile`):
+```
+function newmin() { curl https://raw.githubusercontent.com/Siphon880gh/rapid-tools-suite/master/boilerplates/Newmin.php --output "./$1" | code "./$1"; };
+```  
+
+Then you can create new files using boilerplates like this:
+```
+newmin index.php
+```
+
 
 MAINTENANCE: Enums
 ===
