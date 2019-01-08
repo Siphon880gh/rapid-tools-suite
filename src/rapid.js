@@ -17,7 +17,6 @@
  * Version: 2
  */
 
-
 /*     
 *	ENGINE
 *   ------------------------------------------------------------------------------------------ 
@@ -243,7 +242,6 @@
         }
     );
 
-
 /*     
 *	MODULAR
 *   ------------------------------------------------------------------------------------------ 
@@ -293,7 +291,6 @@
             scripts.push('\nvar ori = $("[data-script-id=' + countScript + ']");\n'+code);
         });
 
-        
         //B:
         $("[data-onload-src-b]").each(function() {
             if(typeof $(this).attr("data-async-id")!='undefined') return;
@@ -317,7 +314,6 @@
             scripts.push('\nvar ori = $("[data-script-id=' + countScript + ']");\n'+code);
         });
 
-        
         //C:
         $("[data-onload-src-c]").each(function() {
             if(typeof $(this).attr("data-async-id")!='undefined') return;
@@ -341,7 +337,6 @@
             scripts.push('\nvar ori = $("[data-script-id=' + countScript + ']");\n'+code);
         });
 
-        
         //D:
         $("[data-onload-src-d]").each(function() {
             if(typeof $(this).attr("data-async-id")!='undefined') return;
@@ -419,7 +414,6 @@
             }, 1); 
         
     } //initM
-
 
 /**
 * CHROME DEBUGGER ENHANCED
@@ -673,14 +667,12 @@
                             if(extraInfo.length>0 && typeof extraInfo === "string")
                                 isStr2=true;
 
-                            
                             if(changes[0].type=="delete")
                                 console.log(oObj.$_name_$+" %cchanged:%c { \"" + changes[0]["name"] + "\" : (deleted) ..}", "font-style:italic;", "font-style:normal", changes, oObj);
                             else if(typeof changes[0]["oldValue"]!='undefined')
                                 console.log(oObj.$_name_$+" %cchanged:%c { \"" + changes[0]["name"] + "\" : " + (isStr1?"\"":"") + changes[0]["oldValue"] + (isStr1?"\"":"") + " ➜ " + (isStr2?"\"":"") + extraInfo + (isStr2?"\"":"") + " ..}", "font-style:italic;", "font-style:normal", changes, oObj);
                             else
                                 console.log(oObj.$_name_$+" %cchanged:%c { \"" + changes[0]["name"] + "\" : " + (isStr2?"\"":"") + extraInfo + (isStr2?"\"":"") + " ..}", "font-style:italic;", "font-style:normal", changes, oObj);
-                            
                             
                             if(typeof oObj.$_debugger_pause_$!='undefined') { console.log("PAUSED"); debugger; }
                         }); // observe
@@ -757,15 +749,6 @@
                 }); // extend
     //} // else is Chrome
 
-    //CD-8 delayDebugger
-    $.extend(true, Rapid, {
-        delayDebugger: function(ms) {
-            console.log("Will freeze in " + ms + "milliseconds.");
-            setTimeout(function() { debugger; }, ms);
-        }
-    });
-
-
     //CD+. If you want to test monitoring functions, uncomment this block, view demo.php, and open Chrome Console:
     /*$(function() {
         var aa = {a:1, b:2};
@@ -777,6 +760,73 @@
         Rapid.watchKey("window.aa", "a");
         aa.a=3;
     });*/
+
+    //CD-8 delayDebugger
+    $.extend(true, Rapid, {
+        delayDebugger: function(ms) {
+            console.log("Will freeze in " + ms + "milliseconds.");
+            setTimeout(function() { debugger; }, ms);
+        }
+    });
+
+    //CD-9 flashColor
+    //@param color, hex, rgb, or rgba
+    //@duration {optional int} ms
+    $.extend(true, Rapid, {
+        flashColor: function(color, duration) {
+            // Settings
+            if(typeof duration==="undefined") var duration=200;
+            var originalColor = $("body").css("background-color");
+
+            function rgb2Hex(rgb) {
+                var parts = rgb.split(",").map( (str,i)=>{ return parseInt(str) } ),
+                    r = parts[0],
+                    g = parts[1],
+                    b = parts[2];
+
+                r = Math.abs(r);
+                g = Math.abs(g);
+                b = Math.abs(b);
+            
+                if ( r < 0 ) r = 0;
+                if ( g < 0 ) g = 0;
+                if ( b < 0 ) b = 0;
+            
+                if ( r > 255 ) r = 255;
+                if ( g > 255 ) g = 255;
+                if ( b > 255 ) b = 255;
+            
+                return '#' + [r, g, b].map(x => {
+                    const hex = x.toString(16);
+                    return hex.length === 1 ? '0' + hex : hex
+                }).join('');
+            } // rgb2Hex
+
+            function trim (str) {
+                return str.replace(/^\s+|\s+$/gm,'');
+              }
+              
+              function rgba2Hex(rgba) {
+                  var parts = rgba.split(","),
+                      r = parseInt(trim(parts[0]), 10),
+                      g = parseInt(trim(parts[1]), 10),
+                      b = parseInt(trim(parts[2]), 10),
+                      a = parseFloat(trim(parts[3]), 10);
+              
+                  return ('#' + r.toString(16) + g.toString(16) + b.toString(16) + (a * 255).toString(16).substring(0,2));
+              }
+              
+            if(color.split(",").length===3)
+                color=rgb2Hex(color);
+            else if(color.split(",").length===4)
+                color=rgba2Hex(color);
+            
+            console.log(color);
+            //debugger;
+            $("body").css("background-color", color);
+            setTimeout(function() { $("body").css("background-color", originalColor); }, duration);
+        }
+    });
 
 /**
 * DESIGN UTILITIES: LOREM IPSUM
@@ -907,7 +957,6 @@ function initL() {
     })();
     }; // initL
 
-
 /**
 * DESIGN UTILITIES: IMG AND BLOCK PLACEHOLDERS
 * Placeholders of sections and elements for quick wireframing. Colored, labeled, and choice of rectangle/circle.
@@ -941,7 +990,6 @@ function initP() {
         } // else
     });
 
-
     $("[data-circ]").each(function () {
         var json=typeof $(this).data("circ")!='undefined'?$(this).data("circ"):{};
         if(typeof json.font=='undefined') json.font = "16px Helvetica";
@@ -965,8 +1013,6 @@ function initP() {
         } // else
     });
 } // initP
-
-
 
 /*     
 *	DESIGN UTILITIES: Handlebars and ihtml
@@ -1073,7 +1119,6 @@ $.extend(true, Rapid, {
                     $("#rapid-html").css("opacity", 1);
             });
         } // if creating ihtml
-        
         
         if(arguments.length>0)
             $("#rapid-html").prepend(arguments[0]);
@@ -1341,7 +1386,6 @@ $.extend(true, Rapid, {
         
     } // initB
 
-
 /*
 *   ASSET UTILITIES
 *   ------------------------------------------------------------------------------------------ 
@@ -1396,7 +1440,6 @@ $.extend(true, Rapid.assets, {
     }
 }); // extend
 
-
 /*     
 *	BACKEND
 *       - AJAX Generator
@@ -1441,7 +1484,6 @@ $.extend(true, Rapid.assets, {
                   console.dir(data);
                   return false;
               }
-                
                 
               try {
                   JSON.parse(data);
@@ -1528,7 +1570,6 @@ $.extend(true, Rapid.assets, {
                           if(typeof data!='undefined') console.log("data: ", data);
                           console.groupEnd();
                           
-                  
                   },
                   forMiscMethod: function(data) { // done wrapper
                           var strJS="";
@@ -1559,7 +1600,6 @@ $.extend(true, Rapid.assets, {
               var fail = function(jsxhr, textStatus, errorThrown) {
                   console.error("Rapid.ajax: " + method + " " + textStatus + " with " + errorThrown);
               }; // fail
-              
               
               //Listeners overriding Ajax, part 2:
                   if(typeof Rapid.backend_helpers.listeners[requestLine]!='undefined') {
@@ -1701,7 +1741,6 @@ $.extend(true, Rapid.assets, {
                                   return $.extend(this, {_error:true});
                               }
                               
-                              
                               error_obj_key_reg = "Rapid.mysql.Chain()'s fetchQuery: Must pass an object with a key name preceded with \$ and assigned a regular expression. The key name represents the PHP array that stores the fetch assocs before echoing. Therefore, the key name must be preceded with a \$. The regular expression represents what you would type into mysqli_query in PHP with or without: string quotes, escape quotes, method parameters (eg. $_POST[\"someVar\"]), sql injection functions, and query string. Regular expression escapes the javascript parser so that PHP syntax can be allowed.\nEg. fetchQuery(\$arr: /\"SELECT * from users\"/) ";
                               var _getArrayName="";
                               var asIsQuery="";
@@ -1775,7 +1814,6 @@ $.extend(true, Rapid.assets, {
                               this.phpSrcEcho+="\n"+str;
                               return this;
                           },
-                          
                           
                            jsExecAjaxStarter: function() {
                               //alert("reached!");
@@ -1921,7 +1959,6 @@ $.extend(true, Rapid.assets, {
                   return;
               } // if
               
-              
               //Going down chain with error
               if(typeof arguments[0].testingChain!='undefined') {
                   console.error("Rapid.mysql.serverListen: A test chain does not belong to serverListen because you are not listening for ajax to perform a mysql chain. The purpose of test chain is to validate your query code without the boilerplate of a regular Chain with serverListen. Just run it standalone and finish the chain with .run(). Eg. (Rapid.mysql.simpleChain()).fetchQuery({results:/\"SELECT * FROM tbl1 LIMIT 5\"}).run();");
@@ -1946,7 +1983,6 @@ $.extend(true, Rapid.assets, {
                   
           } // serverListen
     }); // extend
-
 
 /**
 * TEAMWORK UTILITIES: Notes inside elements
@@ -2180,7 +2216,6 @@ function initT() {
             $(this).addClass('tooltip-' + selFontSize + selFontFamily);
         }     
         
-        
         if (typeof (tip.bgcolor) != 'undefined') {
             $('<style type="text/css">.tooltip-bg' + tip.bgcolor + ' + .tooltip > .tooltip-inner {background-color: ' + tip.bgcolor + ';}</style>').appendTo($('head'));
             $(this).addClass('tooltip-bg' + tip.bgcolor);
@@ -2266,7 +2301,6 @@ function initSM() {
 
     }); // keypress
 } // initSM
-
 
 /*     
 *	TEAMWORK: Stories

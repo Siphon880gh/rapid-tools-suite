@@ -275,9 +275,21 @@ $("#target2").data("attr","3");
 
 DEBUGGING: Delay Debugger
 ===
-Runs debugger after x ms. Useful for some scenarios like having your mouse positioned before debugger runs. This is useful because opening the console and running the debugger statement would place the focus away from the DOM and may not trigger the function you want to debug.
+Runs debugger after desired milliseconds. One use case is getting your mouse into position before the time is up because the focus moves away if you open the console to run debugger.
 ```
 Rapid.delayDebugger(3000);
+```
+
+
+DEBUGGING: Flash Color
+===
+Flash the screen with a desired color to see if a line is reached in the code, eg. a function or an event. You may also pass a duration in ms to change the default flash duration of 200ms.
+```
+Rapid.flashColor("red");
+Rapid.flashColor("#ff0000");
+Rapid.flashColor("255,0,0");
+Rapid.flashColor("255,0,0,0.3");
+Rapid.flashColor("255,0,0,0.3", 3000); // flash for 3 seconds
 ```
 
 DESIGN UTILITIES: Img and Block Placeholders

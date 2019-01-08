@@ -235,8 +235,8 @@
         <script src="https://rawgit.com/tkem/jquery-timeout/master/src/jquery.timeout.js"></script>
         
         <!-- Rapid Tools Suite (Weng's tool) -->
-        <link href="https://raw.githack.com/Siphon880gh/rapid-tools-suite/master/src/rapid.css" rel="stylesheet">
-        <script src="https://raw.githack.com/Siphon880gh/rapid-tools-suite/master/src/rapid.js"></script>
+        <link href="https://rawgit.com/Siphon880gh/rapid-tools-suite/master/js/rapid.css" rel="stylesheet">
+        <script src="https://rawgit.com/Siphon880gh/rapid-tools-suite/master/js/rapid.js"></script>
                 
         <!-- Webapp: Crossroads JS, Qunit -->
         <script src="//cdnjs.cloudflare.com/ajax/libs/js-signals/0.8.1/js-signals.min.js"></script>
