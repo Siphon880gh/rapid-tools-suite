@@ -32,6 +32,10 @@ Ajax to src/rapid-mysql.php
 Table of Contents
 =================
 
+   * [Rapid Tools Suite](#rapid-tools-suite)
+      * [Dependencies:](#dependencies)
+      * [Installation:](#installation)
+   * [Table of Contents](#table-of-contents)
    * [BOILERPLATES](#boilerplates)
       * [boilerplates/newstatic.php](#boilerplatesnewstaticphp)
       * [boilerplates/newmin.php](#boilerplatesnewminphp)
@@ -39,6 +43,7 @@ Table of Contents
       * [boilerplates/newrest.php](#boilerplatesnewrestphp)
       * [Suggested aliases](#suggested-aliases)
    * [MAINTENANCE: Enums](#maintenance-enums)
+   * [MAINTENANCE: Visible and Display directives](#maintenance-visible-and-display-directives)
    * [MAINTENANCE: Reverse-engineer styles going up](#maintenance-reverse-engineer-styles-going-up)
    * [MAINTENANCE: Reverse-engineer styles going down](#maintenance-reverse-engineer-styles-going-down)
    * [MODULAR PATTERNS](#modular-patterns)
@@ -51,6 +56,7 @@ Table of Contents
    * [DEBUGGING: Assert](#debugging-assert-1)
    * [DEBUGGING: Watch](#debugging-watch)
    * [DEBUGGING: Delay Debugger](#debugging-delay-debugger)
+   * [DEBUGGING: Flash Color](#debugging-flash-color)
    * [DESIGN UTILITIES: Img and Block Placeholders](#design-utilities-img-and-block-placeholders)
    * [DESIGN UTILITIES: Lorem Ipsum](#design-utilities-lorem-ipsum)
    * [DESIGN UTILITIES: ihtml and handlebars](#design-utilities-ihtml-and-handlebars)
