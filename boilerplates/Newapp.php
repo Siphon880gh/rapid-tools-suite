@@ -211,12 +211,12 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.css">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.0/jquery.waypoints.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/skrollr/0.6.30/skrollr.min.js"></script>
-        <script src="https://rawgit.com/filamentgroup/jQuery-Pixel-Em-Converter/master/pxem.jQuery.js"></script>
+        <script src="https://raw.githack.com/filamentgroup/jQuery-Pixel-Em-Converter/master/pxem.jQuery.js"></script>
         
         <!-- Rendering: Handlebars JS, LiveQuery, Sprintf JS -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.js"></script>
-        <script src="https://rawgit.com/hazzik/livequery/master/src/jquery.livequery.js"></script>
-        <script src="https://rawgit.com/azatoth/jquery-sprintf/master/jquery.sprintf.js"></script>
+        <script src="https://raw.githack.com/hazzik/livequery/master/src/jquery.livequery.js"></script>
+        <script src="https://raw.githack.com/azatoth/jquery-sprintf/master/jquery.sprintf.js"></script>
         
         <!-- Compatibility: Modernizr, jQuery Migrate (check browser) -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
@@ -231,12 +231,12 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
         
         <!-- Friendlier API: ListHandlers, Timeout -->
-        <script src="https://rawgit.com/Inducido/jquery-handler-toolkit.js/master/jquery-handler-toolkit.js"></script>
-        <script src="https://rawgit.com/tkem/jquery-timeout/master/src/jquery.timeout.js"></script>
+        <script src="https://raw.githack.com/Inducido/jquery-handler-toolkit.js/master/jquery-handler-toolkit.js"></script>
+        <script src="https://raw.githack.com/tkem/jquery-timeout/master/src/jquery.timeout.js"></script>
         
         <!-- Rapid Tools Suite (Weng's tool) -->
-        <link href="https://raw.githack.com/Siphon880gh/rapid-tools-suite/master/src/rapid.css" rel="stylesheet">
-        <script src="https://raw.githack.com/Siphon880gh/rapid-tools-suite/master/src/rapid.js"></script>
+        <link href="https://rawcdn.githack.com/Siphon880gh/rapid-tools-suite/eb752a9bc502c3eeb80d4aef80d18cc88f3cb691/src/rapid.css" rel="stylesheet">
+        <script src="https://rawcdn.githack.com/Siphon880gh/rapid-tools-suite/21dc670439234a7530e3069a81b3c00760af1545/src/rapid.js"></script>
                 
         <!-- Webapp: Crossroads JS, Qunit -->
         <script src="//cdnjs.cloudflare.com/ajax/libs/js-signals/0.8.1/js-signals.min.js"></script>

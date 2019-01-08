@@ -102,6 +102,7 @@
 /*     
 *	MAINTENANCE: 
 *       - Enums
+*       - Visible and Display directives
 *       - Reverse engineer styles going up or down
 *   ------------------------------------------------------------------------------------------ 
 */
@@ -241,6 +242,33 @@
             } // cssDown
         }
     );
+
+    // Visible and Display directives
+    $(function() {
+        // Visible and Display directives
+        setInterval( () => { 
+            $("[data-rapid-visible]").each((i,el)=>{ 
+                if(eval($(el).data("rapid-visible"))) 
+                    $(el).css("visibility","visible"); 
+                else 
+                    $(el).css("visibility","hidden"); 
+                }); // each
+            }, 200 );
+
+        setInterval( () => {
+            $("[data-rapid-display]").each((i,el)=>{
+                if(!$(el).data("prev-display") && $(el).data("prev-display")!=="none") {
+                    $(el).data("prev-display", $(el).css("display"));
+                }
+                if(eval($(el).data("rapid-display"))) {
+                    var prevDisplay=$(el).data("prev-display")?$(el).data("prev-display"):"block";
+                    $(el).css("display",$(el).data("prev-display"));
+                } else { 
+                    $(el).css("display","none");
+                }
+                }); // each
+            }, 200 );
+    });
 
 /*     
 *	MODULAR
@@ -760,6 +788,13 @@
         Rapid.watchKey("window.aa", "a");
         aa.a=3;
     });*/
+
+    /**
+    * DEBUGGER IN GENERAL
+    * Delay Debugger: Runs debugger after desired milliseconds.
+    * Flash Color: Flash the screen with a desired color to see if a line is reached in the code... You may also pass a duration in ms to change the default flash duration of 200ms.
+    * ------------------------------------------------------------------------------------------
+    **/
 
     //CD-8 delayDebugger
     $.extend(true, Rapid, {
