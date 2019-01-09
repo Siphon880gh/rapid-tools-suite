@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <?php /*
-Setup compass and livereload
+Setup compass, npm, and livereload
 ---
 1. Run Command: compass init
-2. Edit config.rb
-3. Run localhost either by:
-    `http-server` (DRAWBACK: Does not serve index.php or any php files because NodeJS only supports JS, not PHP)
-    Use MAMP/LAMP/etc (Preferred)
-5. Run Command: concurrently "compass watch ." "livereload ."
-4. Run livereload extension while the webpage is served. Chrome has a good livereload extension.
+2. Edit config.rb's css and scss paths
+3. Run command: npm init
+4. Edit package.json's scripts:
+    "watch": "concurrently 'compass watch ./' 'livereload .'"
+5. Run localhost either by:
+    - http-server command (DRAWBACK: Does not serve index.php or any php files because NodeJS only supports JS, not PHP)
+    - MAMP/LAMP/etc
+        Then run command: npm run watch
+        And activate Livereload browser extension.
 */ ?>
 <html lang="en">
   <head>
