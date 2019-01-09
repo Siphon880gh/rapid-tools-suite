@@ -257,17 +257,31 @@
 
         setInterval( () => {
             $("[data-rapid-display]").each((i,el)=>{
-                if(!$(el).data("prev-display") && $(el).data("prev-display")!=="none") {
-                    $(el).data("prev-display", $(el).css("display"));
-                }
-                if(eval($(el).data("rapid-display"))) {
-                    var prevDisplay=$(el).data("prev-display")?$(el).data("prev-display"):"block";
-                    $(el).css("display",$(el).data("prev-display"));
+                var prevDisplay = $(el).data("prev-display"),
+                    curDisplay = $(el).css("display"),
+                    defaultDisplay = $(el).data("rapid-display-default"),
+                    willShow = eval($(el).data("rapid-display"));
+
+                if(!prevDisplay) // On first iteration, prev-default is set internally so when directive is true, we know
+                                // if we're setting to block/inline/inline-block/flex/etc
+                                // The programmer could provide markup for the prev-default as, eg. data-rapid-display-default="flex" 
+                                // or the script would look at the last display css that's not none
+                                // However, if the element is initially display none, please provide data-rapid-display-default or the default is block
+                    if(defaultDisplay && defaultDisplay!=="none")
+                        prevDisplay = defaultDisplay;
+                    else if(curDisplay!=="none") 
+                        prevDisplay = curDisplay;
+                    else
+                        prevDisplay = "block"; 
+
+                if(willShow) {
+                    $(el).css("display", prevDisplay);
                 } else { 
                     $(el).css("display","none");
                 }
-                }); // each
-            }, 200 );
+
+            }); // each
+        }, 200 );
     });
 
 /*     
