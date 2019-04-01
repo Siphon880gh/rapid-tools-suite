@@ -18,6 +18,8 @@ Setup compass, npm, jsdocs, livereload, and git:
 4. Edit package.json's scripts:
     "watch": "concurrently 'compass watch ./' 'livereload .' 'watch \"npm run js_docs_run\" js/'",
     "js_docs_run": "jsdoc js/*"
+
+   Create directory js and add a .js file there. Otherwise jsdocs or watch will complain.
 5. You may choose to init git:
     git init
     git add .
@@ -33,6 +35,7 @@ Setup compass, npm, jsdocs, livereload, and git:
         2. Activate Livereload browser extension.
     - http-server command
         Drawback: Node does not support Php so no Php extension or code runs. Ignores index.php)
+
 */ ?>
 <html lang="en">
   <head>
@@ -44,8 +47,8 @@ Setup compass, npm, jsdocs, livereload, and git:
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
         
-    <link href="assets/css/index.css?v=<?php echo time(); ?>" rel="stylesheet">
-    <script src="assets/js/app.js?v=<?php echo time(); ?>"></script>
+    <link href="css/index.css?v=<?php echo time(); ?>" rel="stylesheet">
+    <script src="js/app.js?v=<?php echo time(); ?>"></script>
     
 </head>
     <body>
