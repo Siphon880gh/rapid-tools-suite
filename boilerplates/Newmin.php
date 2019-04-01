@@ -1,17 +1,38 @@
 <!DOCTYPE html>
 <?php /*
-Setup compass, npm, and livereload
----
+Setup compass, npm, jsdocs, livereload, and git:
+
 1. Run Command: compass init
-2. Edit config.rb's css and scss paths
+2. Create css and css/scss directories then add them to config.rb
 3. Run command: npm init
+4. Edit package.json's settings
+  "watch": {
+    "js_docs_watch": {
+      "patterns": [
+        "js"
+      ],
+      "extensions": "js",
+      "quiet": false
+    }
+  }
 4. Edit package.json's scripts:
-    "watch": "concurrently 'compass watch ./' 'livereload .'"
-5. Run localhost either by:
-    - http-server command (DRAWBACK: Does not serve index.php or any php files because NodeJS only supports JS, not PHP)
-    - MAMP/LAMP/etc
-        Then run command: npm run watch
-        And activate Livereload browser extension.
+    "watch": "concurrently 'compass watch ./' 'livereload .' 'watch \"npm run js_docs_run\" js/'",
+    "js_docs_run": "jsdoc js/*"
+5. You may choose to init git:
+    git init
+    git add .
+    git commit -m "Init"
+
+    Then touch .gitignore:
+    .sass_compass/
+    .git
+    out/
+6. Run localhost:
+    - MAMP
+        1. npm run watch
+        2. Activate Livereload browser extension.
+    - http-server command
+        Drawback: Node does not support Php so no Php extension or code runs. Ignores index.php)
 */ ?>
 <html lang="en">
   <head>
