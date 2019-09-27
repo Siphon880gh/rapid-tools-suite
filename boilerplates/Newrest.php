@@ -1,4 +1,8 @@
 <?php
+// If using the mysqli wrapper MeekroDB which has class DB:
+// 1. Download at https://meekro.com/download_page.php
+// 2. Then uncomment:
+// require_once("php/meekrodb.2.3.class.php");
 
 ///////////////////////////
 //    CONNECT TO DB      //
