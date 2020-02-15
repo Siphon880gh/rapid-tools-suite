@@ -1,40 +1,45 @@
 <!DOCTYPE html>
 <?php /*
-Setup compass, npm, jsdocs, livereload, and git:
+Setup npm, sass, compass, jsdocs, livereload, and git:
 
-1. Run Command: compass init
-2. Create css and css/scss directories then add them to config.rb
-3. Run command: npm init
-4. Edit package.json's settings
-  "watch": {
-    "js_docs_watch": {
-      "patterns": [
-        "js"
-      ],
-      "extensions": "js",
-      "quiet": false
+A. Setup NPM
+  1. Run command: npm init
+  2. Edit package.json's top-level settings
+    "watch": {
+      "js_docs_watch": {
+        "patterns": [
+          "js"
+        ],
+        "extensions": "js",
+        "quiet": false
+      }
     }
-  }
-4. Edit package.json's scripts:
-    "watch": "concurrently 'compass watch ./' 'livereload .' 'watch \"npm run js_docs_run\" js/'",
-    "js_docs_run": "jsdoc js/*"
+  3. Edit package.json's scripts:
+      "watch": "concurrently 'compass watch ./' 'livereload .' 'watch \"npm run js_docs_run\" js/'",
+      "js_docs_run": "jsdoc js/*"
 
-   Create directory js and add a .js file there. Otherwise jsdocs or watch will complain.
-5. You may choose to init git:
-    git init
-    git add .
-    git commit -m "Init"
+    Create directory js and add a .js file there. Otherwise jsdocs or watch will complain.
 
-    Then touch .gitignore:
-    .sass_compass/
-    .git
-    out/
-6. Run localhost:
-    - MAMP
-        1. npm run watch
-        2. Activate Livereload browser extension.
-    - http-server command
-        Drawback: Node does not support Php so no Php extension or code runs. Ignores index.php)
+B. Setup Sass and Compass
+  4. Run Command: compass init
+  5. Create css and css/scss directories then add them to config.rb
+
+C. Setup Git and Hot Reloading
+  6. You may choose to init git:
+      git init
+      git add .
+      git commit -m "Init"
+
+      Then touch .gitignore:
+      .sass_compass/
+      .git
+      out/
+  7. Run localhost:
+      - MAMP
+          1. npm run watch
+          2. Activate Livereload browser extension.
+      - http-server command
+          Drawback: Node does not support Php so no Php extension or code runs. Ignores index.php)
 
 */ ?>
 <html lang="en">
