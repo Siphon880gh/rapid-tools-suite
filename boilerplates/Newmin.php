@@ -24,23 +24,29 @@ B. Setup Sass and Compass
   4. Run Command: compass init
   5. Create css and css/scss directories then add them to config.rb
 
-C. Setup Git and Hot Reloading
-  6. You may choose to init git:
+C. Setup Git
+  6. Run commands
       git init
       git add .
       git commit -m "Init"
 
-      Then touch .gitignore:
+  7. hen add to .gitignore:
       .sass_compass/
       .git
       out/
-  7. Run localhost:
-      - MAMP
-          1. npm run watch
-          2. Activate Livereload browser extension.
-      - http-server command
-          Drawback: Node does not support Php so no Php extension or code runs. Ignores index.php)
 
+D. Setup Hot Reloading
+   You can use MAMP or http-server. Drawback of http-server is it supports only Node so PHP code does not run and opening a directory ignores index.php for the default page.
+  
+   MAMP Hot Reloading Prerequisites:
+        Node's livereload-js:     https://www.npmjs.com/package/livereload-js?fbclid=IwAR11sghYx6WPqrNJ_v-BxZJ-e5WzIb77pZaMb8xfUx-yXQZyse8nzfrAO1Q
+        Chrome's LiveReloadHttps: https://chrome.google.com/webstore/detail/livereloadhttps/mbcllnijheidbcbjhagbloiplmddkacm?fbclid=IwAR3IICWMkBdgWIxU90BuqaMO-tN9JSVEDmFXCOjagsfGfsIydoZtwR-A53A
+
+   8. MAMP Hot Reloading Instructions:
+        1. Run MAMP
+        1. Run command: npm run watch
+        2. Run Chrome extension: LiveReloadHttps
+        
 */ ?>
 <html lang="en">
   <head>
