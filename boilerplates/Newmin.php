@@ -1,30 +1,49 @@
 <!DOCTYPE html>
-<?php /*
-Setup npm, sass, compass, jsdocs, livereload, and git:
+<?php /* * * * *
+       * * * * 
+       
+Setup NPM, Sass/Compass, JSDoc, LiveReload, and Git:
 
 A. Setup NPM
   1. Run command: npm init
-  2. Edit package.json's top-level settings
-    "watch": {
-      "js_docs_watch": {
-        "patterns": [
-          "js"
-        ],
-        "extensions": "js",
-        "quiet": false
+
+  2. Insert into package.json's top-level
+    
+    "scripts": {
+      "watch": "concurrently 'compass watch ./' 'livereload .' 'watch \"npm run js_docs_run\"'",
+      "js_docs_run": "jsdoc -c jsdoc.json"
+    }
+
+    ...
+
+    "dependencies": {
+      "livereload-js": "^3.2.1"
+    }
+
+B. Setup JSDoc (Recommended for big projects that may benefit from on-the-fly documentation)
+    - Good: JSDoc is already setup at NPM's package.json
+    - Create jsdoc.json.
+    - Then add to it:
+    {
+      "recurseDepth": 10,
+      "source": {
+          "include": ["js", "comps"],
+          "exclude": ["js/vendors", "js/vendor", "node_modules"]
+      },
+      "tags": {
+          "allowUnknownTags": true,
+          "dictionaries": ["jsdoc","closure"]
       }
     }
-  3. Edit package.json's scripts:
-      "watch": "concurrently 'compass watch ./' 'livereload .' 'watch \"npm run js_docs_run\" js/'",
-      "js_docs_run": "jsdoc js/*"
+    - Look over the source.include array. 
+      If a path does not exist, then you'll get "Unable to find the source file or directory" errors during the `npm run watch` process.
+      However the errors may take over the terminal screen, it does not break the watching.
 
-    Create directory js and add a .js file there. Otherwise jsdocs or watch will complain.
-
-B. Setup Sass and Compass
+C. Setup Sass and Compass
   4. Run Command: compass init
   5. Create css and css/scss directories then add them to config.rb
 
-C. Setup Git
+D. Setup Git
   6. Run commands
       git init
       git add .
@@ -35,7 +54,7 @@ C. Setup Git
       .git
       out/
 
-D. Setup Hot Reloading
+E. Setup Hot Reloading
    You can use MAMP or http-server. Drawback of http-server is it supports only Node so PHP code does not run and opening a directory ignores index.php for the default page.
   
    MAMP Hot Reloading Prerequisites:
@@ -46,8 +65,9 @@ D. Setup Hot Reloading
         1. Run MAMP
         1. Run command: npm run watch
         2. Run Chrome extension: LiveReloadHttps
-        
-*/ ?>
+
+* * * * 
+* * * * */ ?>
 <html lang="en">
   <head>
    <title>Untitled</title>
