@@ -7,18 +7,29 @@ Setup NPM, Sass/Compass, JSDoc, LiveReload, and Git:
 A. Setup NPM
   1. Run command: npm init
 
-  2. Insert into package.json's top-level
+  2. Merge into package.json's top-level
     
     "scripts": {
-      "watch": "concurrently 'compass watch ./' 'livereload .' 'watch \"npm run js_docs_run\"'",
-      "js_docs_run": "jsdoc -c jsdoc.json"
-    }
-
-    ...
-
+      "watch": "concurrently 'compass watch ./' 'livereload --ignore out/' 'watch \"npm run js_docs\"'",
+      "js_docs": "jsdoc -c jsdoc.json"
+    },
+    "watch": {
+      "js_docs": {
+        "patterns": "**/*.js",
+        "ignore": "out/*",
+        "extensions": "js,jsx",
+        "quiet": false,
+        "delay": 2500
+      }
+    },
     "dependencies": {
-      "livereload-js": "^3.2.1"
+      "node-livereload": "^0.6.0",
     }
+
+  3. But also install globally so the livereload command works:
+     npm install -g node-livereload
+    
+     If it doeesn't let you, you may need to sudo.
 
 B. Setup JSDoc (Recommended for big projects that may benefit from on-the-fly documentation)
     - Good: JSDoc is already setup at NPM's package.json
@@ -28,7 +39,7 @@ B. Setup JSDoc (Recommended for big projects that may benefit from on-the-fly do
       "recurseDepth": 10,
       "source": {
           "include": ["js", "comps"],
-          "exclude": ["js/vendors", "js/vendor", "node_modules"]
+          "exclude": ["js/vendors", "js/vendor", "node_modules", "out"]
       },
       "tags": {
           "allowUnknownTags": true,
