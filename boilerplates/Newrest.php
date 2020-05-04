@@ -1,6 +1,6 @@
 <?php
 // If using the mysqli wrapper MeekroDB which has class DB:
-// 1. Download at https://meekro.com/download_page.php
+// 1. Download at //meekro.com/download_page.php
 // 2. Then uncomment:
 // require_once("php/meekrodb.2.3.class.php");
 
@@ -42,9 +42,9 @@ mysqli_set_charset($lnk1, "utf8");
    options = returns available API methods and URI paths
 
    E.g. If the request line is 
-        GET http://example.com/api.php/songs/1
+        GET //example.com/api.php/songs/1
                             or
-        GET http://example.com/api.php/songs/1/
+        GET //example.com/api.php/songs/1/
 
    Then $_SERVER['PATH_INFO'] returns the string:
         "songs/1/"

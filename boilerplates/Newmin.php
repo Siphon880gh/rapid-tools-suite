@@ -69,8 +69,8 @@ E. Setup Hot Reloading
    You can use MAMP or http-server. Drawback of http-server is it supports only Node so PHP code does not run and opening a directory ignores index.php for the default page.
   
    MAMP Hot Reloading Prerequisites:
-        Node's livereload-js:     https://www.npmjs.com/package/livereload-js?fbclid=IwAR11sghYx6WPqrNJ_v-BxZJ-e5WzIb77pZaMb8xfUx-yXQZyse8nzfrAO1Q
-        Chrome's LiveReloadHttps: https://chrome.google.com/webstore/detail/livereloadhttps/mbcllnijheidbcbjhagbloiplmddkacm?fbclid=IwAR3IICWMkBdgWIxU90BuqaMO-tN9JSVEDmFXCOjagsfGfsIydoZtwR-A53A
+        Node's livereload-js:     //www.npmjs.com/package/livereload-js?fbclid=IwAR11sghYx6WPqrNJ_v-BxZJ-e5WzIb77pZaMb8xfUx-yXQZyse8nzfrAO1Q
+        Chrome's LiveReload //chrome.google.com/webstore/detail/livereloadhttps/mbcllnijheidbcbjhagbloiplmddkacm?fbclid=IwAR3IICWMkBdgWIxU90BuqaMO-tN9JSVEDmFXCOjagsfGfsIydoZtwR-A53A
 
    8. MAMP Hot Reloading Instructions:
         1. Run MAMP
@@ -86,8 +86,8 @@ E. Setup Hot Reloading
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 
     <!-- jQuery and Bootstrap  -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
         
     <link href="css/index.css?v=<?php echo time(); ?>" rel="stylesheet">
     <script src="js/app.js?v=<?php echo time(); ?>"></script>
@@ -100,33 +100,33 @@ E. Setup Hot Reloading
         </div> <!-- /.container -->
         
         <!-- Designer: Open Sans, Lato, FontAwesome, Waypoints, Skrollr, Pixel-Em-Converter -->
-        <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300|Open+Sans+Condensed:300" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.css">
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.0/jquery.waypoints.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/skrollr/0.6.30/skrollr.min.js"></script>
-        <script src="https://raw.githack.com/filamentgroup/jQuery-Pixel-Em-Converter/master/pxem.jQuery.js"></script>
+        <link href="//fonts.googleapis.com/css?family=Open+Sans:400,300|Open+Sans+Condensed:300" rel="stylesheet">
+        <link href="//fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.css">
+        <script src="//cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.0/jquery.waypoints.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/skrollr/0.6.30/skrollr.min.js"></script>
+        <script src="//raw.githack.com/filamentgroup/jQuery-Pixel-Em-Converter/master/pxem.jQuery.js"></script>
         
         <!-- Rendering: Handlebars JS, LiveQuery, Sprintf JS -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.js"></script>
-        <script src="https://raw.githack.com/hazzik/livequery/master/src/jquery.livequery.js"></script>
-        <script src="https://raw.githack.com/azatoth/jquery-sprintf/master/jquery.sprintf.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.js"></script>
+        <script src="//raw.githack.com/hazzik/livequery/master/src/jquery.livequery.js"></script>
+        <script src="//raw.githack.com/azatoth/jquery-sprintf/master/jquery.sprintf.js"></script>
         
         <!-- Compatibility: Modernizr, jQuery Migrate (check browser) -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
-        <script src="https://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
+        <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
         
         <!-- Mobile: jQuery UI, jQuery UI Touch Punch -->
-        <link href="https://code.jquery.com/ui/1.11.3/themes/ui-lightness/jquery-ui.css" rel="stylesheet"/>
-        <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js"></script>
+        <link href="//code.jquery.com/ui/1.11.3/themes/ui-lightness/jquery-ui.css" rel="stylesheet"/>
+        <script src="//code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js"></script>
        
         <!-- Bootstrap JS -->
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
         
         <!-- Friendlier API: ListHandlers, Timeout -->
-        <script src="https://raw.githack.com/Inducido/jquery-handler-toolkit.js/master/jquery-handler-toolkit.js"></script>
-        <script src="https://raw.githack.com/tkem/jquery-timeout/master/src/jquery.timeout.js"></script>
+        <script src="//raw.githack.com/Inducido/jquery-handler-toolkit.js/master/jquery-handler-toolkit.js"></script>
+        <script src="//raw.githack.com/tkem/jquery-timeout/master/src/jquery.timeout.js"></script>
 
     </body>
 </html>
