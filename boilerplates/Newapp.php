@@ -1,4 +1,85 @@
 <!DOCTYPE html>
+<?php /* * * * *
+       * * * * 
+NEWAPP
+       
+Setup NPM, Sass/Compass, JSDoc, LiveReload, and Git:
+
+A. Setup NPM
+  1. Run command: npm init
+
+  2. Merge into package.json's top-level
+    
+    "scripts": {
+      "watch": "concurrently 'compass watch ./' 'livereload --ignore out/' 'watch \"npm run js_docs\"'",
+      "js_docs": "jsdoc -c jsdoc.json"
+    },
+    "watch": {
+      "js_docs": {
+        "patterns": "**/*.js",
+        "ignore": "out/*",
+        "extensions": "js,jsx",
+        "quiet": false,
+        "delay": 2500
+      }
+    },
+    "dependencies": {
+      "node-livereload": "^0.6.0",
+    }
+
+  3. But also install globally so the livereload command works:
+     npm install -g node-livereload
+    
+     If it doeesn't let you, you may need to sudo.
+
+B. Setup JSDoc (Recommended for big projects that may benefit from on-the-fly documentation)
+    - Good: JSDoc is already setup at NPM's package.json
+    - Create jsdoc.json.
+    - Then add to it:
+    {
+      "recurseDepth": 10,
+      "source": {
+          "include": ["js", "comps"],
+          "exclude": ["js/vendors", "js/vendor", "node_modules", "out"]
+      },
+      "tags": {
+          "allowUnknownTags": true,
+          "dictionaries": ["jsdoc","closure"]
+      }
+    }
+    - Look over the source.include array. 
+      If a path does not exist, then you'll get "Unable to find the source file or directory" errors during the `npm run watch` process.
+      However the errors may take over the terminal screen, it does not break the watching.
+
+C. Setup Sass and Compass
+  4. Run Command: compass init
+  5. Create css and css/scss directories then add them to config.rb
+
+D. Setup Git
+  6. Run commands
+      git init
+      git add .
+      git commit -m "Init"
+
+  7. hen add to .gitignore:
+      .sass_compass/
+      .git
+      out/
+
+E. Setup Hot Reloading
+   You can use MAMP or http-server. Drawback of http-server is it supports only Node so PHP code does not run and opening a directory ignores index.php for the default page.
+  
+   MAMP Hot Reloading Prerequisites:
+        Node's livereload-js:     //www.npmjs.com/package/livereload-js?fbclid=IwAR11sghYx6WPqrNJ_v-BxZJ-e5WzIb77pZaMb8xfUx-yXQZyse8nzfrAO1Q
+        Chrome's LiveReload //chrome.google.com/webstore/detail/livereloadhttps/mbcllnijheidbcbjhagbloiplmddkacm?fbclid=IwAR3IICWMkBdgWIxU90BuqaMO-tN9JSVEDmFXCOjagsfGfsIydoZtwR-A53A
+
+   8. MAMP Hot Reloading Instructions:
+        1. Run MAMP
+        1. Run command: npm run watch
+        2. Run Chrome extension: LiveReloadHttps
+
+* * * * 
+* * * * */ ?>
 <html lang="en">
   <head>
    <title>Untitled</title>
@@ -213,9 +294,9 @@
         <script src="//cdnjs.cloudflare.com/ajax/libs/skrollr/0.6.30/skrollr.min.js"></script>
         <script src="//raw.githack.com/filamentgroup/jQuery-Pixel-Em-Converter/master/pxem.jQuery.js"></script>
         
-        <!-- Rendering: Handlebars JS, LiveQuery, Sprintf JS -->
+        <!-- Rendering: Handlebars JS, whenLive, Sprintf JS -->
         <script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.js"></script>
-        <script src="//raw.githack.com/hazzik/livequery/master/src/jquery.livequery.js"></script>
+        <script src="https://raw.githack.com/tkambler/whenLive/master/src/jquery.whenlive.js"></script>
         <script src="//raw.githack.com/azatoth/jquery-sprintf/master/jquery.sprintf.js"></script>
         
         <!-- Compatibility: Modernizr, jQuery Migrate (check browser) -->

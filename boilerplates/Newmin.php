@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <?php /* * * * *
        * * * * 
+NEWMIN
        
 Setup NPM, Sass/Compass, JSDoc, LiveReload, and Git:
 
@@ -99,21 +100,14 @@ E. Setup Hot Reloading
 
         </div> <!-- /.container -->
         
-        <!-- Designer: Open Sans, Lato, FontAwesome, Waypoints, Skrollr, Pixel-Em-Converter -->
-        <link href="//fonts.googleapis.com/css?family=Open+Sans:400,300|Open+Sans+Condensed:300" rel="stylesheet">
-        <link href="//fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+        <!-- Designer: FontAwesome -->
         <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.css">
-        <script src="//cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.0/jquery.waypoints.min.js"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/skrollr/0.6.30/skrollr.min.js"></script>
-        <script src="//raw.githack.com/filamentgroup/jQuery-Pixel-Em-Converter/master/pxem.jQuery.js"></script>
         
-        <!-- Rendering: Handlebars JS, LiveQuery, Sprintf JS -->
+        <!-- Rendering: Handlebars JS, whenLive -->
         <script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.js"></script>
-        <script src="//raw.githack.com/hazzik/livequery/master/src/jquery.livequery.js"></script>
-        <script src="//raw.githack.com/azatoth/jquery-sprintf/master/jquery.sprintf.js"></script>
+        <script src="https://raw.githack.com/tkambler/whenLive/master/src/jquery.whenlive.js"></script>
         
-        <!-- Compatibility: Modernizr, jQuery Migrate (check browser) -->
-        <script src="//cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
+        <!-- Compatibility: jQuery Migrate (check browser) -->
         <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
         
         <!-- Mobile: jQuery UI, jQuery UI Touch Punch -->
@@ -124,9 +118,5 @@ E. Setup Hot Reloading
         <!-- Bootstrap JS -->
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
         
-        <!-- Friendlier API: ListHandlers, Timeout -->
-        <script src="//raw.githack.com/Inducido/jquery-handler-toolkit.js/master/jquery-handler-toolkit.js"></script>
-        <script src="//raw.githack.com/tkem/jquery-timeout/master/src/jquery.timeout.js"></script>
-
     </body>
 </html>
